@@ -30,6 +30,7 @@ public class SnowFinance {
 
     private void shutdown() {
         //TODO: close and save data
+        System.out.println("Shutting down");
         transactionManager.close();
     }
 

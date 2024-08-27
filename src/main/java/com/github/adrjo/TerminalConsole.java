@@ -18,13 +18,14 @@ public class TerminalConsole extends Thread {
             String[] args = line.split(" ");
             Command command = SnowFinance.instance.getCommandManager().get(args[0]);
             if (command == null) {
-                System.err.printf("%s: command not found", args[0]);
+                System.err.printf("%s: command not found\n", args[0]);
                 continue;
             }
 
             String[] commandArgs = Arrays.copyOfRange(args, 1, args.length);
             command.exec(commandArgs);
         }
+        System.out.println("Bye!");
     }
 
     private String getCommandList() {
