@@ -14,18 +14,40 @@ public class TerminalConsole extends Thread {
         System.out.println("Commands: " + commandList);
         Scanner scan = new Scanner(System.in);
         while (scan.hasNext()) {
-            String line = scan.nextLine();
+            final String line = scan.nextLine();
             String[] args = line.split(" ");
-            Command command = SnowFinance.instance.getCommandManager().get(args[0]);
+            
+            final String commandString = args[0];
+            // Shutdown
+            if (commandString.equalsIgnoreCase("stop") || commandString.equalsIgnoreCase("exit")) {
+                break;
+            }
+            
+            final Command command = SnowFinance.instance.getCommandManager().get(commandString);
             if (command == null) {
-                System.err.printf("%s: command not found\n", args[0]);
+                System.err.printf("%s: command not found\n", commandString);
                 continue;
             }
 
             String[] commandArgs = Arrays.copyOfRange(args, 1, args.length);
+            if (contains(args, "-?", "?", "help")) {
+                System.err.printf("%s: %s\n", command.getName(), command.getDesc());
+                continue;
+            }
             command.exec(commandArgs);
         }
         System.out.println("Bye!");
+    }
+
+    private boolean contains(String[] args, String... strings) {
+        for (String arg : args) {
+            for (String s : strings) {
+                if (arg.equalsIgnoreCase(s)) {
+                    return true;
+                }
+            }
+        }
+        return false;
     }
 
     private String getCommandList() {
