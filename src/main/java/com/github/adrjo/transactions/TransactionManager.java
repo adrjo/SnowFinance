@@ -1,5 +1,11 @@
 package com.github.adrjo.transactions;
 
+import com.github.adrjo.Helper;
+
+import java.io.*;
+import java.nio.charset.StandardCharsets;
+import java.nio.file.Files;
+import java.nio.file.Path;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -9,11 +15,23 @@ public class TransactionManager {
     private int index = 0;
 
     public TransactionManager() {
-        //TODO: load data from file
+        try {
+            loadTransactions();
+        } catch (IOException e) {
+            System.err.println("Failed to load transactions: " + e.getMessage());
+            e.printStackTrace();
+        }
     }
 
     public void add(Transaction transaction) {
         this.idtoTransactionMap.put(index++, transaction);
+    }
+
+    public void add(int id, Transaction transaction) {
+        this.idtoTransactionMap.put(id, transaction);
+        if (index <= id) {
+            index = id + 1;
+        }
     }
 
     public void addNow(String name, float amt) {
@@ -53,9 +71,29 @@ public class TransactionManager {
         return idtoTransactionMap.get(id);
     }
 
+    //TODO: save to sql db
     public void close() {
-//        for (Transaction transaction : transactions) {
-//            //TODO: save
-//        }
+        try (BufferedWriter writer = new BufferedWriter(
+                new OutputStreamWriter(new FileOutputStream(Helper.DATABASE), StandardCharsets.UTF_8))) {
+            for (Map.Entry<Integer, Transaction> entry : idtoTransactionMap.entrySet()) {
+                final int id = entry.getKey();
+                final Transaction transaction = entry.getValue();
+                writer.write(String.format("%d,%s,%.3f,%d\n", id, transaction.desc(), transaction.amt(), transaction.timestamp()));
+            }
+        } catch (IOException e) {
+            System.err.println("Error in saving transactions to file: " + e.getMessage());
+        }
+    }
+
+    private void loadTransactions() throws IOException {
+        Path path = Path.of(Helper.DATABASE);
+        if (!path.toFile().exists()) return;
+
+        Files.readAllLines(path).forEach(line -> {
+            String[] split = line.split(",");
+            int id = Integer.parseInt(split[0]);
+            Transaction transaction = new Transaction(split[1], Double.parseDouble(split[2]), Long.parseLong(split[3]));
+            this.add(id, transaction);
+        });
     }
 }
