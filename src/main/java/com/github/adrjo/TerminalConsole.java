@@ -10,8 +10,7 @@ public class TerminalConsole extends Thread {
     @Override
     public void run() {
         System.out.println("Welcome to SnowFinance");
-        String commandList = getCommandList();
-        System.out.println("Commands: " + commandList);
+        System.out.println("Commands: " + getCommandList());
         Scanner scan = new Scanner(System.in);
         while (scan.hasNext()) {
             final String line = scan.nextLine();

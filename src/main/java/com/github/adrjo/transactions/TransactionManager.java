@@ -1,17 +1,18 @@
 package com.github.adrjo.transactions;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.stream.Collectors;
 
 public class TransactionManager {
-    private final List<Transaction> transactions = new ArrayList<>();
+    private final Map<Integer, Transaction> idtoTransactionMap = new HashMap<>();
 
     public TransactionManager() {
         //TODO: load data from file
     }
 
     public void add(Transaction transaction) {
-        this.transactions.add(transaction);
+        this.idtoTransactionMap.put(transaction.hashCode(), transaction);
     }
 
     public void addNow(String name, float amt) {
@@ -23,7 +24,7 @@ public class TransactionManager {
     }
 
     public double getBalanceAt(long timestamp) {
-        return transactions.stream()
+        return idtoTransactionMap.values().stream()
                 .filter(transaction -> transaction.timestamp() <= timestamp)
                 .mapToDouble(Transaction::amt)
                 .sum();
@@ -33,9 +34,19 @@ public class TransactionManager {
         return getBalanceAt(System.currentTimeMillis());
     }
 
+    public Map<Integer, Transaction> getTransactions() {
+        return getTransactionsBefore(System.currentTimeMillis());
+    }
+
+    public Map<Integer, Transaction> getTransactionsBefore(long timestamp) {
+        return this.idtoTransactionMap.entrySet().stream()
+                .filter((entry) -> entry.getValue().timestamp() < timestamp)
+                .collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue));
+    }
+
     public void close() {
-        for (Transaction transaction : transactions) {
-            //TODO: save
-        }
+//        for (Transaction transaction : transactions) {
+//            //TODO: save
+//        }
     }
 }

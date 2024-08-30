@@ -5,15 +5,13 @@ import com.github.adrjo.SnowFinance;
 import com.github.adrjo.commands.Command;
 import com.github.adrjo.transactions.Transaction;
 
-import java.text.DateFormat;
 import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.Date;
 
 public class AddTransactionCommand extends Command {
 
     public AddTransactionCommand() {
-        super("add_transaction", "args: [name] [amt in SEK] [date in format yyyy-MM-dd.hh:mm (or blank for current time)]");
+        super("add", "args: [name] [amt in SEK] [date in format " + Helper.DATE_AND_TIME + " (or blank for current time)]");
     }
 
     @Override
