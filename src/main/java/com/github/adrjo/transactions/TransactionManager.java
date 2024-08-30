@@ -6,13 +6,14 @@ import java.util.stream.Collectors;
 
 public class TransactionManager {
     private final Map<Integer, Transaction> idtoTransactionMap = new HashMap<>();
+    private int index = 0;
 
     public TransactionManager() {
         //TODO: load data from file
     }
 
     public void add(Transaction transaction) {
-        this.idtoTransactionMap.put(transaction.hashCode(), transaction);
+        this.idtoTransactionMap.put(index++, transaction);
     }
 
     public void addNow(String name, float amt) {
