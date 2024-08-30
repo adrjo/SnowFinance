@@ -44,6 +44,14 @@ public class TransactionManager {
                 .collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue));
     }
 
+    public void remove(int id) {
+        idtoTransactionMap.remove(id);
+    }
+
+    public Transaction get(int id) {
+        return idtoTransactionMap.get(id);
+    }
+
     public void close() {
 //        for (Transaction transaction : transactions) {
 //            //TODO: save
