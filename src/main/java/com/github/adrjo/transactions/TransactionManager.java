@@ -22,6 +22,17 @@ public class TransactionManager {
         this.add(new Transaction(name, amt, timestamp));
     }
 
+    public double getBalanceAt(long timestamp) {
+        return transactions.stream()
+                .filter(transaction -> transaction.timestamp() <= timestamp)
+                .mapToDouble(Transaction::amt)
+                .sum();
+    }
+
+    public double getBalance() {
+        return getBalanceAt(System.currentTimeMillis());
+    }
+
     public void close() {
         for (Transaction transaction : transactions) {
             //TODO: save

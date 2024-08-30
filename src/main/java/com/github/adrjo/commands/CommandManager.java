@@ -1,5 +1,6 @@
 package com.github.adrjo.commands;
 
+import com.github.adrjo.commands.impl.AddTransactionCommand;
 import com.github.adrjo.commands.impl.BalanceCommand;
 
 import java.util.ArrayList;
@@ -11,6 +12,7 @@ public class CommandManager {
     public CommandManager() {
         //TODO: load commands automatically
         commands.add(new BalanceCommand());
+        commands.add(new AddTransactionCommand());
     }
 
     public Command get(String command) {
