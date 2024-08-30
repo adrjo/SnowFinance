@@ -3,6 +3,8 @@ package com.github.adrjo;
 import com.github.adrjo.commands.CommandManager;
 import com.github.adrjo.transactions.TransactionManager;
 
+import java.util.Locale;
+
 public class SnowFinance {
     public static SnowFinance instance = null;
 
@@ -11,6 +13,8 @@ public class SnowFinance {
     private TerminalConsole console;
     public SnowFinance() {
         instance = this;
+        // Fix commas being used in floats on some systems
+        Locale.setDefault(Locale.US);
 
         System.out.println("Starting SnowFinance...");
         long now = System.currentTimeMillis();
