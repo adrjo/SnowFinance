@@ -1,6 +1,7 @@
 package com.github.adrjo;
 
 import com.github.adrjo.commands.CommandManager;
+import com.github.adrjo.gui.GuiRenderer;
 import com.github.adrjo.transactions.TransactionManager;
 
 import java.util.Locale;
@@ -10,6 +11,7 @@ public class SnowFinance {
 
     private TransactionManager transactionManager;
     private CommandManager commandManager;
+    private GuiRenderer guiRenderer;
     private TerminalConsole console;
     public SnowFinance() {
         instance = this;
@@ -24,12 +26,14 @@ public class SnowFinance {
         Runtime.getRuntime().addShutdownHook(new Thread(this::shutdown));
 
         console.start();
+        guiRenderer.start();
     }
 
     private void init() {
         transactionManager = new TransactionManager();
         commandManager = new CommandManager();
         console = new TerminalConsole();
+        guiRenderer = new GuiRenderer();
     }
 
     private void shutdown() {
