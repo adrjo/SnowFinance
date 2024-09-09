@@ -73,8 +73,7 @@ public class TransactionManager {
 
     //TODO: save to sql db
     public void close() {
-        try (BufferedWriter writer = new BufferedWriter(
-                new OutputStreamWriter(new FileOutputStream(Helper.DATABASE), StandardCharsets.UTF_8))) {
+        try (FileWriter writer = new FileWriter(Helper.DATABASE, StandardCharsets.UTF_8)) {
             for (Map.Entry<Integer, Transaction> entry : idtoTransactionMap.entrySet()) {
                 final int id = entry.getKey();
                 final Transaction transaction = entry.getValue();
@@ -89,7 +88,7 @@ public class TransactionManager {
         Path path = Path.of(Helper.DATABASE);
         if (!path.toFile().exists()) return;
 
-        Files.readAllLines(path).forEach(line -> {
+        Files.readAllLines(path, StandardCharsets.UTF_8).forEach(line -> {
             String[] split = line.split(",");
             int id = Integer.parseInt(split[0]);
             Transaction transaction = new Transaction(split[1], Double.parseDouble(split[2]), Long.parseLong(split[3]));

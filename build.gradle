@@ -2,6 +2,7 @@ plugins {
     id 'java'
     id 'application'
     id 'org.openjfx.javafxplugin' version '0.1.0'
+    id("com.github.johnrengelman.shadow") version "8.1.1"
 }
 
 group = 'com.github.adrjo'
@@ -9,6 +10,7 @@ version = '1.0-SNAPSHOT'
 
 repositories {
     mavenCentral()
+    maven { url 'https://jitpack.io/' }
 }
 
 dependencies {
@@ -23,6 +25,12 @@ javafx {
 
 test {
     useJUnitPlatform()
+}
+
+application {
+    mainClass = 'com.github.adrjo.Main'  // Ensure main class is set here too
+    // Add JVM argument to enforce UTF-8 encoding
+    applicationDefaultJvmArgs = ['-Dfile.encoding=UTF-8']
 }
 
 jar {
