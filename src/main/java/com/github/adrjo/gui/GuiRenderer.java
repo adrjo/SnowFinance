@@ -1,9 +1,14 @@
 package com.github.adrjo.gui;
 
+import com.github.adrjo.SnowFinance;
+import com.github.adrjo.transactions.Transaction;
 import javafx.application.Application;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.control.TableColumn;
+import javafx.scene.control.TableView;
+import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 
@@ -16,8 +21,7 @@ public class GuiRenderer extends Application {
     @Override
     public void start(Stage primaryStage) {
         // Create the welcome text
-        Label welcomeLabel = new Label("Welcome to SnowFinance");
-        welcomeLabel.setStyle("-fx-font-size: 20px; -fx-font-weight: bold;");
+        Label welcomeLabel = getTitle("Welcome to SnowFinance");
 
         // Create the buttons
         Button transactionsButton = new Button("Transactions");
@@ -25,7 +29,7 @@ public class GuiRenderer extends Application {
         Button removeTransactionButton = new Button("Remove Transaction");
 
         // Set button actions
-        transactionsButton.setOnAction(e -> showTransactions());
+        transactionsButton.setOnAction(e -> showTransactions(primaryStage));
         addTransactionButton.setOnAction(e -> addTransaction());
         removeTransactionButton.setOnAction(e -> removeTransaction());
 
@@ -41,9 +45,36 @@ public class GuiRenderer extends Application {
         primaryStage.show();
     }
 
-    private void showTransactions() {
-        // Implement this method to show the list of transactions
-        System.out.println("Show Transactions Clicked");
+    private Label getTitle(String text) {
+        Label label = new Label(text);
+        label.setStyle("-fx-font-size: 20px; -fx-font-weight: bold;");
+        return label;
+    }
+
+    private void showTransactions(Stage stage) {
+        Label title = getTitle("Transactions");
+        TableView<TransactionDisplay> table = new TableView<>();
+        table.setEditable(false);
+
+        TableColumn<TransactionDisplay, Integer> id = new TableColumn<>("ID");
+        id.setCellValueFactory(new PropertyValueFactory<>("id"));
+        TableColumn<TransactionDisplay, String> name = new TableColumn<>("Name");
+        name.setCellValueFactory(new PropertyValueFactory<>("desc"));
+        TableColumn<TransactionDisplay, String> dateTime = new TableColumn<>("Date");
+        dateTime.setCellValueFactory(new PropertyValueFactory<>("date"));
+        TableColumn<TransactionDisplay, Double> amount = new TableColumn<>("Amount");
+        amount.setCellValueFactory(new PropertyValueFactory<>("amount"));
+        table.getColumns().addAll(id, name, dateTime, amount);
+
+        SnowFinance.instance.getTransactionManager().getTransactions().forEach((tid, transaction) -> {
+            table.getItems().add(new TransactionDisplay(tid, transaction));
+        });
+
+        VBox layout = new VBox(20);
+        layout.setStyle("-fx-alignment: center; -fx-padding: 50px;");
+        layout.getChildren().addAll(title, table);
+        Scene transactionScene = new Scene(layout, 400, 300);
+        stage.setScene(transactionScene);
     }
 
     private void addTransaction() {
