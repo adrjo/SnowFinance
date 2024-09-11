@@ -10,19 +10,18 @@ import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.VBox;
-import javafx.stage.Stage;
 import javafx.util.Callback;
 
 import java.text.ParseException;
 
 public class TransactionsScene extends Scene {
-    public TransactionsScene(Stage stage) {
+    public TransactionsScene() {
         super(new VBox(20), 400, 500);
 
-        render(stage);
+        render();
     }
 
-    private void render(Stage stage) {
+    private void render() {
         Label title = Helper.getTitle("Transactions");
         TableView<TransactionDisplay> table = new TableView<>();
         table.setMaxWidth(600);
