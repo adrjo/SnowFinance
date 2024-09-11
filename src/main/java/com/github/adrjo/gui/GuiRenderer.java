@@ -57,14 +57,19 @@ public class GuiRenderer extends Application {
     private void showTransactions(Stage stage) {
         Label title = getTitle("Transactions");
         TableView<TransactionDisplay> table = new TableView<>();
+        table.setMaxWidth(600);
+        table.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY_ALL_COLUMNS);
         table.setEditable(false);
 
         TableColumn<TransactionDisplay, Integer> id = new TableColumn<>("ID");
         id.setCellValueFactory(new PropertyValueFactory<>("id"));
+
         TableColumn<TransactionDisplay, String> name = new TableColumn<>("Name");
         name.setCellValueFactory(new PropertyValueFactory<>("desc"));
+
         TableColumn<TransactionDisplay, String> dateTime = new TableColumn<>("Date");
         dateTime.setCellValueFactory(new PropertyValueFactory<>("date"));
+
         TableColumn<TransactionDisplay, Double> amount = new TableColumn<>("Amount");
         amount.setCellValueFactory(new PropertyValueFactory<>("amount"));
 
@@ -99,13 +104,14 @@ public class GuiRenderer extends Application {
         addTransFields.addRow(0, nameField, amountField, dateField, addTransaction);
         addTransFields.setVisible(false);
 
+        addTransFields.setStyle("-fx-alignment: center;");
 
         Button newTransaction = new Button("New Transaction");
         newTransaction.setOnAction(e -> addTransFields.setVisible(true));
 
-        VBox layout = new VBox(20);
+        VBox layout = new VBox(20, title, table, newTransaction, addTransFields);
+
         layout.setStyle("-fx-alignment: center; -fx-padding: 50px;");
-        layout.getChildren().addAll(title, table, newTransaction, addTransFields);
         Scene transactionScene = new Scene(layout, 500, 400);
         stage.setScene(transactionScene);
     }
