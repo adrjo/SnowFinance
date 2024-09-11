@@ -47,6 +47,11 @@ public class TransactionsScene extends Scene {
 
         updateTable(table);
 
+        // For error feedback
+        Label errorLabel = new Label();
+        errorLabel.setStyle("-fx-text-fill: red;");
+        errorLabel.setVisible(false);
+
         //Add transaction inputs
         //name, amount, date(optional)
         GridPane addTransFields = new GridPane();
@@ -68,9 +73,13 @@ public class TransactionsScene extends Scene {
                     SnowFinance.instance.getTransactionManager().add(desc, amt, Helper.DATE_FORMAT.parse(date).getTime());
                 }
                 clearTextFields(nameField, amountField, dateField);
-
+                errorLabel.setVisible(false);
             } catch (ParseException ex) {
-                ex.printStackTrace();
+                errorLabel.setText("Error: date must be written in format " + Helper.DATE_AND_TIME);
+                errorLabel.setVisible(true);
+            } catch (NumberFormatException ex) {
+                errorLabel.setText("Error: amount: type a number");
+                errorLabel.setVisible(true);
             }
             updateTable(table);
         });
@@ -84,7 +93,7 @@ public class TransactionsScene extends Scene {
         newTransaction.setOnAction(e -> addTransFields.setVisible(true));
 
         VBox layout = (VBox) this.getRoot();
-        layout.getChildren().addAll(title, table, addTransFields, newTransaction);
+        layout.getChildren().addAll(title, table, addTransFields, newTransaction, errorLabel);
         layout.setStyle("-fx-alignment: center; -fx-padding: 50px;");
     }
 
