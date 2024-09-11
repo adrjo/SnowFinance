@@ -16,7 +16,7 @@ import java.text.ParseException;
 
 public class TransactionsScene extends Scene {
     public TransactionsScene() {
-        super(new VBox(20), 400, 500);
+        super(new VBox(20), 600, 500);
 
         render();
     }
