@@ -31,11 +31,8 @@ public class WelcomeScene extends Scene {
 //        addTransactionButton.setOnAction(e -> addTransaction());
 //        removeTransactionButton.setOnAction(e -> removeTransaction());
 
-        // Create a layout and add the elements
         VBox layout = (VBox) this.getRoot();
         layout.setStyle("-fx-alignment: center; -fx-padding: 50px;");
         layout.getChildren().addAll(welcomeLabel, transactionsButton, addTransactionButton, removeTransactionButton);
-
-
     }
 }

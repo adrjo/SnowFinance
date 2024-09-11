@@ -34,11 +34,11 @@ public class TransactionManager {
         }
     }
 
-    public void addNow(String name, float amt) {
+    public void addNow(String name, double amt) {
         this.add(new Transaction(name, amt, System.currentTimeMillis()));
     }
 
-    public void add(String name, float amt, long timestamp) {
+    public void add(String name, double amt, long timestamp) {
         this.add(new Transaction(name, amt, timestamp));
     }
 

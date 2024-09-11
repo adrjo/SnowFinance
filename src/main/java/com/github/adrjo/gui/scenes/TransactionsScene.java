@@ -45,27 +45,34 @@ public class TransactionsScene extends Scene {
 
         table.getColumns().addAll(id, name, dateTime, amount, actionColumn);
 
-
-        SnowFinance.instance.getTransactionManager().getTransactions().forEach((tid, transaction) -> {
-            table.getItems().add(new TransactionDisplay(tid, transaction));
-        });
+        updateTable(table);
 
         //Add transaction inputs
         //name, amount, date(optional)
         GridPane addTransFields = new GridPane();
-        TextField nameField = new TextField("Name");
-        TextField amountField = new TextField("Amount");
-        TextField dateField = new TextField("Date");
+        TextField nameField = new TextField("");
+        nameField.setPromptText("Name");
+        TextField amountField = new TextField("");
+        amountField.setPromptText("Amount");
+        TextField dateField = new TextField("");
+        dateField.setPromptText("Date");
         Button addTransaction = new Button("Add");
         addTransaction.setOnAction(e -> {
             try {
                 String desc = nameField.getText();
-                String amt = amountField.getText();
+                double amt = Double.parseDouble(amountField.getText());
                 String date = dateField.getText();
-                System.out.println("Adding " + new Transaction(desc, Double.parseDouble(amt), Helper.DATE_FORMAT.parse(date).getTime()));
+                if (date.isBlank()) {
+                    SnowFinance.instance.getTransactionManager().addNow(desc, amt);
+                } else {
+                    SnowFinance.instance.getTransactionManager().add(desc, amt, Helper.DATE_FORMAT.parse(date).getTime());
+                }
+                clearTextFields(nameField, amountField, dateField);
+
             } catch (ParseException ex) {
                 ex.printStackTrace();
             }
+            updateTable(table);
         });
 
         addTransFields.addRow(0, nameField, amountField, dateField, addTransaction);
@@ -79,6 +86,19 @@ public class TransactionsScene extends Scene {
         VBox layout = (VBox) this.getRoot();
         layout.getChildren().addAll(title, table, addTransFields, newTransaction);
         layout.setStyle("-fx-alignment: center; -fx-padding: 50px;");
+    }
+
+    private void clearTextFields(TextField... fields) {
+        for (TextField field : fields) {
+            field.clear();
+        }
+    }
+
+    private void updateTable(TableView<TransactionDisplay> table) {
+        table.getItems().clear();
+        SnowFinance.instance.getTransactionManager().getTransactions().forEach((tid, transaction) -> {
+            table.getItems().add(new TransactionDisplay(tid, transaction));
+        });
     }
 
     private TableColumn<TransactionDisplay, Void> addButton(TableView<TransactionDisplay> table) {
