@@ -1,16 +1,19 @@
 package com.github.adrjo.gui;
 
+import com.github.adrjo.Helper;
 import com.github.adrjo.SnowFinance;
 import com.github.adrjo.transactions.Transaction;
 import javafx.application.Application;
+import javafx.event.ActionEvent;
 import javafx.scene.Scene;
-import javafx.scene.control.Button;
-import javafx.scene.control.Label;
-import javafx.scene.control.TableColumn;
-import javafx.scene.control.TableView;
+import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.layout.GridPane;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
+import javafx.util.Callback;
+
+import java.text.ParseException;
 
 public class GuiRenderer extends Application {
 
@@ -39,7 +42,7 @@ public class GuiRenderer extends Application {
         layout.getChildren().addAll(welcomeLabel, transactionsButton, addTransactionButton, removeTransactionButton);
 
         // Create the scene and set it in the stage
-        Scene scene = new Scene(layout, 400, 300);
+        Scene scene = new Scene(layout, 500, 400);
         primaryStage.setTitle("Transaction Manager");
         primaryStage.setScene(scene);
         primaryStage.show();
@@ -64,17 +67,83 @@ public class GuiRenderer extends Application {
         dateTime.setCellValueFactory(new PropertyValueFactory<>("date"));
         TableColumn<TransactionDisplay, Double> amount = new TableColumn<>("Amount");
         amount.setCellValueFactory(new PropertyValueFactory<>("amount"));
-        table.getColumns().addAll(id, name, dateTime, amount);
+
+        // Add delete button
+        TableColumn<TransactionDisplay, Void> actionColumn = addButton(table);
+
+        table.getColumns().addAll(id, name, dateTime, amount, actionColumn);
+
 
         SnowFinance.instance.getTransactionManager().getTransactions().forEach((tid, transaction) -> {
             table.getItems().add(new TransactionDisplay(tid, transaction));
         });
 
+        //Add transaction inputs
+        //name, amount, date(optional)
+        GridPane addTransFields = new GridPane();
+        TextField nameField = new TextField("Name");
+        TextField amountField = new TextField("Amount");
+        TextField dateField = new TextField("Date");
+        Button addTransaction = new Button("Add");
+        addTransaction.setOnAction(e -> {
+            try {
+                String desc = nameField.getText();
+                String amt = amountField.getText();
+                String date = dateField.getText();
+                System.out.println("Adding " + new Transaction(desc, Double.parseDouble(amt), Helper.DATE_FORMAT.parse(date).getTime()));
+            } catch (ParseException ex) {
+                ex.printStackTrace();
+            }
+        });
+
+        addTransFields.addRow(0, nameField, amountField, dateField, addTransaction);
+        addTransFields.setVisible(false);
+
+
+        Button newTransaction = new Button("New Transaction");
+        newTransaction.setOnAction(e -> addTransFields.setVisible(true));
+
         VBox layout = new VBox(20);
         layout.setStyle("-fx-alignment: center; -fx-padding: 50px;");
-        layout.getChildren().addAll(title, table);
-        Scene transactionScene = new Scene(layout, 400, 300);
+        layout.getChildren().addAll(title, table, newTransaction, addTransFields);
+        Scene transactionScene = new Scene(layout, 500, 400);
         stage.setScene(transactionScene);
+    }
+
+    private TableColumn<TransactionDisplay, Void> addButton(TableView<TransactionDisplay> table) {
+        TableColumn<TransactionDisplay, Void> actionColumn = new TableColumn<>("Actions");
+
+        Callback<TableColumn<TransactionDisplay, Void>, TableCell<TransactionDisplay, Void>> cellFactory = new Callback<>() {
+            @Override
+            public TableCell<TransactionDisplay, Void> call(final TableColumn<TransactionDisplay, Void> param) {
+                final TableCell<TransactionDisplay, Void> cell = new TableCell<>() {
+
+                    private final Button btn = new Button("Remove");
+
+                    {
+                        btn.setOnAction((ActionEvent event) -> {
+                            TransactionDisplay data = getTableView().getItems().get(getIndex());
+                            table.getItems().remove(data);
+                            SnowFinance.instance.getTransactionManager().remove(data.getId());
+                        });
+                    }
+
+                    @Override
+                    public void updateItem(Void item, boolean empty) {
+                        super.updateItem(item, empty);
+                        if (empty) {
+                            setGraphic(null);
+                        } else {
+                            setGraphic(btn);
+                        }
+                    }
+                };
+                return cell;
+            }
+        };
+
+        actionColumn.setCellFactory(cellFactory);
+        return actionColumn;
     }
 
     private void addTransaction() {
