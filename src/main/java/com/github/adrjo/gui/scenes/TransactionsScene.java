@@ -15,9 +15,15 @@ import javafx.util.Callback;
 import java.text.ParseException;
 
 public class TransactionsScene extends Scene {
+
+    private CheckBox showIncome = new CheckBox("Show Income ");
+    private CheckBox showOutcome = new CheckBox("Show Money Spent ");
+
     public TransactionsScene() {
         super(new VBox(20), 600, 500);
 
+        showIncome.setSelected(true);
+        showOutcome.setSelected(true);
         render();
     }
 
@@ -92,8 +98,19 @@ public class TransactionsScene extends Scene {
         Button newTransaction = new Button("New Transaction");
         newTransaction.setOnAction(e -> addTransFields.setVisible(true));
 
+
+        GridPane checkBoxes = new GridPane();
+        checkBoxes.setStyle("-fx-alignment: center;");
+        showOutcome.setOnAction(e -> {
+            updateTable(table);
+        });
+        showIncome.setOnAction(e -> {
+            updateTable(table);
+        });
+        checkBoxes.addRow(0, showIncome, showOutcome);
+
         VBox layout = (VBox) this.getRoot();
-        layout.getChildren().addAll(title, table, addTransFields, newTransaction, errorLabel);
+        layout.getChildren().addAll(title, checkBoxes, table, addTransFields, newTransaction, errorLabel);
         layout.setStyle("-fx-alignment: center; -fx-padding: 50px;");
     }
 
@@ -105,9 +122,18 @@ public class TransactionsScene extends Scene {
 
     private void updateTable(TableView<TransactionDisplay> table) {
         table.getItems().clear();
-        SnowFinance.instance.getTransactionManager().getTransactions().forEach((tid, transaction) -> {
-            table.getItems().add(new TransactionDisplay(tid, transaction));
-        });
+        SnowFinance.instance.getTransactionManager().getTransactions().entrySet().stream()
+                .filter(entry -> {
+                    if (showIncome.isSelected() && entry.getValue().amt() >= 0) {
+                        return true;
+                    }
+                    return showOutcome.isSelected() && entry.getValue().amt() <= 0;
+                })
+                .forEach(entry -> {
+                    int id = entry.getKey();
+                    Transaction transaction = entry.getValue();
+                    table.getItems().add(new TransactionDisplay(id, transaction));
+                });
     }
 
     private TableColumn<TransactionDisplay, Void> addButton(TableView<TransactionDisplay> table) {
