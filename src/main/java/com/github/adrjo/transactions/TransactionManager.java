@@ -53,6 +53,10 @@ public class TransactionManager {
         return getBalanceAt(System.currentTimeMillis());
     }
 
+    public Map<Integer, Transaction> getAllTransactions() {
+        return idtoTransactionMap;
+    }
+
     public Map<Integer, Transaction> getTransactions() {
         return getTransactionsBefore(System.currentTimeMillis());
     }

@@ -19,6 +19,8 @@ public class TransactionsScene extends Scene {
     private CheckBox showIncome = new CheckBox("Show Income ");
     private CheckBox showOutcome = new CheckBox("Show Money Spent ");
 
+    private Label balance = new Label("0 SEK");
+
     public TransactionsScene() {
         super(new VBox(20), 600, 500);
 
@@ -108,9 +110,10 @@ public class TransactionsScene extends Scene {
             updateTable(table);
         });
         checkBoxes.addRow(0, showIncome, showOutcome);
+        balance.setStyle("-fx-font-weight: bold; -fx-padding: 0px;");
 
         VBox layout = (VBox) this.getRoot();
-        layout.getChildren().addAll(title, checkBoxes, table, addTransFields, newTransaction, errorLabel);
+        layout.getChildren().addAll(title, checkBoxes, table, addTransFields, newTransaction, errorLabel, balance);
         layout.setStyle("-fx-alignment: center; -fx-padding: 50px;");
     }
 
@@ -122,7 +125,7 @@ public class TransactionsScene extends Scene {
 
     private void updateTable(TableView<TransactionDisplay> table) {
         table.getItems().clear();
-        SnowFinance.instance.getTransactionManager().getTransactions().entrySet().stream()
+        SnowFinance.instance.getTransactionManager().getAllTransactions().entrySet().stream()
                 .filter(entry -> {
                     if (showIncome.isSelected() && entry.getValue().amt() >= 0) {
                         return true;
@@ -134,6 +137,8 @@ public class TransactionsScene extends Scene {
                     Transaction transaction = entry.getValue();
                     table.getItems().add(new TransactionDisplay(id, transaction));
                 });
+        double balance = SnowFinance.instance.getTransactionManager().getBalance();
+        this.balance.setText(balance + " SEK");
     }
 
     private TableColumn<TransactionDisplay, Void> addButton(TableView<TransactionDisplay> table) {
@@ -151,6 +156,7 @@ public class TransactionsScene extends Scene {
                             TransactionDisplay data = getTableView().getItems().get(getIndex());
                             table.getItems().remove(data);
                             SnowFinance.instance.getTransactionManager().remove(data.getId());
+                            updateTable(table);
                         });
                     }
 
