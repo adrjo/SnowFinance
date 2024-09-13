@@ -36,9 +36,13 @@ public class SnowFinance {
         guiRenderer = new GuiRenderer();
     }
 
-    private void shutdown() {
+    public void shutdown() {
         System.out.println("Shutting down");
         transactionManager.close();
+        console.close();
+        try {
+            guiRenderer.stop();
+        } catch (Exception e) {}
     }
 
     public TransactionManager getTransactionManager() {

@@ -15,5 +15,8 @@ public class GuiRenderer extends Application {
         stage.setTitle("Transaction Manager");
         stage.setScene(new WelcomeScene(stage));
         stage.show();
+        stage.setOnCloseRequest(e -> {
+            System.exit(0);
+        });
     }
 }

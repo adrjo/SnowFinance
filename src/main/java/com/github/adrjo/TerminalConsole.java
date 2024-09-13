@@ -7,19 +7,21 @@ import java.util.Scanner;
 
 public class TerminalConsole extends Thread {
 
+    private boolean running = true;
+
     @Override
     public void run() {
         System.out.println("Welcome to SnowFinance");
         System.out.println("Commands: " + getCommandList());
         Scanner scan = new Scanner(System.in);
-        while (scan.hasNext()) {
+        while (this.running) {
             final String line = scan.nextLine();
             String[] args = line.split(" ");
             
             final String commandString = args[0];
             // Shutdown
             if (commandString.equalsIgnoreCase("stop") || commandString.equalsIgnoreCase("exit")) {
-                break;
+                System.exit(0);
             }
             
             final Command command = SnowFinance.instance.getCommandManager().get(commandString);
@@ -36,6 +38,10 @@ public class TerminalConsole extends Thread {
             command.exec(commandArgs);
         }
         System.out.println("Bye!");
+    }
+
+    public void close() {
+        running = false;
     }
 
     private boolean contains(String[] args, String... strings) {
