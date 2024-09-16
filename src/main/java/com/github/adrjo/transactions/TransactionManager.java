@@ -14,7 +14,7 @@ public class TransactionManager {
     private final Map<Integer, Transaction> idtoTransactionMap = new HashMap<>();
     private int index = 0;
 
-    public TransactionManager() {
+    public void load() {
         try {
             loadTransactions();
         } catch (IOException e) {

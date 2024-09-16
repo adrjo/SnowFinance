@@ -31,6 +31,7 @@ public class SnowFinance {
 
     private void init() {
         transactionManager = new TransactionManager();
+        transactionManager.load();
         commandManager = new CommandManager();
         console = new TerminalConsole();
         guiRenderer = new GuiRenderer();
