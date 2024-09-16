@@ -10,6 +10,7 @@ import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.GridPane;
+import javafx.scene.layout.Region;
 import javafx.scene.layout.VBox;
 import javafx.util.Callback;
 
@@ -25,6 +26,8 @@ public class TransactionsScene extends Scene {
     private CheckBox showOutcome = new CheckBox("Show Money Spent ");
 
     private Label balance = new Label("Balance: 0 SEK");
+    private Label expenses = new Label("Expense: 0 SEK");
+    private Label income = new Label("Income: 0 SEK");
     private DateInput activeFilter;
 
     public TransactionsScene() {
@@ -136,10 +139,14 @@ public class TransactionsScene extends Scene {
 
 
         checkBoxes.addRow(0, showIncome, showOutcome, filterButton, clearFilter);
-        balance.setStyle("-fx-font-weight: bold; -fx-padding: 0px;");
+        GridPane balances = new GridPane();
+        // no need to add padding to the outer two, the middle one splits them up already
+        expenses.setStyle("-fx-padding: 10px;");
+        balances.setStyle("-fx-alignment: center; -fx-font-weight: bold;");
+        balances.addRow(0, balance, expenses, income);
 
         VBox layout = (VBox) this.getRoot();
-        layout.getChildren().addAll(title, balance, checkBoxes, table, addTransFields, newTransaction, errorLabel);
+        layout.getChildren().addAll(title, balances, checkBoxes, table, addTransFields, newTransaction, errorLabel);
         layout.setStyle("-fx-alignment: center; -fx-padding: 50px;");
     }
 
@@ -264,14 +271,38 @@ public class TransactionsScene extends Scene {
                     Transaction transaction = entry.getValue();
                     table.getItems().add(new TransactionDisplay(id, transaction));
                 });
-        double balance = getBalanceFromTransactions(transactions);
-        this.balance.setText("Balance: " + balance + " SEK");
+
+        updateBalances(transactions);
+
         return dateString;
+    }
+
+    private void updateBalances(Map<Integer, Transaction> transactions) {
+        double balance = getBalanceFromTransactions(transactions);
+        double expense = getExpensesForTransactions(transactions);
+        double income = getIncomeForTransactions(transactions);
+        this.balance.setText("Balance: " + balance + " SEK");
+        this.expenses.setText("Expense: " + expense + " SEK");
+        this.income.setText("Income: " + income + " SEK");
     }
 
     private double getBalanceFromTransactions(Map<Integer, Transaction> transactions) {
         return transactions.values().stream()
                 .mapToDouble(Transaction::amt)
+                .sum();
+    }
+
+    private double getExpensesForTransactions(Map<Integer, Transaction> transactions) {
+        return transactions.values().stream()
+                .mapToDouble(Transaction::amt)
+                .filter(amt -> amt < 0)
+                .sum();
+    }
+
+    private double getIncomeForTransactions(Map<Integer, Transaction> transactions) {
+        return transactions.values().stream()
+                .mapToDouble(Transaction::amt)
+                .filter(amt -> amt > 0)
                 .sum();
     }
 

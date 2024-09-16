@@ -31,7 +31,6 @@ public class DateInput {
                     this.date.setTime(this.date.getTime() + TimeUnit.DAYS.toMillis(1));
                 }
             }
-            System.out.println(Helper.DATE_FORMAT.format(this.date));
         } catch (ParseException e) {
             e.printStackTrace();
         }
