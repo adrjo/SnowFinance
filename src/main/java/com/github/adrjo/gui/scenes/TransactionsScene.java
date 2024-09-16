@@ -14,14 +14,18 @@ import javafx.scene.layout.VBox;
 import javafx.util.Callback;
 
 import java.text.ParseException;
-import java.util.Optional;
+import java.text.SimpleDateFormat;
+import java.time.LocalDate;
+import java.time.ZoneId;
+import java.util.*;
 
 public class TransactionsScene extends Scene {
 
     private CheckBox showIncome = new CheckBox("Show Income ");
     private CheckBox showOutcome = new CheckBox("Show Money Spent ");
 
-    private Label balance = new Label("0 SEK");
+    private Label balance = new Label("Balance: 0 SEK");
+    private DateInput activeFilter;
 
     public TransactionsScene() {
         super(new VBox(20), 600, 500);
@@ -118,15 +122,24 @@ public class TransactionsScene extends Scene {
         Button filterButton = new Button("Filter By Date");
         filterButton.setOnAction(e -> {
             Optional<DateInput> result = filterDialog.showAndWait();
-            result.ifPresent(dateInput -> System.out.println(dateInput));
+            result.ifPresent(dateInput -> {
+                activeFilter = dateInput;
+                title.setText("Transactions during " + updateTable(table));
+            });
+        });
+        Button clearFilter = new Button("Clear Filter");
+        clearFilter.setOnAction(e -> {
+            activeFilter = null;
+            updateTable(table);
+            title.setText("Transactions");
         });
 
 
-        checkBoxes.addRow(0, showIncome, showOutcome, filterButton);
+        checkBoxes.addRow(0, showIncome, showOutcome, filterButton, clearFilter);
         balance.setStyle("-fx-font-weight: bold; -fx-padding: 0px;");
 
         VBox layout = (VBox) this.getRoot();
-        layout.getChildren().addAll(title, checkBoxes, table, addTransFields, newTransaction, errorLabel, balance);
+        layout.getChildren().addAll(title, balance, checkBoxes, table, addTransFields, newTransaction, errorLabel);
         layout.setStyle("-fx-alignment: center; -fx-padding: 50px;");
     }
 
@@ -196,9 +209,50 @@ public class TransactionsScene extends Scene {
         }
     }
 
-    private void updateTable(TableView<TransactionDisplay> table) {
+    private String updateTable(TableView<TransactionDisplay> table) {
         table.getItems().clear();
-        SnowFinance.instance.getTransactionManager().getAllTransactions().entrySet().stream()
+        String dateString = "";
+        Map<Integer, Transaction> transactions = null;
+        if (activeFilter != null) {
+            LocalDate localDate = activeFilter.getDate().toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
+
+            switch (activeFilter.getDateType()) {
+                case YEAR -> {
+                    dateString = new SimpleDateFormat("yyyy").format(activeFilter.getDate());
+                    transactions = SnowFinance.instance.getTransactionManager().getTransactionsBetween(
+                            activeFilter.getDate().getTime(),
+                            localDate.plusYears(1).atStartOfDay(ZoneId.systemDefault()).toInstant().toEpochMilli()
+                    );
+                }
+                case MONTH -> {
+                    dateString = new SimpleDateFormat("yyyy MMM").format(activeFilter.getDate());
+                    transactions = SnowFinance.instance.getTransactionManager().getTransactionsBetween(
+                            activeFilter.getDate().getTime(),
+                            localDate.plusMonths(1).atStartOfDay(ZoneId.systemDefault()).toInstant().toEpochMilli()
+                    );
+                }
+                case DAY -> {
+                    dateString = new SimpleDateFormat("yyyy MMM dd").format(activeFilter.getDate());
+                    transactions = SnowFinance.instance.getTransactionManager().getTransactionsBetween(
+                            activeFilter.getDate().getTime(),
+                            localDate.plusDays(1).atStartOfDay(ZoneId.systemDefault()).toInstant().toEpochMilli()
+                    );
+                }
+                case WEEK -> {
+                    dateString = new SimpleDateFormat("YYYY 'Week' ww (yyyy-MM-dd)").format(activeFilter.getDate());
+
+                    transactions = SnowFinance.instance.getTransactionManager().getTransactionsBetween(
+                            activeFilter.getDate().getTime(),
+                            localDate.plusWeeks(1).atStartOfDay(ZoneId.systemDefault()).toInstant().toEpochMilli()
+                    );
+                }
+
+            }
+        } else {
+            transactions = SnowFinance.instance.getTransactionManager().getAllTransactions();
+        }
+
+        transactions.entrySet().stream()
                 .filter(entry -> {
                     if (showIncome.isSelected() && entry.getValue().amt() >= 0) {
                         return true;
@@ -210,8 +264,15 @@ public class TransactionsScene extends Scene {
                     Transaction transaction = entry.getValue();
                     table.getItems().add(new TransactionDisplay(id, transaction));
                 });
-        double balance = SnowFinance.instance.getTransactionManager().getBalance();
-        this.balance.setText("Current balance: " + balance + " SEK");
+        double balance = getBalanceFromTransactions(transactions);
+        this.balance.setText("Balance: " + balance + " SEK");
+        return dateString;
+    }
+
+    private double getBalanceFromTransactions(Map<Integer, Transaction> transactions) {
+        return transactions.values().stream()
+                .mapToDouble(Transaction::amt)
+                .sum();
     }
 
     private TableColumn<TransactionDisplay, Void> addButton(TableView<TransactionDisplay> table) {
