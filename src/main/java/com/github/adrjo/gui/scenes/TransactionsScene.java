@@ -2,6 +2,7 @@ package com.github.adrjo.gui.scenes;
 
 import com.github.adrjo.Helper;
 import com.github.adrjo.SnowFinance;
+import com.github.adrjo.gui.DateInput;
 import com.github.adrjo.gui.TransactionDisplay;
 import com.github.adrjo.transactions.Transaction;
 import javafx.event.ActionEvent;
@@ -13,6 +14,7 @@ import javafx.scene.layout.VBox;
 import javafx.util.Callback;
 
 import java.text.ParseException;
+import java.util.Optional;
 
 public class TransactionsScene extends Scene {
 
@@ -109,12 +111,83 @@ public class TransactionsScene extends Scene {
         showIncome.setOnAction(e -> {
             updateTable(table);
         });
-        checkBoxes.addRow(0, showIncome, showOutcome);
+
+        Dialog<DateInput> filterDialog = createFilterDialog();
+        filterDialog.setResizable(true);
+
+        Button filterButton = new Button("Filter By Date");
+        filterButton.setOnAction(e -> {
+            Optional<DateInput> result = filterDialog.showAndWait();
+            result.ifPresent(dateInput -> System.out.println(dateInput));
+        });
+
+
+        checkBoxes.addRow(0, showIncome, showOutcome, filterButton);
         balance.setStyle("-fx-font-weight: bold; -fx-padding: 0px;");
 
         VBox layout = (VBox) this.getRoot();
         layout.getChildren().addAll(title, checkBoxes, table, addTransFields, newTransaction, errorLabel, balance);
         layout.setStyle("-fx-alignment: center; -fx-padding: 50px;");
+    }
+
+    private Dialog<DateInput> createFilterDialog() {
+        Dialog<DateInput> filterDialog = new Dialog<>();
+        filterDialog.setTitle("Date Input Dialog");
+
+
+        ComboBox<String> dropdown = new ComboBox<>();
+        dropdown.getItems().addAll("Year", "Month", "Day", "Week");
+        dropdown.setValue("Year");
+
+        // Create text fields for input
+        TextField year = new TextField();
+        year.setPromptText("yyyy");
+        TextField month = new TextField();
+        month.setPromptText("MM");
+        TextField day = new TextField();
+        day.setPromptText("dd");
+        TextField week = new TextField();
+        week.setPromptText("ww");
+
+        GridPane grid = new GridPane();
+        Label select = new Label("Select");
+        grid.addRow(0, select, dropdown);
+        Label input = new Label("Input:");
+        grid.addRow(1, input, year);
+
+        dropdown.setOnAction(e -> {
+            grid.getChildren().removeIf(node -> GridPane.getRowIndex(node) == 1); // Remove the current input field
+            switch (dropdown.getValue()) {
+                case "Year" -> grid.addRow(1, input, year);
+                case "Month" -> grid.addRow(1, input, year, month);
+                case "Day" -> grid.addRow(1, input, year, month, day);
+                case "Week" -> grid.addRow(1, input, year, week);
+            }
+        });
+
+        ButtonType submitButtonType = new ButtonType("Submit", ButtonBar.ButtonData.OK_DONE);
+        filterDialog.getDialogPane().getButtonTypes().addAll(submitButtonType, ButtonType.CANCEL);
+
+        filterDialog.setResultConverter(button -> {
+            if (button.equals(submitButtonType)) {
+                switch (dropdown.getValue()) {
+                    case "Year":
+                        return new DateInput(DateInput.DateType.YEAR, year.getText());
+                    case "Month":
+                        return new DateInput(DateInput.DateType.MONTH, year.getText(), month.getText());
+                    case "Day":
+                        return new DateInput(DateInput.DateType.DAY, year.getText(), month.getText(), day.getText());
+                    case "Week":
+                        return new DateInput(DateInput.DateType.WEEK, year.getText(), week.getText());
+                }
+            }
+
+            return null;
+        });
+
+
+        filterDialog.getDialogPane().setContent(grid);
+        return filterDialog;
     }
 
     private void clearTextFields(TextField... fields) {
@@ -138,7 +211,7 @@ public class TransactionsScene extends Scene {
                     table.getItems().add(new TransactionDisplay(id, transaction));
                 });
         double balance = SnowFinance.instance.getTransactionManager().getBalance();
-        this.balance.setText(balance + " SEK");
+        this.balance.setText("Current balance: " + balance + " SEK");
     }
 
     private TableColumn<TransactionDisplay, Void> addButton(TableView<TransactionDisplay> table) {
