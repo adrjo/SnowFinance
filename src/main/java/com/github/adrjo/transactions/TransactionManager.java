@@ -70,7 +70,7 @@ public class TransactionManager {
     public Map<Integer, Transaction> getTransactionsBetween(long from, long until) {
         return this.idtoTransactionMap.entrySet().stream()
                 .filter((entry) -> entry.getValue().timestamp() >= from)
-                .filter((entry) -> entry.getValue().timestamp() <= until)
+                .filter((entry) -> entry.getValue().timestamp() < until)
                 .collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue));
     }
 
