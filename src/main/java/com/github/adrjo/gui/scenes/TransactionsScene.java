@@ -10,7 +10,6 @@ import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.GridPane;
-import javafx.scene.layout.Region;
 import javafx.scene.layout.VBox;
 import javafx.util.Callback;
 
@@ -87,12 +86,12 @@ public class TransactionsScene extends Scene {
                 if (date.isBlank()) {
                     SnowFinance.instance.getTransactionManager().addNow(desc, amt);
                 } else {
-                    SnowFinance.instance.getTransactionManager().add(desc, amt, Helper.DATE_FORMAT.parse(date).getTime());
+                    SnowFinance.instance.getTransactionManager().add(desc, amt, new SimpleDateFormat("yyyy-MM-dd HH:mm").parse(date).getTime());
                 }
                 clearTextFields(nameField, amountField, dateField);
                 errorLabel.setVisible(false);
             } catch (ParseException ex) {
-                errorLabel.setText("Error: date must be written in format " + Helper.DATE_AND_TIME);
+                errorLabel.setText("Error: date must be written in format yyyy-MM-dd HH:mm");
                 errorLabel.setVisible(true);
             } catch (NumberFormatException ex) {
                 errorLabel.setText("Error: amount: type a number");

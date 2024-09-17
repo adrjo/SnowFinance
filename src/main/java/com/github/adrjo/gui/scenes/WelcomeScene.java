@@ -21,18 +21,14 @@ public class WelcomeScene extends Scene {
 
         // Create the buttons
         Button transactionsButton = new Button("Transactions");
-        Button addTransactionButton = new Button("Add Transaction");
-        Button removeTransactionButton = new Button("Remove Transaction");
 
         // Set button actions
         transactionsButton.setOnAction(e -> {
             stage.setScene(new TransactionsScene());
         });
-//        addTransactionButton.setOnAction(e -> addTransaction());
-//        removeTransactionButton.setOnAction(e -> removeTransaction());
 
         VBox layout = (VBox) this.getRoot();
         layout.setStyle("-fx-alignment: center; -fx-padding: 50px;");
-        layout.getChildren().addAll(welcomeLabel, transactionsButton, addTransactionButton, removeTransactionButton);
+        layout.getChildren().addAll(welcomeLabel, transactionsButton);
     }
 }
