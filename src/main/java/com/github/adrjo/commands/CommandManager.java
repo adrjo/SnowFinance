@@ -1,9 +1,6 @@
 package com.github.adrjo.commands;
 
-import com.github.adrjo.commands.impl.AddTransactionCommand;
-import com.github.adrjo.commands.impl.BalanceCommand;
-import com.github.adrjo.commands.impl.ListTransactionCommand;
-import com.github.adrjo.commands.impl.RemoveTransactionCommand;
+import com.github.adrjo.commands.impl.*;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -17,6 +14,7 @@ public class CommandManager {
         commands.add(new AddTransactionCommand());
         commands.add(new ListTransactionCommand());
         commands.add(new RemoveTransactionCommand());
+        commands.add(new ImportCommand());
     }
 
     public Command get(String command) {

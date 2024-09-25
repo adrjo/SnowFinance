@@ -8,6 +8,8 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
 public class TransactionManager {
@@ -17,6 +19,7 @@ public class TransactionManager {
     public void load() {
         try {
             loadTransactions();
+            System.out.println("Loaded " + idtoTransactionMap.size() + " transactions from file");
         } catch (IOException e) {
             System.err.println("Failed to load transactions: " + e.getMessage());
             e.printStackTrace();
@@ -88,7 +91,7 @@ public class TransactionManager {
             for (Map.Entry<Integer, Transaction> entry : idtoTransactionMap.entrySet()) {
                 final int id = entry.getKey();
                 final Transaction transaction = entry.getValue();
-                writer.write(String.format("%d,%s,%.3f,%d\n", id, transaction.desc(), transaction.amt(), transaction.timestamp()));
+                writer.write(String.format("%d,\"%s\",%.3f,%d\n", id, transaction.desc(), transaction.amt(), transaction.timestamp()));
             }
         } catch (IOException e) {
             System.err.println("Error in saving transactions to file: " + e.getMessage());
@@ -100,9 +103,19 @@ public class TransactionManager {
         if (!path.toFile().exists()) return;
 
         Files.readAllLines(path, StandardCharsets.UTF_8).forEach(line -> {
-            String[] split = line.split(",");
+            // Deal with string entries (descriptions may have commas in them, breaking the String.split())
+            Pattern pattern = Pattern.compile("\"(.*?)\"");
+            Matcher matcher = pattern.matcher(line);
+
+            String lineWithoutStrings = String.join("", pattern.split(line));
+            String desc = "";
+            while (matcher.find()) {
+                desc = matcher.group(1);
+            }
+
+            String[] split = lineWithoutStrings.split(",");
             int id = Integer.parseInt(split[0]);
-            Transaction transaction = new Transaction(split[1], Double.parseDouble(split[2]), Long.parseLong(split[3]));
+            Transaction transaction = new Transaction(desc, Double.parseDouble(split[2]), Long.parseLong(split[3]));
             this.add(id, transaction);
         });
     }
