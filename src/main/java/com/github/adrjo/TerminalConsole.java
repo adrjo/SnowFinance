@@ -3,6 +3,7 @@ package com.github.adrjo;
 import com.github.adrjo.commands.Command;
 
 import java.util.Arrays;
+import java.util.List;
 import java.util.Scanner;
 
 public class TerminalConsole extends Thread {
@@ -57,11 +58,16 @@ public class TerminalConsole extends Thread {
 
     private String getCommandList() {
         StringBuilder commandList = new StringBuilder();
-        for (Command command : SnowFinance.instance.getCommandManager().commands) {
-            commandList.append(command.getName()).append(", ");
+        List<Command> commands = SnowFinance.instance.getCommandManager().commands;
+
+        for (int i = 0; i < commands.size(); ++i) {
+            Command command = commands.get(i);
+            commandList.append(command.getName());
+            if (i != commands.size() - 1) {
+                commandList.append(", ");
+            }
         }
-        // Delete last comma
-        commandList.delete(commandList.length() - 2, commandList.length());
+
         return commandList.toString();
     }
 }
