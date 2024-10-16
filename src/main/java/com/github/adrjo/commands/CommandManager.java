@@ -1,6 +1,6 @@
 package com.github.adrjo.commands;
 
-import com.github.adrjo.commands.impl.*;
+import com.github.adrjo.Helper;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -9,12 +9,31 @@ public class CommandManager {
     public List<Command> commands = new ArrayList<>();
 
     public CommandManager() {
-        //TODO: load commands automatically
-        commands.add(new BalanceCommand());
-        commands.add(new AddTransactionCommand());
-        commands.add(new ListTransactionCommand());
-        commands.add(new RemoveTransactionCommand());
-        commands.add(new ImportCommand());
+        try {
+            loadCommands();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    private void loadCommands() throws Exception {
+        List<Command> clazzCommands = Helper.findClasses("com.github.adrjo.commands.impl").stream()
+                .filter(clazz -> clazz.isAnnotationPresent(RegisterCommand.class))
+                .filter(clazz -> clazz.getSuperclass().equals(Command.class))
+                .map(clazz -> {
+                    try {
+                        RegisterCommand annotation = clazz.getAnnotation(RegisterCommand.class);
+                        Command command = (Command) clazz.getDeclaredConstructors()[0].newInstance();
+                        command.setName(annotation.name());
+                        command.setDescription(annotation.description());
+                        return command;
+                    } catch (Exception e) {
+                        throw new RuntimeException("Failed to load commands with reflection");
+                    }
+                })
+                .toList();
+
+        commands.addAll(clazzCommands);
     }
 
     public Command get(String command) {

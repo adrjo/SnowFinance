@@ -3,16 +3,17 @@ package com.github.adrjo.commands.impl;
 import com.github.adrjo.Helper;
 import com.github.adrjo.SnowFinance;
 import com.github.adrjo.commands.Command;
+import com.github.adrjo.commands.RegisterCommand;
 import com.github.adrjo.transactions.Transaction;
 
 import java.text.ParseException;
 import java.util.Date;
 
+@RegisterCommand(
+        name = "add",
+        description = "args: [name] [amt in SEK] [date in format " + Helper.DATE_AND_TIME + " (or blank for current time)]"
+)
 public class AddTransactionCommand extends Command {
-
-    public AddTransactionCommand() {
-        super("add", "args: [name] [amt in SEK] [date in format " + Helper.DATE_AND_TIME + " (or blank for current time)]");
-    }
 
     @Override
     public void exec(String[] args) {

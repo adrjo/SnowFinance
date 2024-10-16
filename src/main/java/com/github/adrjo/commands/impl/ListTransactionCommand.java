@@ -3,16 +3,17 @@ package com.github.adrjo.commands.impl;
 import com.github.adrjo.Helper;
 import com.github.adrjo.SnowFinance;
 import com.github.adrjo.commands.Command;
+import com.github.adrjo.commands.RegisterCommand;
 import com.github.adrjo.transactions.Transaction;
 
 import java.text.ParseException;
 import java.util.Date;
 
+@RegisterCommand(
+        name = "list",
+        description = "List saved transactions, optionally by [Date]"
+)
 public class ListTransactionCommand extends Command {
-
-    public ListTransactionCommand() {
-        super("list", "List saved transactions, optionally by [Date]");
-    }
 
     @Override
     public void exec(String[] args) {

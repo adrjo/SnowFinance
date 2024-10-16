@@ -3,15 +3,16 @@ package com.github.adrjo.commands.impl;
 import com.github.adrjo.Helper;
 import com.github.adrjo.SnowFinance;
 import com.github.adrjo.commands.Command;
+import com.github.adrjo.commands.RegisterCommand;
 
 import java.text.ParseException;
 import java.util.Date;
 
+@RegisterCommand(
+        name = "bal",
+        description = "returns your current balance OR your balance at a specific [Date] (yyyy-MM-dd.hh:mm)"
+)
 public class BalanceCommand extends Command {
-
-    public BalanceCommand() {
-        super("bal", "returns your current balance OR your balance at a specific [Date] (yyyy-MM-dd.hh:mm)");
-    }
 
     @Override
     public void exec(String[] args) {

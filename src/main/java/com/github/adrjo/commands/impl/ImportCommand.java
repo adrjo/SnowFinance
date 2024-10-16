@@ -2,6 +2,7 @@ package com.github.adrjo.commands.impl;
 
 import com.github.adrjo.SnowFinance;
 import com.github.adrjo.commands.Command;
+import com.github.adrjo.commands.RegisterCommand;
 
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
@@ -14,11 +15,11 @@ import java.util.concurrent.atomic.AtomicInteger;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+@RegisterCommand(
+        name = "import",
+        description = "imports transactions from Swedbank"
+)
 public class ImportCommand extends Command {
-
-    public ImportCommand() {
-        super("import", "imports transactions from Swedbank");
-    }
 
     @Override
     public void exec(String[] args) {

@@ -2,13 +2,14 @@ package com.github.adrjo.commands.impl;
 
 import com.github.adrjo.SnowFinance;
 import com.github.adrjo.commands.Command;
+import com.github.adrjo.commands.RegisterCommand;
 import com.github.adrjo.transactions.TransactionManager;
 
+@RegisterCommand(
+        name = "remove",
+        description = "Removes a transaction by [ID]"
+)
 public class RemoveTransactionCommand extends Command {
-
-    public RemoveTransactionCommand() {
-        super("remove", "Removes a transaction by [ID]");
-    }
 
     @Override
     public void exec(String[] args) {
