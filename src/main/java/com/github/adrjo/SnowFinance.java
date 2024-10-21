@@ -12,9 +12,15 @@ public class SnowFinance {
 
     private TransactionManager transactionManager;
     private CommandManager commandManager;
-    private GuiRenderer guiRenderer;
-    private TerminalConsole console;
-    public SnowFinance() {
+    private Renderer renderer;
+    private boolean useGui = false;
+    public SnowFinance(String[] args) {
+        if (args.length > 0 && args[0].equalsIgnoreCase("--gui")) {
+            System.out.println("Using JavaFX GUI.");
+            useGui = true;
+        } else {
+            System.out.println("Using terminal UI. To change, add \"--gui\" command line argument!");
+        }
         instance = this;
         // Fix commas being used in floats on some systems
         Locale.setDefault(Locale.US);
@@ -26,8 +32,6 @@ public class SnowFinance {
 
         Runtime.getRuntime().addShutdownHook(new Thread(this::shutdown));
 
-        console.start();
-        guiRenderer.start();
     }
 
     private void init() {
@@ -37,17 +41,19 @@ public class SnowFinance {
         commandManager = new AnnotationCommandManager();
         commandManager.registerCommands();
 
-        console = new TerminalConsole();
-        guiRenderer = new GuiRenderer();
+        if (useGui) {
+            renderer = new GuiRenderer();
+        } else {
+            renderer = new TerminalConsole();
+        }
+
+        renderer.startRenderer();
     }
 
     public void shutdown() {
         System.out.println("Shutting down");
         transactionManager.close();
-        console.close();
-        try {
-            guiRenderer.stop();
-        } catch (Exception e) {}
+        renderer.stopRenderer();
     }
 
     public TransactionManager getTransactionManager() {

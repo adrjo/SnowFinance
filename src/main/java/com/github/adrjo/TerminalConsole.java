@@ -6,9 +6,19 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Scanner;
 
-public class TerminalConsole extends Thread {
+public class TerminalConsole extends Thread implements Renderer {
 
     private boolean running = true;
+
+    @Override
+    public void startRenderer() {
+        this.start();
+    }
+
+    @Override
+    public void stopRenderer() {
+        this.close();
+    }
 
     @Override
     public void run() {
