@@ -1,5 +1,6 @@
 package com.github.adrjo;
 
+import com.github.adrjo.commands.AnnotationCommandManager;
 import com.github.adrjo.commands.CommandManager;
 import com.github.adrjo.gui.GuiRenderer;
 import com.github.adrjo.transactions.TransactionManager;
@@ -32,7 +33,7 @@ public class SnowFinance {
     private void init() {
         transactionManager = new TransactionManager();
         transactionManager.load();
-        commandManager = new CommandManager();
+        commandManager = new AnnotationCommandManager();
         console = new TerminalConsole();
         guiRenderer = new GuiRenderer();
     }

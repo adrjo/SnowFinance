@@ -1,15 +1,13 @@
 package com.github.adrjo.transactions;
 
 import com.github.adrjo.Helper;
+import com.github.adrjo.fileloading.SnowFileLoader;
+import com.github.adrjo.fileloading.TransactionFileLoader;
 
 import java.io.*;
 import java.nio.charset.StandardCharsets;
-import java.nio.file.Files;
-import java.nio.file.Path;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
 public class TransactionManager {
@@ -19,7 +17,6 @@ public class TransactionManager {
     public void load() {
         try {
             loadTransactions();
-            System.out.println("Loaded " + idtoTransactionMap.size() + " transactions from file");
         } catch (IOException e) {
             System.err.println("Failed to load transactions: " + e.getMessage());
             e.printStackTrace();
@@ -99,24 +96,9 @@ public class TransactionManager {
     }
 
     private void loadTransactions() throws IOException {
-        Path path = Path.of(Helper.DATABASE);
-        if (!path.toFile().exists()) return;
+        TransactionFileLoader loader = new SnowFileLoader();
+        int count = loader.load(new File(Helper.DATABASE));
 
-        Files.readAllLines(path, StandardCharsets.UTF_8).forEach(line -> {
-            // Deal with string entries (descriptions may have commas in them, breaking the String.split())
-            Pattern pattern = Pattern.compile("\"(.*?)\"");
-            Matcher matcher = pattern.matcher(line);
-
-            String lineWithoutStrings = String.join("", pattern.split(line));
-            String desc = "";
-            while (matcher.find()) {
-                desc = matcher.group(1);
-            }
-
-            String[] split = lineWithoutStrings.split(",");
-            int id = Integer.parseInt(split[0]);
-            Transaction transaction = new Transaction(desc, Double.parseDouble(split[2]), Long.parseLong(split[3]));
-            this.add(id, transaction);
-        });
+        System.out.println("Loaded " + count + " transactions from file");
     }
 }
