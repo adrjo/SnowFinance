@@ -3,10 +3,13 @@ package com.github.adrjo;
 import javafx.scene.control.Label;
 
 import java.io.File;
+import java.net.URI;
 import java.net.URL;
+import java.nio.file.*;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 public class Helper {
@@ -22,21 +25,42 @@ public class Helper {
         return label;
     }
 
+    /**
+     * inspiration from
+     * <a href="https://stackoverflow.com/questions/520328/can-you-find-all-classes-in-a-package-using-reflection">stackoverflow</a>
+     */
     public static List<Class<?>> findClasses(String packageName) throws Exception {
         String path = packageName.replace('.', '/');
         URL packageURL = Thread.currentThread().getContextClassLoader().getResource(path);
 
         if (packageURL == null) return List.of();
-
-        File directory = new File(packageURL.toURI());
-        List<Class<?>> classes = new ArrayList<>();
-
-        for (File file : directory.listFiles()) {
-            if (file.getName().endsWith(".class")) {
-                String className = file.getName().substring(0, file.getName().length() - 6);
-                classes.add(Class.forName(packageName + '.' + className));
+        URI uri = packageURL.toURI();
+        Path directory;
+        if (packageURL.toURI().getScheme().equals("jar")) {
+            FileSystem fs;
+            try {
+                fs = FileSystems.getFileSystem(uri);
+            } catch (FileSystemNotFoundException e) {
+                fs = FileSystems.newFileSystem(uri, Collections.emptyMap());
             }
+            directory = fs.getPath(path);
+        } else {
+            directory = Path.of(packageURL.toURI());
         }
+
+
+        List<Class<?>> classes = new ArrayList<>();
+        Files.walk(directory)
+                .map(filePath -> filePath.getFileName().toString())
+                .filter(name -> name.endsWith(".class"))
+                .forEach(name -> {
+                    name = name.split(".class")[0];
+                    try {
+                        classes.add(Class.forName(packageName + '.' + name));
+                    } catch (ClassNotFoundException e) {
+                        e.printStackTrace();
+                    }
+                });
 
         return classes;
     }
