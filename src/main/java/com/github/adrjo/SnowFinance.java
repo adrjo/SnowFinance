@@ -32,6 +32,7 @@ public class SnowFinance {
 
         Runtime.getRuntime().addShutdownHook(new Thread(this::shutdown));
 
+        renderer.startRenderer();
     }
 
     private void init() {
@@ -44,10 +45,8 @@ public class SnowFinance {
         if (useGui) {
             renderer = new GuiRenderer();
         } else {
-            renderer = new TerminalConsole();
+            renderer = new TerminalRenderer();
         }
-
-        renderer.startRenderer();
     }
 
     public void shutdown() {

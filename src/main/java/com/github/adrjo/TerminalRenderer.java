@@ -6,7 +6,7 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Scanner;
 
-public class TerminalConsole extends Thread implements Renderer {
+public class TerminalRenderer extends Thread implements Renderer {
 
     private boolean running = true;
 
@@ -32,7 +32,7 @@ public class TerminalConsole extends Thread implements Renderer {
             final String commandString = args[0];
             // Shutdown
             if (commandString.equalsIgnoreCase("stop") || commandString.equalsIgnoreCase("exit")) {
-                System.exit(0);
+                this.close();
             }
             
             final Command command = SnowFinance.instance.getCommandManager().get(commandString);
