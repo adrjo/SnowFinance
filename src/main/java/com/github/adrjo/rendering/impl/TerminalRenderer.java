@@ -48,7 +48,11 @@ public class TerminalRenderer extends Thread implements Renderer {
                 System.err.printf("%s: %s\n", command.getName(), command.getDesc());
                 continue;
             }
-            command.exec(commandArgs);
+            try {
+                command.exec(commandArgs);
+            } catch (Exception e) {
+                System.err.println(e.getMessage());
+            }
         }
         System.out.println("Bye!");
     }

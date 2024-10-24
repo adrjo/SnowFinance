@@ -11,18 +11,16 @@ import java.util.Date;
 
 @RegisterCommand(
         name = "add",
-        description = "args: [name] [amt in SEK] [date in format " + Helper.DATE_AND_TIME + " (or blank for current time)]"
+        description = "args: [name] [amt in SEK] [date in format " + Helper.DATE_AND_TIME + " (or blank for current time)]\n"
+                + "Example: `add Willys 500 2024-08-30.20:30`",
+        requiredArgs = 2
 )
 public class AddTransactionCommand extends Command {
 
     @Override
     public void exec(String[] args) {
-        if (args == null || args.length < 2) {
-            System.err.println(this.getName() + ": " + this.getDesc());
-            System.out.println("Example: `" + this.getName() + " Willys 500 2024-08-30.20:30`");
-            System.out.println("or: `" + this.getName() + " Willys 500` (your current time is used for the date)");
-            return;
-        }
+        super.exec(args);
+
         Date date = new Date(System.currentTimeMillis());
         // has date arg
         if (args.length == 3) {

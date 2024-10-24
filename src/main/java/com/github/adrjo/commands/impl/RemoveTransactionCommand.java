@@ -7,16 +7,14 @@ import com.github.adrjo.transactions.management.TransactionManager;
 
 @RegisterCommand(
         name = "remove",
-        description = "Removes a transaction by [ID]"
+        description = "Removes a transaction by [ID]",
+        requiredArgs = 1
 )
 public class RemoveTransactionCommand extends Command {
 
     @Override
     public void exec(String[] args) {
-        if (args == null || args.length < 1) {
-            System.err.println(this.getName() + ": specify a transaction id to remove.");
-            return;
-        }
+        super.exec(args);
 
         final int id = Integer.parseInt(args[0]);
         TransactionManager manager = SnowFinance.instance.getTransactionManager();

@@ -7,4 +7,5 @@ import java.lang.annotation.RetentionPolicy;
 public @interface RegisterCommand {
     String name();
     String description();
+    int requiredArgs() default 0;
 }

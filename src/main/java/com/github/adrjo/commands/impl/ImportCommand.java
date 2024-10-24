@@ -10,17 +10,15 @@ import java.io.IOException;
 
 @RegisterCommand(
         name = "import",
-        description = "imports transactions from Swedbank"
+        description = "Imports transactions from Swedbank\n"
+                + "Usage: import path/to/transactionsexport.csv",
+        requiredArgs = 1
 )
 public class ImportCommand extends Command {
 
     @Override
     public void exec(String[] args) {
-        if (args == null || args.length < 1) {
-            System.err.println(this.getName() + ": " + this.getDesc());
-            System.out.println("Usage: import path/to/transactionsexport.csv");
-            return;
-        }
+        super.exec(args);
 
         TransactionFileLoader loader = new SwedbankFileLoader();
         try {

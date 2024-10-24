@@ -10,7 +10,7 @@ import java.util.Date;
 
 @RegisterCommand(
         name = "bal",
-        description = "returns your current balance OR your balance at a specific [Date] (yyyy-MM-dd.hh:mm)"
+        description = "Returns your current balance OR your balance at a specific [Date] (yyyy-MM-dd.hh:mm)"
 )
 public class BalanceCommand extends Command {
 

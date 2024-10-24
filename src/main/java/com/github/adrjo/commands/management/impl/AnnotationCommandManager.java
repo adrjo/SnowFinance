@@ -18,6 +18,7 @@ public class AnnotationCommandManager implements CommandManager {
                             Command command = (Command) clazz.getDeclaredConstructors()[0].newInstance();
                             command.setName(annotation.name());
                             command.setDescription(annotation.description());
+                            command.setRequiredArgs(annotation.requiredArgs());
                             this.registerCommand(command);
                         } catch (Exception e) {
                             throw new RuntimeException("Failed to load command with reflection");
