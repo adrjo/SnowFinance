@@ -44,7 +44,7 @@ public class TerminalRenderer extends Thread implements Renderer {
             }
 
             String[] commandArgs = Arrays.copyOfRange(args, 1, args.length);
-            if (contains(args, "-?", "?", "help")) {
+            if (contains(args, "-?", "?")) {
                 System.err.printf("%s: %s\n", command.getName(), command.getDesc());
                 continue;
             }

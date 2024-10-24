@@ -11,6 +11,10 @@ public interface CommandManager {
 
     void registerCommands();
 
+    default List<Command> getCommands() {
+        return commands;
+    }
+
     default void registerCommand(Command command) {
         commands.add(command);
     }
