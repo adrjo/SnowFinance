@@ -1,5 +1,5 @@
 import com.github.adrjo.transactions.Transaction;
-import com.github.adrjo.transactions.TransactionManager;
+import com.github.adrjo.transactions.SimpleTransactionManager;
 import org.junit.jupiter.api.Test;
 
 import java.util.Map;
@@ -10,7 +10,7 @@ public class TransactionTest {
 
     @Test
     void balanceGetTest() {
-        TransactionManager manager = new TransactionManager();
+        SimpleTransactionManager manager = new SimpleTransactionManager();
 
         manager.addNow("Test1", 800);
         manager.addNow("Test2", -700);
@@ -20,7 +20,7 @@ public class TransactionTest {
 
     @Test
     void testAddTransaction() {
-        TransactionManager manager = new TransactionManager();
+        SimpleTransactionManager manager = new SimpleTransactionManager();
         int listSize = manager.getAllTransactions().size();
         manager.addNow("Test", 1000);
 
@@ -29,7 +29,7 @@ public class TransactionTest {
 
     @Test
     void newTransactionTest() {
-        TransactionManager manager = new TransactionManager();
+        SimpleTransactionManager manager = new SimpleTransactionManager();
         Transaction transaction = new Transaction("Test", 100, 1000);
         manager.add("Test", 100, 1000);
 
@@ -42,7 +42,7 @@ public class TransactionTest {
 
     @Test
     void testDateRange() {
-        TransactionManager manager = new TransactionManager();
+        SimpleTransactionManager manager = new SimpleTransactionManager();
         manager.add("Test", 1000, 1000);
         manager.add("Test2", 200, 1999);
         manager.add("Test3", 300, 2000);
@@ -56,7 +56,7 @@ public class TransactionTest {
 
     @Test
     public void testRemoveTransaction() {
-        TransactionManager manager = new TransactionManager();
+        SimpleTransactionManager manager = new SimpleTransactionManager();
         manager.addNow("Test", 1500);
         int id = manager.getAllTransactions().entrySet().iterator().next().getKey();
 

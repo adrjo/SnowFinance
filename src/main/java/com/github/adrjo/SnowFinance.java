@@ -3,6 +3,7 @@ package com.github.adrjo;
 import com.github.adrjo.commands.AnnotationCommandManager;
 import com.github.adrjo.commands.CommandManager;
 import com.github.adrjo.gui.GuiRenderer;
+import com.github.adrjo.transactions.SimpleTransactionManager;
 import com.github.adrjo.transactions.TransactionManager;
 
 import java.util.Locale;
@@ -21,6 +22,7 @@ public class SnowFinance {
         } else {
             System.out.println("Using terminal UI. To change, add \"--gui\" command line argument!");
         }
+
         instance = this;
         // Fix commas being used in floats on some systems
         Locale.setDefault(Locale.US);
@@ -36,7 +38,7 @@ public class SnowFinance {
     }
 
     private void init() {
-        transactionManager = new TransactionManager();
+        transactionManager = new SimpleTransactionManager();
         transactionManager.load();
 
         commandManager = new AnnotationCommandManager();
@@ -49,9 +51,12 @@ public class SnowFinance {
         }
     }
 
+    /**
+     * Gets called on program shutdown, even on crash, so no data is lost
+     */
     public void shutdown() {
         System.out.println("Shutting down");
-        transactionManager.close();
+        transactionManager.save();
         renderer.stopRenderer();
     }
 
