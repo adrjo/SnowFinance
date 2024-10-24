@@ -1,8 +1,10 @@
-package com.github.adrjo.transactions;
+package com.github.adrjo.transactions.management.impl;
 
 import com.github.adrjo.Helper;
-import com.github.adrjo.fileloading.SnowFileLoader;
+import com.github.adrjo.fileloading.impl.SnowFileLoader;
 import com.github.adrjo.fileloading.TransactionFileLoader;
+import com.github.adrjo.transactions.Transaction;
+import com.github.adrjo.transactions.management.TransactionManager;
 
 import java.io.*;
 import java.nio.charset.StandardCharsets;

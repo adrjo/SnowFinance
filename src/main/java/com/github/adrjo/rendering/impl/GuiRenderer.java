@@ -1,7 +1,7 @@
-package com.github.adrjo.gui;
+package com.github.adrjo.rendering.impl;
 
-import com.github.adrjo.Renderer;
-import com.github.adrjo.gui.scenes.WelcomeScene;
+import com.github.adrjo.rendering.Renderer;
+import com.github.adrjo.rendering.impl.gui.scenes.WelcomeScene;
 import javafx.application.Application;
 import javafx.stage.Stage;
 

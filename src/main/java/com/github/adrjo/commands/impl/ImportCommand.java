@@ -1,6 +1,6 @@
 package com.github.adrjo.commands.impl;
 
-import com.github.adrjo.fileloading.SwedbankFileLoader;
+import com.github.adrjo.fileloading.impl.SwedbankFileLoader;
 import com.github.adrjo.fileloading.TransactionFileLoader;
 import com.github.adrjo.commands.Command;
 import com.github.adrjo.commands.RegisterCommand;

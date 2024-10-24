@@ -1,4 +1,4 @@
-package com.github.adrjo.gui;
+package com.github.adrjo.rendering.impl.gui;
 
 import com.github.adrjo.Helper;
 

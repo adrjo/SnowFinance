@@ -1,10 +1,12 @@
 package com.github.adrjo;
 
-import com.github.adrjo.commands.AnnotationCommandManager;
-import com.github.adrjo.commands.CommandManager;
-import com.github.adrjo.gui.GuiRenderer;
-import com.github.adrjo.transactions.SimpleTransactionManager;
-import com.github.adrjo.transactions.TransactionManager;
+import com.github.adrjo.commands.management.impl.AnnotationCommandManager;
+import com.github.adrjo.commands.management.CommandManager;
+import com.github.adrjo.rendering.impl.GuiRenderer;
+import com.github.adrjo.rendering.Renderer;
+import com.github.adrjo.rendering.impl.TerminalRenderer;
+import com.github.adrjo.transactions.management.impl.SimpleTransactionManager;
+import com.github.adrjo.transactions.management.TransactionManager;
 
 import java.util.Locale;
 

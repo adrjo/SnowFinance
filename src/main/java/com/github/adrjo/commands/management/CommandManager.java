@@ -1,5 +1,7 @@
-package com.github.adrjo.commands;
+package com.github.adrjo.commands.management;
 
+
+import com.github.adrjo.commands.Command;
 
 import java.util.ArrayList;
 import java.util.List;

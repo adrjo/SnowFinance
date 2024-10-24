@@ -1,6 +1,7 @@
-package com.github.adrjo.fileloading;
+package com.github.adrjo.fileloading.impl;
 
 import com.github.adrjo.SnowFinance;
+import com.github.adrjo.fileloading.TransactionFileLoader;
 import com.github.adrjo.transactions.Transaction;
 
 import java.io.File;

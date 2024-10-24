@@ -1,5 +1,5 @@
 import com.github.adrjo.transactions.Transaction;
-import com.github.adrjo.transactions.SimpleTransactionManager;
+import com.github.adrjo.transactions.management.impl.SimpleTransactionManager;
 import org.junit.jupiter.api.Test;
 
 import java.util.Map;

@@ -1,4 +1,4 @@
-package com.github.adrjo;
+package com.github.adrjo.rendering;
 
 public interface Renderer {
 

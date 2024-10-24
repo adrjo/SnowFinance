@@ -3,7 +3,7 @@ package com.github.adrjo.commands.impl;
 import com.github.adrjo.SnowFinance;
 import com.github.adrjo.commands.Command;
 import com.github.adrjo.commands.RegisterCommand;
-import com.github.adrjo.transactions.TransactionManager;
+import com.github.adrjo.transactions.management.TransactionManager;
 
 @RegisterCommand(
         name = "remove",
