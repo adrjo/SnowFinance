@@ -16,15 +16,20 @@ public class TransactionUtil {
     }
 
     public static void printStats(Map<Integer, Transaction> transactionsFound) {
+        final double balance = getBalanceFromTransactions(transactionsFound);
+        final int amtTransactions = transactionsFound.size();
+
         System.out.printf("""
                         %d transactions with a total outcome of %.1f SEK
                         Income: %.1f SEK
                         Expenses: %.1f SEK
+                        Average income/expense: %.1f SEK
                         """,
-                transactionsFound.size(),
-                getBalanceFromTransactions(transactionsFound),
+                amtTransactions,
+                balance,
                 getIncomeForTransactions(transactionsFound),
-                getExpensesForTransactions(transactionsFound));
+                getExpensesForTransactions(transactionsFound),
+                balance / amtTransactions);
     }
 
     public static double getBalanceFromTransactions(Map<Integer, Transaction> transactions) {
