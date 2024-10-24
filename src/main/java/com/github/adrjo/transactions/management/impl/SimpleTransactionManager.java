@@ -102,7 +102,7 @@ public class SimpleTransactionManager implements TransactionManager {
     @Override
     public Map<Integer, Transaction> find(String toSearch) {
         return idtoTransactionMap.entrySet().stream()
-                .filter(entry -> entry.getValue().desc().contains(toSearch))
+                .filter(entry -> entry.getValue().desc().toLowerCase().contains(toSearch.toLowerCase()))
                 .collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue));
     }
 }
