@@ -1,10 +1,11 @@
 package com.github.adrjo.rendering.impl.gui.scenes;
 
-import com.github.adrjo.Helper;
+import com.github.adrjo.util.Helper;
 import com.github.adrjo.SnowFinance;
 import com.github.adrjo.rendering.impl.gui.DateInput;
 import com.github.adrjo.rendering.impl.gui.TransactionDisplay;
 import com.github.adrjo.transactions.Transaction;
+import com.github.adrjo.util.TransactionUtil;
 import javafx.event.ActionEvent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
@@ -277,32 +278,12 @@ public class TransactionsScene extends Scene {
     }
 
     private void updateBalances(Map<Integer, Transaction> transactions) {
-        double balance = getBalanceFromTransactions(transactions);
-        double expense = getExpensesForTransactions(transactions);
-        double income = getIncomeForTransactions(transactions);
+        double balance = TransactionUtil.getBalanceFromTransactions(transactions);
+        double expense = TransactionUtil.getExpensesForTransactions(transactions);
+        double income = TransactionUtil.getIncomeForTransactions(transactions);
         this.balance.setText("Balance: " + balance + " SEK");
         this.expenses.setText("Expense: " + expense + " SEK");
         this.income.setText("Income: " + income + " SEK");
-    }
-
-    private double getBalanceFromTransactions(Map<Integer, Transaction> transactions) {
-        return transactions.values().stream()
-                .mapToDouble(Transaction::amt)
-                .sum();
-    }
-
-    private double getExpensesForTransactions(Map<Integer, Transaction> transactions) {
-        return transactions.values().stream()
-                .mapToDouble(Transaction::amt)
-                .filter(amt -> amt < 0)
-                .sum();
-    }
-
-    private double getIncomeForTransactions(Map<Integer, Transaction> transactions) {
-        return transactions.values().stream()
-                .mapToDouble(Transaction::amt)
-                .filter(amt -> amt > 0)
-                .sum();
     }
 
     private TableColumn<TransactionDisplay, Void> addButton(TableView<TransactionDisplay> table) {

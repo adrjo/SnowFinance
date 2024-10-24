@@ -78,4 +78,9 @@ public class DatabaseTransactionManager implements TransactionManager {
         throw new IllegalArgumentException("Not implemented");
         // select id, name, amt, timestamp from transactions where this.timestamp > from and this.timestamp < until;
     }
+
+    @Override
+    public Map<Integer, Transaction> find(String toSearch) {
+        throw new IllegalArgumentException("Not implemented");
+    }
 }

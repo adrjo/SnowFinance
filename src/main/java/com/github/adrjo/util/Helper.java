@@ -1,16 +1,13 @@
-package com.github.adrjo;
+package com.github.adrjo.util;
 
 import javafx.scene.control.Label;
 
-import java.io.File;
 import java.net.URI;
 import java.net.URL;
 import java.nio.file.*;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
+import java.util.*;
 
 public class Helper {
 
@@ -64,4 +61,5 @@ public class Helper {
 
         return classes;
     }
+
 }

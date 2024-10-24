@@ -1,10 +1,10 @@
 package com.github.adrjo.commands.impl;
 
-import com.github.adrjo.Helper;
+import com.github.adrjo.util.Helper;
 import com.github.adrjo.SnowFinance;
 import com.github.adrjo.commands.Command;
 import com.github.adrjo.commands.RegisterCommand;
-import com.github.adrjo.transactions.Transaction;
+import com.github.adrjo.util.TransactionUtil;
 
 import java.text.ParseException;
 import java.util.Date;
@@ -22,7 +22,7 @@ public class ListTransactionCommand extends Command {
                 Date date = Helper.DATE_FORMAT.parse(args[0]);
                 SnowFinance.instance.getTransactionManager()
                         .getTransactionsBefore(date.getTime())
-                        .forEach(this::printTransactionInfo);
+                        .forEach(TransactionUtil::printTransactionInfo);
             } catch (ParseException e) {
                 System.err.println(this.getName() + ": date must be in format " + Helper.DATE_AND_TIME);
             }
@@ -31,15 +31,6 @@ public class ListTransactionCommand extends Command {
 
         SnowFinance.instance.getTransactionManager()
                 .getTransactions()
-                .forEach(this::printTransactionInfo);
-    }
-
-    private void printTransactionInfo(int id, Transaction transaction) {
-        System.out.printf("%d | %s | %.2f | %s\n",
-                id,
-                transaction.desc(),
-                transaction.amt(),
-                Helper.DATE_FORMAT.format(new Date(transaction.timestamp()))
-        );
+                .forEach(TransactionUtil::printTransactionInfo);
     }
 }

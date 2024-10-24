@@ -1,6 +1,6 @@
 package com.github.adrjo.transactions.management.impl;
 
-import com.github.adrjo.Helper;
+import com.github.adrjo.util.Helper;
 import com.github.adrjo.fileloading.impl.SnowFileLoader;
 import com.github.adrjo.fileloading.TransactionFileLoader;
 import com.github.adrjo.transactions.Transaction;
@@ -97,5 +97,12 @@ public class SimpleTransactionManager implements TransactionManager {
     @Override
     public Transaction get(int id) {
         return idtoTransactionMap.get(id);
+    }
+
+    @Override
+    public Map<Integer, Transaction> find(String toSearch) {
+        return idtoTransactionMap.entrySet().stream()
+                .filter(entry -> entry.getValue().desc().contains(toSearch))
+                .collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue));
     }
 }

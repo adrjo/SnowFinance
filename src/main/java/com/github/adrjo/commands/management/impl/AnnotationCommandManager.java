@@ -1,6 +1,6 @@
 package com.github.adrjo.commands.management.impl;
 
-import com.github.adrjo.Helper;
+import com.github.adrjo.util.Helper;
 import com.github.adrjo.commands.Command;
 import com.github.adrjo.commands.RegisterCommand;
 import com.github.adrjo.commands.management.CommandManager;

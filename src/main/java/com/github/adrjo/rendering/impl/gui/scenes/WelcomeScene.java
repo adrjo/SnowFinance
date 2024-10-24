@@ -1,6 +1,6 @@
 package com.github.adrjo.rendering.impl.gui.scenes;
 
-import com.github.adrjo.Helper;
+import com.github.adrjo.util.Helper;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;

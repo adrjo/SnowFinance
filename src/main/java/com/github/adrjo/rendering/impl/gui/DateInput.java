@@ -1,7 +1,5 @@
 package com.github.adrjo.rendering.impl.gui;
 
-import com.github.adrjo.Helper;
-
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;

@@ -40,4 +40,5 @@ public interface TransactionManager {
         return getTransactionsBefore(System.currentTimeMillis());
     }
 
+    Map<Integer, Transaction> find(String toSearch);
 }

@@ -1,6 +1,6 @@
 package com.github.adrjo.rendering.impl.gui;
 
-import com.github.adrjo.Helper;
+import com.github.adrjo.util.Helper;
 import com.github.adrjo.transactions.Transaction;
 
 // Wrapper for transactions to include the transaction id for display in Transactions gui screen
