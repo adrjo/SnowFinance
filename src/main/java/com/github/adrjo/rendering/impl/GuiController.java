@@ -1,19 +1,19 @@
 package com.github.adrjo.rendering.impl;
 
-import com.github.adrjo.rendering.Renderer;
+import com.github.adrjo.rendering.Controller;
 import com.github.adrjo.rendering.impl.gui.scenes.WelcomeScene;
 import javafx.application.Application;
 import javafx.stage.Stage;
 
-public class GuiRenderer extends Application implements Renderer {
+public class GuiController extends Application implements Controller {
 
     @Override
-    public void startRenderer() {
+    public void startController() {
         this.start();
     }
 
     @Override
-    public void stopRenderer() {
+    public void stopController() {
         try {
             this.stop();
         } catch (Exception e) {

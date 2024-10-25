@@ -2,9 +2,9 @@ package com.github.adrjo;
 
 import com.github.adrjo.commands.management.impl.AnnotationCommandManager;
 import com.github.adrjo.commands.management.CommandManager;
-import com.github.adrjo.rendering.impl.GuiRenderer;
-import com.github.adrjo.rendering.Renderer;
-import com.github.adrjo.rendering.impl.TerminalRenderer;
+import com.github.adrjo.rendering.impl.GuiController;
+import com.github.adrjo.rendering.Controller;
+import com.github.adrjo.rendering.impl.TerminalController;
 import com.github.adrjo.transactions.management.impl.SimpleTransactionManager;
 import com.github.adrjo.transactions.management.TransactionManager;
 
@@ -15,7 +15,7 @@ public class SnowFinance {
 
     private TransactionManager transactionManager;
     private CommandManager commandManager;
-    private Renderer renderer;
+    private Controller controller;
     private boolean useGui = false;
     public SnowFinance(String[] args) {
         if (args.length > 0 && args[0].equalsIgnoreCase("--gui")) {
@@ -36,7 +36,7 @@ public class SnowFinance {
 
         Runtime.getRuntime().addShutdownHook(new Thread(this::shutdown));
 
-        renderer.startRenderer();
+        controller.startController();
     }
 
     private void init() {
@@ -47,9 +47,9 @@ public class SnowFinance {
         commandManager.registerCommands();
 
         if (useGui) {
-            renderer = new GuiRenderer();
+            controller = new GuiController();
         } else {
-            renderer = new TerminalRenderer();
+            controller = new TerminalController();
         }
     }
 
@@ -59,7 +59,7 @@ public class SnowFinance {
     public void shutdown() {
         System.out.println("Shutting down");
         transactionManager.save();
-        renderer.stopRenderer();
+        controller.stopController();
     }
 
     public TransactionManager getTransactionManager() {
