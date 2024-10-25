@@ -2,6 +2,8 @@ package com.github.adrjo.util;
 
 import com.github.adrjo.transactions.Transaction;
 
+import java.time.LocalDate;
+import java.time.ZoneId;
 import java.util.Date;
 import java.util.Map;
 
@@ -50,5 +52,9 @@ public class TransactionUtil {
                 .mapToDouble(Transaction::amt)
                 .filter(amt -> amt > 0)
                 .sum();
+    }
+
+    public static long epochMilli(LocalDate date) {
+        return date.atStartOfDay(ZoneId.systemDefault()).toInstant().toEpochMilli();
     }
 }

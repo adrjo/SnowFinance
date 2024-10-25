@@ -25,9 +25,10 @@ public class TerminalRenderer extends Thread implements Renderer {
     @Override
     public void run() {
         System.out.println("Welcome to SnowFinance");
-        System.out.println("Commands: " + getCommandList());
         Scanner scan = new Scanner(System.in);
         while (this.running) {
+            System.out.println("Commands: " + getCommandList());
+
             final String line = scan.nextLine();
             String[] args = line.split(" ");
             

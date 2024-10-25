@@ -1,11 +1,14 @@
-package com.github.adrjo.rendering.impl.gui;
+package com.github.adrjo.util;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.Arrays;
 import java.util.Date;
 import java.util.concurrent.TimeUnit;
 
 public class DateInput {
+
+
     public enum DateType {
         YEAR,
         MONTH,
@@ -32,6 +35,13 @@ public class DateInput {
         } catch (ParseException e) {
             e.printStackTrace();
         }
+    }
+
+    public DateInput(DateType dateType, Integer... inputs) {
+        this(dateType,
+                Arrays.stream(inputs)
+                        .map(String::valueOf)
+                        .toArray(String[]::new));
     }
 
     public Date getDate() {

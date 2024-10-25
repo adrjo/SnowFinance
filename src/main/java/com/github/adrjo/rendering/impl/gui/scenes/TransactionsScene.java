@@ -2,7 +2,7 @@ package com.github.adrjo.rendering.impl.gui.scenes;
 
 import com.github.adrjo.util.Helper;
 import com.github.adrjo.SnowFinance;
-import com.github.adrjo.rendering.impl.gui.DateInput;
+import com.github.adrjo.util.DateInput;
 import com.github.adrjo.rendering.impl.gui.TransactionDisplay;
 import com.github.adrjo.transactions.Transaction;
 import com.github.adrjo.util.TransactionUtil;
@@ -227,30 +227,30 @@ public class TransactionsScene extends Scene {
                 case YEAR -> {
                     dateString = new SimpleDateFormat("yyyy").format(activeFilter.getDate());
                     transactions = SnowFinance.instance.getTransactionManager().getTransactionsBetween(
-                            activeFilter.getDate().getTime(),
-                            localDate.plusYears(1).atStartOfDay(ZoneId.systemDefault()).toInstant().toEpochMilli()
+                            TransactionUtil.epochMilli(localDate),
+                            TransactionUtil.epochMilli(localDate.plusYears(1))
                     );
                 }
                 case MONTH -> {
                     dateString = new SimpleDateFormat("yyyy MMM").format(activeFilter.getDate());
                     transactions = SnowFinance.instance.getTransactionManager().getTransactionsBetween(
-                            activeFilter.getDate().getTime(),
-                            localDate.plusMonths(1).atStartOfDay(ZoneId.systemDefault()).toInstant().toEpochMilli()
+                            TransactionUtil.epochMilli(localDate),
+                            TransactionUtil.epochMilli(localDate.plusMonths(1))
                     );
                 }
                 case DAY -> {
                     dateString = new SimpleDateFormat("yyyy MMM dd").format(activeFilter.getDate());
                     transactions = SnowFinance.instance.getTransactionManager().getTransactionsBetween(
-                            activeFilter.getDate().getTime(),
-                            localDate.plusDays(1).atStartOfDay(ZoneId.systemDefault()).toInstant().toEpochMilli()
+                            TransactionUtil.epochMilli(localDate),
+                            TransactionUtil.epochMilli(localDate.plusDays(1))
                     );
                 }
                 case WEEK -> {
                     dateString = new SimpleDateFormat("YYYY 'Week' ww (yyyy-MM-dd)").format(activeFilter.getDate());
 
                     transactions = SnowFinance.instance.getTransactionManager().getTransactionsBetween(
-                            activeFilter.getDate().getTime(),
-                            localDate.plusWeeks(1).atStartOfDay(ZoneId.systemDefault()).toInstant().toEpochMilli()
+                            TransactionUtil.epochMilli(localDate),
+                            TransactionUtil.epochMilli(localDate.plusWeeks(1))
                     );
                 }
 
