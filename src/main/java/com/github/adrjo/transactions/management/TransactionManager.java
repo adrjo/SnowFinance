@@ -21,7 +21,7 @@ public interface TransactionManager {
     Map<Integer, Transaction> getAllTransactions();
     Map<Integer, Transaction> getTransactionsBefore(long timestamp);
     Map<Integer, Transaction> getTransactionsBetween(long from, long until);
-
+    Map<Integer, Transaction> find(String toSearch);
 
     // Helper functions that only forwards data
     default void addNow(String name, double amt) {
@@ -40,5 +40,4 @@ public interface TransactionManager {
         return getTransactionsBefore(System.currentTimeMillis());
     }
 
-    Map<Integer, Transaction> find(String toSearch);
 }
