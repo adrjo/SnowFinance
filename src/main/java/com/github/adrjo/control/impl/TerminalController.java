@@ -1,8 +1,8 @@
-package com.github.adrjo.rendering.impl;
+package com.github.adrjo.control.impl;
 
 import com.github.adrjo.SnowFinance;
 import com.github.adrjo.commands.Command;
-import com.github.adrjo.rendering.Controller;
+import com.github.adrjo.control.Controller;
 
 import java.util.Arrays;
 import java.util.List;

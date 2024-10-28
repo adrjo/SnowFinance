@@ -1,4 +1,4 @@
-package com.github.adrjo.rendering.impl.gui.scenes;
+package com.github.adrjo.control.impl.gui.scenes;
 
 import com.github.adrjo.util.Helper;
 import javafx.scene.Scene;

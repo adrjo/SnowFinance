@@ -2,9 +2,9 @@ package com.github.adrjo;
 
 import com.github.adrjo.commands.management.impl.AnnotationCommandManager;
 import com.github.adrjo.commands.management.CommandManager;
-import com.github.adrjo.rendering.impl.GuiController;
-import com.github.adrjo.rendering.Controller;
-import com.github.adrjo.rendering.impl.TerminalController;
+import com.github.adrjo.control.impl.GuiController;
+import com.github.adrjo.control.Controller;
+import com.github.adrjo.control.impl.TerminalController;
 import com.github.adrjo.transactions.management.impl.SimpleTransactionManager;
 import com.github.adrjo.transactions.management.TransactionManager;
 

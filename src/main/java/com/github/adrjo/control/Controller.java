@@ -1,4 +1,4 @@
-package com.github.adrjo.rendering;
+package com.github.adrjo.control;
 
 public interface Controller {
 
