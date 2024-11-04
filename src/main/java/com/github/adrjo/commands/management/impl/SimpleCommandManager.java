@@ -11,5 +11,8 @@ public class SimpleCommandManager implements CommandManager {
         registerCommand(new ImportCommand());
         registerCommand(new ListTransactionCommand());
         registerCommand(new RemoveTransactionCommand());
+        registerCommand(new FindCommand());
+        registerCommand(new HelpCommand());
+        registerCommand(new SummaryCommand());
     }
 }
