@@ -1,5 +1,6 @@
 package com.github.adrjo.control.impl;
 
+import com.github.adrjo.commands.menus.CommandMenu;
 import com.github.adrjo.control.Controller;
 import com.github.adrjo.control.impl.gui.scenes.WelcomeScene;
 import javafx.application.Application;
@@ -19,6 +20,16 @@ public class GuiController extends Application implements Controller {
         } catch (Exception e) {
 
         }
+    }
+
+    @Override
+    public CommandMenu getCommandMenu() {
+        throw new IllegalArgumentException("Unsupported.");
+    }
+
+    @Override
+    public void setCommandMenu(CommandMenu menu) {
+        throw new IllegalArgumentException("Unsupported.");
     }
 
     public void start() {

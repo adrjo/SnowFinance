@@ -2,7 +2,7 @@ package com.github.adrjo.commands.management.impl;
 
 import com.github.adrjo.util.Helper;
 import com.github.adrjo.commands.Command;
-import com.github.adrjo.commands.RegisterCommand;
+import com.github.adrjo.commands.annotations.impl.RegisterCommand;
 import com.github.adrjo.commands.management.CommandManager;
 
 import java.lang.reflect.Constructor;

@@ -3,7 +3,7 @@ package com.github.adrjo.commands.impl;
 import com.github.adrjo.fileloading.impl.SwedbankFileLoader;
 import com.github.adrjo.fileloading.TransactionFileLoader;
 import com.github.adrjo.commands.Command;
-import com.github.adrjo.commands.RegisterCommand;
+import com.github.adrjo.commands.annotations.impl.RegisterCommand;
 
 import java.io.File;
 import java.io.IOException;

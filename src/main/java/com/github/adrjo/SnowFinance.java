@@ -1,6 +1,5 @@
 package com.github.adrjo;
 
-import com.github.adrjo.commands.management.impl.AnnotationCommandManager;
 import com.github.adrjo.commands.management.CommandManager;
 import com.github.adrjo.control.impl.GuiController;
 import com.github.adrjo.control.Controller;
@@ -14,7 +13,6 @@ public class SnowFinance {
     public static SnowFinance instance = null;
 
     private TransactionManager transactionManager;
-    private CommandManager commandManager;
     private Controller controller;
     private boolean useGui = false;
     public SnowFinance(String[] args) {
@@ -43,9 +41,6 @@ public class SnowFinance {
         transactionManager = new SimpleTransactionManager();
         transactionManager.load();
 
-        commandManager = new AnnotationCommandManager();
-        commandManager.registerCommands();
-
         if (useGui) {
             controller = new GuiController();
         } else {
@@ -66,7 +61,11 @@ public class SnowFinance {
         return transactionManager;
     }
 
+    public Controller getController() {
+        return controller;
+    }
+
     public CommandManager getCommandManager() {
-        return commandManager;
+        return controller.getCommandMenu().getCommandManager();
     }
 }

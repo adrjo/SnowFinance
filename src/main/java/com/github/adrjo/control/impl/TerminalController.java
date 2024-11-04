@@ -1,16 +1,16 @@
 package com.github.adrjo.control.impl;
 
-import com.github.adrjo.SnowFinance;
-import com.github.adrjo.commands.Command;
+import com.github.adrjo.commands.menus.CommandMenu;
+import com.github.adrjo.commands.menus.impl.MainCommandMenu;
 import com.github.adrjo.control.Controller;
 
 import java.util.Arrays;
-import java.util.List;
 import java.util.Scanner;
 
 public class TerminalController extends Thread implements Controller {
 
     private boolean running = true;
+    private CommandMenu commandMenu;
 
     @Override
     public void startController() {
@@ -25,10 +25,11 @@ public class TerminalController extends Thread implements Controller {
     @Override
     public void run() {
         System.out.println("Welcome to SnowFinance");
+        commandMenu = new MainCommandMenu();
         Scanner scan = new Scanner(System.in);
         while (this.running) {
-            System.out.println("Commands: " + getCommandList());
-
+            System.out.println("Commands: " + commandMenu.getCommandList());
+            System.out.print("> ");
             final String line = scan.nextLine();
             String[] args = line.split(" ");
             
@@ -37,54 +38,24 @@ public class TerminalController extends Thread implements Controller {
             if (commandString.equalsIgnoreCase("stop") || commandString.equalsIgnoreCase("exit")) {
                 this.close();
             }
-            
-            final Command command = SnowFinance.instance.getCommandManager().get(commandString);
-            if (command == null) {
-                System.err.printf("%s: command not found\n", commandString);
-                continue;
-            }
-
             String[] commandArgs = Arrays.copyOfRange(args, 1, args.length);
-            if (contains(args, "-?", "?")) {
-                System.err.printf("%s: %s\n", command.getName(), command.getDesc());
-                continue;
-            }
-            try {
-                command.exec(commandArgs);
-            } catch (Exception e) {
-                System.err.println(e.getMessage());
-            }
+
+            commandMenu.runCommand(commandString, commandArgs);
         }
         System.out.println("Bye!");
     }
 
+    @Override
+    public CommandMenu getCommandMenu() {
+        return commandMenu;
+    }
+
+    @Override
+    public void setCommandMenu(CommandMenu menu) {
+        this.commandMenu = menu;
+    }
+
     public void close() {
         running = false;
-    }
-
-    private boolean contains(String[] args, String... strings) {
-        for (String arg : args) {
-            for (String s : strings) {
-                if (arg.equalsIgnoreCase(s)) {
-                    return true;
-                }
-            }
-        }
-        return false;
-    }
-
-    private String getCommandList() {
-        StringBuilder commandList = new StringBuilder();
-        List<Command> commands = SnowFinance.instance.getCommandManager().commands;
-
-        for (int i = 0; i < commands.size(); ++i) {
-            Command command = commands.get(i);
-            commandList.append(command.getName());
-            if (i != commands.size() - 1) {
-                commandList.append(", ");
-            }
-        }
-
-        return commandList.toString();
     }
 }

@@ -1,4 +1,4 @@
-package com.github.adrjo.commands;
+package com.github.adrjo.commands.annotations.impl;
 
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;

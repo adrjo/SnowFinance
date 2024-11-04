@@ -2,7 +2,8 @@ package com.github.adrjo.commands.impl;
 
 import com.github.adrjo.SnowFinance;
 import com.github.adrjo.commands.Command;
-import com.github.adrjo.commands.RegisterCommand;
+import com.github.adrjo.commands.annotations.impl.RegisterCommand;
+import com.github.adrjo.commands.menus.impl.SummaryCommandMenu;
 import com.github.adrjo.util.DateInput;
 import com.github.adrjo.transactions.Transaction;
 import com.github.adrjo.util.TransactionUtil;
@@ -18,7 +19,6 @@ import java.util.Scanner;
         description = "View full transaction summary (balance, expenses, income) or optionally by year, month, day or week"
 )
 public class SummaryCommand extends Command {
-    private Scanner scanner;
 
     @Deprecated
     public SummaryCommand() {
@@ -31,16 +31,7 @@ public class SummaryCommand extends Command {
 
     @Override
     public void exec(String[] args) {
-
-        System.out.println("""
-                            Welcome to reports!
-                            Show reports by:
-                            1. Year
-                            2. Year and Month
-                            3. Year, Month and Day
-                            4. Year and Week
-                            5. Full reports
-                            """);
+        SnowFinance.instance.getController().setCommandMenu(new SummaryCommandMenu());
 
         this.scanner = new Scanner(System.in);
         int input = Integer.parseInt(scanner.nextLine().charAt(0)+"");
