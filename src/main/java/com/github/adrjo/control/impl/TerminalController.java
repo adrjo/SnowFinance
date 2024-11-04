@@ -7,14 +7,14 @@ import com.github.adrjo.control.Controller;
 import java.util.Arrays;
 import java.util.Scanner;
 
-public class TerminalController extends Thread implements Controller {
+public class TerminalController implements Controller {
 
     private boolean running = true;
     private CommandMenu commandMenu;
 
     @Override
     public void startController() {
-        this.start();
+        this.run();
     }
 
     @Override
@@ -22,7 +22,6 @@ public class TerminalController extends Thread implements Controller {
         this.close();
     }
 
-    @Override
     public void run() {
         System.out.println("Welcome to SnowFinance");
         commandMenu = new MainCommandMenu();
