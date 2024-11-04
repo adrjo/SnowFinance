@@ -7,10 +7,10 @@ import com.github.adrjo.commands.management.impl.AnnotationCommandManager;
 import java.util.List;
 
 public abstract class CommandMenu {
-    private final CommandManager commandManager = new AnnotationCommandManager();
+    protected final CommandManager commandManager = new AnnotationCommandManager();
 
     public CommandMenu() {
-        commandManager.registerCommands();
+        commandManager.registerCommandsFor(this.getClass());
     }
 
    public void runCommand(String commandString, String[] args) {

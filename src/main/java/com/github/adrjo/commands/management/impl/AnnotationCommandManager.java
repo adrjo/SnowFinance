@@ -1,17 +1,30 @@
 package com.github.adrjo.commands.management.impl;
 
+import com.github.adrjo.commands.annotations.impl.ImplementsMenu;
+import com.github.adrjo.commands.menus.CommandMenu;
 import com.github.adrjo.util.Helper;
 import com.github.adrjo.commands.Command;
 import com.github.adrjo.commands.annotations.impl.RegisterCommand;
 import com.github.adrjo.commands.management.CommandManager;
 
 import java.lang.reflect.Constructor;
+import java.util.List;
 
 public class AnnotationCommandManager implements CommandManager {
     @Override
-    public void registerCommands() {
+    public void registerCommandsFor(Class<? extends CommandMenu> forClazz) {
         try {
-            Helper.findClasses("com.github.adrjo.commands.impl").stream()
+            List<Class<?>> clazzes = Helper.findClasses("com.github.adrjo.commands.impl");
+
+            clazzes.stream()
+                    .filter(clazz -> {
+                        for (ImplementsMenu anno : clazz.getAnnotationsByType(ImplementsMenu.class)) {
+                            if (anno.value().equals(forClazz)) {
+                                return true;
+                            }
+                        }
+                        return false;
+                    })
                     .filter(clazz -> clazz.isAnnotationPresent(RegisterCommand.class))
                     .filter(clazz -> clazz.getSuperclass().equals(Command.class))
                     .forEach(clazz -> {

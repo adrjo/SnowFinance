@@ -2,14 +2,13 @@ package com.github.adrjo.commands.management;
 
 
 import com.github.adrjo.commands.Command;
+import com.github.adrjo.commands.menus.CommandMenu;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public interface CommandManager {
     List<Command> commands = new ArrayList<>();
-
-    void registerCommands();
 
     default List<Command> getCommands() {
         return commands;
@@ -27,4 +26,6 @@ public interface CommandManager {
         }
         return null;
     }
+
+    void registerCommandsFor(Class<? extends CommandMenu> clazz);
 }

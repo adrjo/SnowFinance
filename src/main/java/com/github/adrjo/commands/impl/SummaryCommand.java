@@ -2,7 +2,9 @@ package com.github.adrjo.commands.impl;
 
 import com.github.adrjo.SnowFinance;
 import com.github.adrjo.commands.Command;
+import com.github.adrjo.commands.annotations.impl.ImplementsMenu;
 import com.github.adrjo.commands.annotations.impl.RegisterCommand;
+import com.github.adrjo.commands.menus.impl.MainCommandMenu;
 import com.github.adrjo.commands.menus.impl.SummaryCommandMenu;
 import com.github.adrjo.util.DateInput;
 import com.github.adrjo.transactions.Transaction;
@@ -14,6 +16,7 @@ import java.util.Comparator;
 import java.util.Map;
 import java.util.Scanner;
 
+@ImplementsMenu(MainCommandMenu.class)
 @RegisterCommand(
         name = "summary",
         description = "View full transaction summary (balance, expenses, income) or optionally by year, month, day or week"
@@ -33,24 +36,24 @@ public class SummaryCommand extends Command {
     public void exec(String[] args) {
         SnowFinance.instance.getController().setCommandMenu(new SummaryCommandMenu());
 
-        this.scanner = new Scanner(System.in);
-        int input = Integer.parseInt(scanner.nextLine().charAt(0)+"");
-
-        Map<Integer, Transaction> transactions;
-        switch (input) {
-            case 1 -> transactions = year();
-            case 2 -> transactions = yearMonth();
-            case 3 -> transactions = yearMonthDay();
-            case 4 -> transactions = yearWeek();
-            default -> transactions = full();
-        }
-
-        transactions.entrySet().stream()
-                .sorted(Comparator.comparingInt(Map.Entry::getKey))
-                .forEach(e -> TransactionUtil.printTransactionInfo(e.getKey(), e.getValue()));
-
-        System.out.println();
-        TransactionUtil.printStats(transactions);
+//        this.scanner = new Scanner(System.in);
+//        int input = Integer.parseInt(scanner.nextLine().charAt(0)+"");
+//
+//        Map<Integer, Transaction> transactions;
+//        switch (input) {
+//            case 1 -> transactions = year();
+//            case 2 -> transactions = yearMonth();
+//            case 3 -> transactions = yearMonthDay();
+//            case 4 -> transactions = yearWeek();
+//            default -> transactions = full();
+//        }
+//
+//        transactions.entrySet().stream()
+//                .sorted(Comparator.comparingInt(Map.Entry::getKey))
+//                .forEach(e -> TransactionUtil.printTransactionInfo(e.getKey(), e.getValue()));
+//
+//        System.out.println();
+//        TransactionUtil.printStats(transactions);
     }
 
     private Map<Integer, Transaction> full() {
@@ -102,7 +105,8 @@ public class SummaryCommand extends Command {
     }
 
     private int getInput(String lookingFor) {
-        System.out.print(lookingFor + ": ");
-        return Integer.parseInt(scanner.nextLine());
+//        System.out.print(lookingFor + ": ");
+//        return Integer.parseInt(scanner.nextLine());
+        return 0;
     }
 }
