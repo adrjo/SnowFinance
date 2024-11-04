@@ -64,4 +64,9 @@ public class Helper {
         return classes;
     }
 
+    public static int getInput(String lookingFor) {
+        System.out.print(lookingFor + ": ");
+        return Integer.parseInt(new Scanner(System.in).nextLine());
+    }
+
 }

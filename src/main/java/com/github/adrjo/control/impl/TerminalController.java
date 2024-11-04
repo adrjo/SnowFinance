@@ -27,8 +27,8 @@ public class TerminalController extends Thread implements Controller {
         System.out.println("Welcome to SnowFinance");
         commandMenu = new MainCommandMenu();
         Scanner scan = new Scanner(System.in);
+
         while (this.running) {
-            System.out.println("Commands: " + commandMenu.getCommandList());
             System.out.print("> ");
             final String line = scan.nextLine();
             String[] args = line.split(" ");

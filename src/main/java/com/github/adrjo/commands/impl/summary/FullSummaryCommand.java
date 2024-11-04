@@ -9,15 +9,12 @@ import com.github.adrjo.commands.menus.impl.SummaryCommandMenu;
 import com.github.adrjo.transactions.Transaction;
 import com.github.adrjo.util.TransactionUtil;
 
-import java.time.LocalDate;
 import java.util.Map;
 
-import static com.github.adrjo.util.Helper.getInput;
-
 @ImplementsMenu(SummaryCommandMenu.class)
-@RegisterCommand(name = "2", description = "")
-public class YearMonthCommand extends Command {
-    public YearMonthCommand(String name, String desc, int requiredArgs) {
+@RegisterCommand(name = "5", description = "")
+public class FullSummaryCommand extends Command {
+    public FullSummaryCommand(String name, String desc, int requiredArgs) {
         super(name, desc, requiredArgs);
     }
 
@@ -25,7 +22,7 @@ public class YearMonthCommand extends Command {
     public void exec(String[] args) {
         super.exec(args);
 
-        Map<Integer, Transaction> transactions = yearMonth();
+        Map<Integer, Transaction> transactions = full();
 
         TransactionUtil.printTransactionInfoFor(transactions);
 
@@ -34,14 +31,7 @@ public class YearMonthCommand extends Command {
         SnowFinance.instance.getController().setCommandMenu(new MainCommandMenu());
     }
 
-    private Map<Integer, Transaction> yearMonth() {
-        int year = getInput("Year");
-        int month = getInput("Month");
-
-        LocalDate date = LocalDate.of(year, month, 1);
-
-        return SnowFinance.instance.getTransactionManager().getTransactionsBetween(
-                TransactionUtil.epochMilli(date),
-                TransactionUtil.epochMilli(date.plusMonths(1)));
+    private Map<Integer, Transaction> full() {
+        return SnowFinance.instance.getTransactionManager().getAllTransactions();
     }
 }

@@ -4,6 +4,7 @@ import com.github.adrjo.transactions.Transaction;
 
 import java.time.LocalDate;
 import java.time.ZoneId;
+import java.util.Comparator;
 import java.util.Date;
 import java.util.Map;
 
@@ -56,5 +57,11 @@ public class TransactionUtil {
 
     public static long epochMilli(LocalDate date) {
         return date.atStartOfDay(ZoneId.systemDefault()).toInstant().toEpochMilli();
+    }
+
+    public static void printTransactionInfoFor(Map<Integer, Transaction> transactions) {
+        transactions.entrySet().stream()
+                .sorted(Comparator.comparingInt(Map.Entry::getKey))
+                .forEach(e -> TransactionUtil.printTransactionInfo(e.getKey(), e.getValue()));
     }
 }

@@ -10,6 +10,7 @@ public abstract class CommandMenu {
     protected final CommandManager commandManager = new AnnotationCommandManager();
 
     public CommandMenu() {
+        commandManager.getCommands().clear();
         commandManager.registerCommandsFor(this.getClass());
     }
 
