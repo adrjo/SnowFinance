@@ -2,10 +2,19 @@ package com.github.adrjo.commands;
 
 public abstract class Command {
 
-    private String name;
-    private String desc;
-    private int requiredArgs;
+    private final String name;
+    private final String desc;
+    private final int requiredArgs;
 
+    public Command(String name, String desc, int requiredArgs) {
+        this.name = name;
+        this.desc = desc;
+        this.requiredArgs = requiredArgs;
+    }
+
+    public Command(String name, String desc) {
+        this(name, desc, 0);
+    }
 
     public void exec(String[] args) {
         if (args.length < requiredArgs) {
@@ -20,17 +29,5 @@ public abstract class Command {
 
     public String getDesc() {
         return desc;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public void setDescription(String desc) {
-        this.desc = desc;
-    }
-
-    public void setRequiredArgs(int num) {
-        this.requiredArgs = num;
     }
 }

@@ -12,6 +12,15 @@ import com.github.adrjo.transactions.management.TransactionManager;
 )
 public class RemoveTransactionCommand extends Command {
 
+    @Deprecated
+    public RemoveTransactionCommand() {
+        super("remove", "Removes a transaction by [ID]", 1);
+    }
+
+    public RemoveTransactionCommand(String name, String desc, int requiredArgs) {
+        super(name, desc, requiredArgs);
+    }
+
     @Override
     public void exec(String[] args) {
         super.exec(args);

@@ -17,6 +17,20 @@ import java.util.Date;
 )
 public class AddTransactionCommand extends Command {
 
+    @Deprecated
+    public AddTransactionCommand() {
+        super(
+                "add",
+                "args: [name] [amt in SEK] [date in format " + Helper.DATE_AND_TIME + " (or blank for current time)]\n"
+                        + "Example: `add Willys 500 2024-08-30.20:30`",
+                2
+        );
+    }
+
+    public AddTransactionCommand(String name, String desc, int requiredArgs) {
+        super(name, desc, requiredArgs);
+    }
+
     @Override
     public void exec(String[] args) {
         super.exec(args);

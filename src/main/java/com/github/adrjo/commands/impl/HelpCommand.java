@@ -10,6 +10,15 @@ import com.github.adrjo.commands.RegisterCommand;
 )
 public class HelpCommand extends Command {
 
+    @Deprecated
+    public HelpCommand(){
+        super("help", "Lists commands and their usage");
+    }
+
+    public HelpCommand(String name, String desc, int requiredArgs) {
+        super(name, desc, requiredArgs);
+    }
+
     @Override
     public void exec(String[] args) {
         for (Command command : SnowFinance.instance.getCommandManager().getCommands()) {

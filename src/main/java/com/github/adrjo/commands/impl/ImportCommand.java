@@ -16,6 +16,20 @@ import java.io.IOException;
 )
 public class ImportCommand extends Command {
 
+    @Deprecated
+    public ImportCommand() {
+        super(
+                "import",
+                "Imports transactions from Swedbank\n"
+                        + "Usage: import path/to/transactionsexport.csv",
+                1
+        );
+    }
+
+    public ImportCommand(String name, String desc, int requiredArgs) {
+        super(name, desc, requiredArgs);
+    }
+
     @Override
     public void exec(String[] args) {
         super.exec(args);

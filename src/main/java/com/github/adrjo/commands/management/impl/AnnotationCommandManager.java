@@ -5,6 +5,8 @@ import com.github.adrjo.commands.Command;
 import com.github.adrjo.commands.RegisterCommand;
 import com.github.adrjo.commands.management.CommandManager;
 
+import java.lang.reflect.Constructor;
+
 public class AnnotationCommandManager implements CommandManager {
     @Override
     public void registerCommands() {
@@ -15,13 +17,17 @@ public class AnnotationCommandManager implements CommandManager {
                     .forEach(clazz -> {
                         try {
                             RegisterCommand annotation = clazz.getAnnotation(RegisterCommand.class);
-                            Command command = (Command) clazz.getDeclaredConstructors()[0].newInstance();
-                            command.setName(annotation.name());
-                            command.setDescription(annotation.description());
-                            command.setRequiredArgs(annotation.requiredArgs());
+                            Constructor<?> constructor = clazz.getDeclaredConstructor(String.class, String.class, int.class);
+                            Command command = (Command) constructor.newInstance(
+                                    annotation.name(),
+                                    annotation.description(),
+                                    annotation.requiredArgs()
+                            );
+
                             this.registerCommand(command);
                         } catch (Exception e) {
-                            throw new RuntimeException("Failed to load command with reflection");
+                            e.printStackTrace();
+                            throw new RuntimeException("Failed to load command with reflection: " + e.getMessage(), e);
                         }
                     });
         } catch (Exception e) {

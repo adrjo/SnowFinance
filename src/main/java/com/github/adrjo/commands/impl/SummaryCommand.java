@@ -18,10 +18,15 @@ import java.util.Scanner;
         description = "View full transaction summary (balance, expenses, income) or optionally by year, month, day or week"
 )
 public class SummaryCommand extends Command {
-    private final Scanner scanner;
+    private Scanner scanner;
 
+    @Deprecated
     public SummaryCommand() {
-        this.scanner = new Scanner(System.in);
+        super("summary", "View full transaction summary (balance, expenses, income) or optionally by year, month, day or week");
+    }
+
+    public SummaryCommand(String name, String desc, int requiredArgs) {
+        super(name, desc, requiredArgs);
     }
 
     @Override
@@ -37,6 +42,7 @@ public class SummaryCommand extends Command {
                             5. Full reports
                             """);
 
+        this.scanner = new Scanner(System.in);
         int input = Integer.parseInt(scanner.nextLine().charAt(0)+"");
 
         Map<Integer, Transaction> transactions;

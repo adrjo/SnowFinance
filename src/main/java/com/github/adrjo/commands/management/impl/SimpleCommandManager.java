@@ -3,6 +3,7 @@ package com.github.adrjo.commands.management.impl;
 import com.github.adrjo.commands.impl.*;
 import com.github.adrjo.commands.management.CommandManager;
 
+@Deprecated
 public class SimpleCommandManager implements CommandManager {
     @Override
     public void registerCommands() {

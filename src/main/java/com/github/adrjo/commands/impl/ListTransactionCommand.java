@@ -15,6 +15,15 @@ import java.util.Date;
 )
 public class ListTransactionCommand extends Command {
 
+    @Deprecated
+    public ListTransactionCommand() {
+        super("list", "List saved transactions, optionally by [Date]");
+    }
+
+    public ListTransactionCommand(String name, String desc, int requiredArgs) {
+        super(name, desc, requiredArgs);
+    }
+
     @Override
     public void exec(String[] args) {
         if (args.length > 0) {

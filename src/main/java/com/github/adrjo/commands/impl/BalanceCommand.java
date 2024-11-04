@@ -14,6 +14,15 @@ import java.util.Date;
 )
 public class BalanceCommand extends Command {
 
+    @Deprecated
+    public BalanceCommand() {
+        super("bal", "Returns your current balance OR your balance at a specific [Date] (yyyy-MM-dd.hh:mm)");
+    }
+
+    public BalanceCommand(String name, String desc, int requiredArgs) {
+        super(name, desc, requiredArgs);
+    }
+
     @Override
     public void exec(String[] args) {
         if (args.length > 0) {

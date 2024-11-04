@@ -18,6 +18,15 @@ import java.util.Scanner;
 public class FindCommand extends Command {
     private boolean list = true;
 
+    @Deprecated
+    public FindCommand() {
+        super("find", "Find transactions by name", 1);
+    }
+
+    public FindCommand(String name, String desc, int requiredArgs) {
+        super(name, desc, requiredArgs);
+    }
+
     @Override
     public void exec(String[] args) {
         super.exec(args);
