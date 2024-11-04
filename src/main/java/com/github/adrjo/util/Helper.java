@@ -27,7 +27,7 @@ public class Helper {
      * <a href="https://stackoverflow.com/questions/520328/can-you-find-all-classes-in-a-package-using-reflection">stackoverflow</a>
      */
     public static List<Class<?>> findClasses(String packageName) throws Exception {
-        String path = packageName.replace('.', '/');
+        String path = packageName.replace('.', '/') + "/";
         URL packageURL = Thread.currentThread().getContextClassLoader().getResource(path);
 
         if (packageURL == null) return List.of();
@@ -48,10 +48,12 @@ public class Helper {
 
         List<Class<?>> classes = new ArrayList<>();
         Files.walk(directory)
-                .map(filePath -> filePath.getFileName().toString())
+                .map(filePath -> filePath.toAbsolutePath().toString().replaceAll("\\\\", "/"))
                 .filter(name -> name.endsWith(".class"))
+                .map(name -> name.split(path)[1])
+                .map(name -> name.replaceAll("/", "."))
                 .forEach(name -> {
-                    name = name.split(".class")[0];
+                    name = name.split("\\.class")[0];
                     try {
                         classes.add(Class.forName(packageName + '.' + name));
                     } catch (ClassNotFoundException e) {
