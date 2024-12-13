@@ -4,6 +4,8 @@ import com.github.adrjo.commands.management.CommandManager;
 import com.github.adrjo.control.impl.GuiController;
 import com.github.adrjo.control.Controller;
 import com.github.adrjo.control.impl.TerminalController;
+import com.github.adrjo.database.Database;
+import com.github.adrjo.database.DatabaseUtil;
 import com.github.adrjo.transactions.management.impl.SimpleTransactionManager;
 import com.github.adrjo.transactions.management.TransactionManager;
 
@@ -14,6 +16,8 @@ public class SnowFinance {
 
     private TransactionManager transactionManager;
     private Controller controller;
+    private Database database;
+
     private boolean useGui = false;
     public SnowFinance(String[] args) {
         if (args.length > 0 && args[0].equalsIgnoreCase("--gui")) {
@@ -34,6 +38,8 @@ public class SnowFinance {
 
         Runtime.getRuntime().addShutdownHook(new Thread(this::shutdown));
 
+
+        DatabaseUtil.applySchema(database.getConnection());
         controller.startController();
     }
 
@@ -46,6 +52,8 @@ public class SnowFinance {
         } else {
             controller = new TerminalController();
         }
+
+        database = new Database();
     }
 
     /**
