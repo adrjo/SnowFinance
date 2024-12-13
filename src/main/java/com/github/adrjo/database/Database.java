@@ -10,32 +10,34 @@ public class Database {
     private static final String USER = "postgres";
     private static final String PASSWORD = "postgres";
 
-    private static final String DATABASE = "SnowFinance";
+    private static final String DATABASE = "snowfinance";
 
     private Connection connection;
 
     public Database() {
-        connect();
+        connect(URL);
+
+        if (!DatabaseUtil.databaseExists(connection, DATABASE)) {
+            createDatabase();
+        }
+        connect(URL + DATABASE);
     }
 
-    private void connect() {
-        // initial connection
-        try (Connection connection = DriverManager.getConnection(URL, USER, PASSWORD)) {
+    private void createDatabase() {
+        // try create snowfinance db
+        try (Statement statement = connection.createStatement()) {
+            String createDbQuery = "CREATE DATABASE " + DATABASE;
+            statement.executeUpdate(createDbQuery);
+            System.out.println("Database '" + DATABASE + "' created successfully");
+        } catch (SQLException e) {
+            System.err.println("Error: " + e.getMessage());
+        }
+    }
 
-            // try create snowfinance db
-            try (Statement statement = connection.createStatement()) {
-                String createDbQuery = "CREATE DATABASE " + DATABASE;
-                statement.executeUpdate(createDbQuery);
-                System.out.println("Database '" + DATABASE + "' created successfully");
-            }
-
-            // connect to created db
-            String newDbUrl = URL + DATABASE;
-            try (Connection newDbConnection = DriverManager.getConnection(newDbUrl, USER, PASSWORD)) {
-                this.connection = newDbConnection;
-                System.out.println("Connected to " + DATABASE);
-
-            }
+    private void connect(String url) {
+        try {
+            this.connection = DriverManager.getConnection(url, USER, PASSWORD);
+            System.out.println("Connected to " + url);
         } catch (SQLException e) {
             System.err.println("Error: " + e.getMessage());
         }
