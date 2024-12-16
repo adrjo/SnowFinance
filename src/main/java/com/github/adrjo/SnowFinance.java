@@ -1,13 +1,17 @@
 package com.github.adrjo;
 
+import com.github.adrjo.accounts.AccountManager;
+import com.github.adrjo.accounts.DatabaseAccountManager;
 import com.github.adrjo.commands.manager.CommandManager;
 import com.github.adrjo.control.gui.GuiController;
 import com.github.adrjo.control.Controller;
 import com.github.adrjo.control.TerminalController;
 import com.github.adrjo.database.Database;
 import com.github.adrjo.database.DatabaseUtil;
-import com.github.adrjo.transactions.impl.SimpleTransactionManager;
+import com.github.adrjo.transactions.impl.DatabaseTransactionManager;
 import com.github.adrjo.transactions.TransactionManager;
+import com.github.adrjo.users.DatabaseUserManager;
+import com.github.adrjo.users.UserManager;
 
 import java.util.Locale;
 
@@ -15,7 +19,10 @@ public class SnowFinance {
     public static SnowFinance instance = null;
 
     private TransactionManager transactionManager;
+    private UserManager userManager;
+    private AccountManager accountManager;
     private Controller controller;
+
     private Database database;
 
     private boolean useGui = false;
@@ -44,7 +51,9 @@ public class SnowFinance {
     }
 
     private void init() {
-        transactionManager = new SimpleTransactionManager();
+        userManager = new DatabaseUserManager(database);
+        accountManager = new DatabaseAccountManager(database);
+        transactionManager = new DatabaseTransactionManager(database);
         transactionManager.load();
 
         if (useGui) {

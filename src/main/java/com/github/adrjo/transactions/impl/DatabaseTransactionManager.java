@@ -1,5 +1,6 @@
 package com.github.adrjo.transactions.impl;
 
+import com.github.adrjo.database.Database;
 import com.github.adrjo.transactions.Transaction;
 import com.github.adrjo.transactions.TransactionManager;
 
@@ -7,6 +8,12 @@ import java.util.Map;
 
 //TODO: implement
 public class DatabaseTransactionManager implements TransactionManager {
+
+    private final Database db;
+
+    public DatabaseTransactionManager(Database db) {
+        this.db = db;
+    }
 
     @Override
     public void load() {

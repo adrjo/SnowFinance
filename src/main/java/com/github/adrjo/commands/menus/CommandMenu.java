@@ -12,6 +12,8 @@ public abstract class CommandMenu {
     public CommandMenu() {
         commandManager.getCommands().clear();
         commandManager.registerCommandsFor(this.getClass());
+
+        System.out.println("Commands: " + this.getCommandList());
     }
 
    public void runCommand(String commandString, String[] args) {

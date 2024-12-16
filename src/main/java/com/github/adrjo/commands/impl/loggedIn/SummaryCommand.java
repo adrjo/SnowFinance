@@ -1,4 +1,4 @@
-package com.github.adrjo.commands.impl;
+package com.github.adrjo.commands.impl.loggedIn;
 
 import com.github.adrjo.SnowFinance;
 import com.github.adrjo.commands.Command;

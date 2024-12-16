@@ -1,6 +1,7 @@
 package com.github.adrjo.control;
 
 import com.github.adrjo.commands.menus.CommandMenu;
+import com.github.adrjo.commands.menus.LoggedOutCommandMenu;
 import com.github.adrjo.commands.menus.MainCommandMenu;
 
 import java.util.Arrays;
@@ -23,7 +24,7 @@ public class TerminalController implements Controller {
 
     public void run() {
         System.out.println("Welcome to SnowFinance");
-        commandMenu = new MainCommandMenu();
+        commandMenu = new LoggedOutCommandMenu();
         Scanner scan = new Scanner(System.in);
 
         while (this.running) {
