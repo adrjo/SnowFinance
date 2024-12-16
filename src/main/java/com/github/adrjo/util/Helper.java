@@ -2,7 +2,10 @@ package com.github.adrjo.util;
 
 import javafx.scene.control.Label;
 
+import java.io.File;
+import java.io.IOException;
 import java.net.URI;
+import java.net.URISyntaxException;
 import java.net.URL;
 import java.nio.file.*;
 import java.text.DateFormat;
@@ -22,6 +25,23 @@ public class Helper {
         return label;
     }
 
+    public static Path getResourceAsPath(URL resource, String resourcePath) throws IOException, URISyntaxException {
+        Path directory;
+        URI uri = resource.toURI();
+        if (uri.getScheme().equals("jar")) {
+            FileSystem fs;
+            try {
+                fs = FileSystems.getFileSystem(uri);
+            } catch (FileSystemNotFoundException e) {
+                fs = FileSystems.newFileSystem(uri, Collections.emptyMap());
+            }
+            directory = fs.getPath(resourcePath);
+        } else {
+            directory = Path.of(resource.toURI());
+        }
+        return directory;
+    }
+
     /**
      * inspiration from
      * <a href="https://stackoverflow.com/questions/520328/can-you-find-all-classes-in-a-package-using-reflection">stackoverflow</a>
@@ -31,20 +51,7 @@ public class Helper {
         URL packageURL = Thread.currentThread().getContextClassLoader().getResource(path);
 
         if (packageURL == null) return List.of();
-        URI uri = packageURL.toURI();
-        Path directory;
-        if (packageURL.toURI().getScheme().equals("jar")) {
-            FileSystem fs;
-            try {
-                fs = FileSystems.getFileSystem(uri);
-            } catch (FileSystemNotFoundException e) {
-                fs = FileSystems.newFileSystem(uri, Collections.emptyMap());
-            }
-            directory = fs.getPath(path);
-        } else {
-            directory = Path.of(packageURL.toURI());
-        }
-
+        Path directory = getResourceAsPath(packageURL, path);
 
         List<Class<?>> classes = new ArrayList<>();
         Files.walk(directory)
