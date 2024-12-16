@@ -21,9 +21,8 @@ public class LogoutCommand extends Command {
     public void exec(String[] args) {
         super.exec(args);
 
-        //logout logic
-
-        //eventually...
+        SnowFinance.instance.getUserManager().logout();
+        System.out.println("Logged out.");
         SnowFinance.instance.getController().setCommandMenu(new LoggedOutCommandMenu());
     }
 }

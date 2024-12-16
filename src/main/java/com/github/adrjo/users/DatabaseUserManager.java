@@ -101,4 +101,9 @@ public class DatabaseUserManager implements UserManager {
         }
         return false;
     }
+
+    @Override
+    public void logout() {
+        this.setLoggedInUser(null);
+    }
 }
