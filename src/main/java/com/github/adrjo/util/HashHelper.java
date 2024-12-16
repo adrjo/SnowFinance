@@ -10,15 +10,20 @@ public class HashHelper {
 
 
     public static boolean verifyHash(String password, String encoded) {
-        String decoded = new String(Base64.getDecoder().decode(encoded.getBytes()));
+        try {
+            String decoded = new String(Base64.getDecoder().decode(encoded.getBytes()));
 
-        String[] split = decoded.split(":");
-        String passHash = split[0];
-        byte[] salt = Base64.getDecoder().decode(split[1]);
+            String[] split = decoded.split(":");
+            String passHash = split[0];
+            byte[] salt = Base64.getDecoder().decode(split[1]);
 
-        String reHashed = HashHelper.hashPassword(password, salt);
+            String reHashed = HashHelper.hashPassword(password, salt);
 
-        return reHashed.equals(passHash);
+            return reHashed.equals(passHash);
+        } catch (Exception e) {
+            System.err.println("Failed to verify hash");
+            return false;
+        }
     }
 
     /**
