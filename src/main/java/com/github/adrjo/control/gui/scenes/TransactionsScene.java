@@ -1,9 +1,9 @@
-package com.github.adrjo.control.impl.gui.scenes;
+package com.github.adrjo.control.gui.scenes;
 
 import com.github.adrjo.util.Helper;
 import com.github.adrjo.SnowFinance;
 import com.github.adrjo.util.DateInput;
-import com.github.adrjo.control.impl.gui.TransactionDisplay;
+import com.github.adrjo.control.gui.TransactionDisplay;
 import com.github.adrjo.transactions.Transaction;
 import com.github.adrjo.util.TransactionUtil;
 import javafx.event.ActionEvent;

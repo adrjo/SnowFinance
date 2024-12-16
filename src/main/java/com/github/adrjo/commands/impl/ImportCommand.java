@@ -1,11 +1,11 @@
 package com.github.adrjo.commands.impl;
 
-import com.github.adrjo.commands.annotations.impl.ImplementsMenu;
-import com.github.adrjo.commands.menus.impl.MainCommandMenu;
-import com.github.adrjo.fileloading.impl.SwedbankFileLoader;
+import com.github.adrjo.commands.annotations.ImplementsMenu;
+import com.github.adrjo.commands.menus.MainCommandMenu;
+import com.github.adrjo.fileloading.SwedbankFileLoader;
 import com.github.adrjo.fileloading.TransactionFileLoader;
 import com.github.adrjo.commands.Command;
-import com.github.adrjo.commands.annotations.impl.RegisterCommand;
+import com.github.adrjo.commands.annotations.RegisterCommand;
 
 import java.io.File;
 import java.io.IOException;

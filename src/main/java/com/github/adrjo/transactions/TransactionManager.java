@@ -1,6 +1,4 @@
-package com.github.adrjo.transactions.management;
-
-import com.github.adrjo.transactions.Transaction;
+package com.github.adrjo.transactions;
 
 import java.util.Map;
 

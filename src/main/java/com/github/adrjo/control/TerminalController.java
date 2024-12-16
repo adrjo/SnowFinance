@@ -1,8 +1,7 @@
-package com.github.adrjo.control.impl;
+package com.github.adrjo.control;
 
 import com.github.adrjo.commands.menus.CommandMenu;
-import com.github.adrjo.commands.menus.impl.MainCommandMenu;
-import com.github.adrjo.control.Controller;
+import com.github.adrjo.commands.menus.MainCommandMenu;
 
 import java.util.Arrays;
 import java.util.Scanner;

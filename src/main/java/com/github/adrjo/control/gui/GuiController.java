@@ -1,8 +1,8 @@
-package com.github.adrjo.control.impl;
+package com.github.adrjo.control.gui;
 
 import com.github.adrjo.commands.menus.CommandMenu;
 import com.github.adrjo.control.Controller;
-import com.github.adrjo.control.impl.gui.scenes.WelcomeScene;
+import com.github.adrjo.control.gui.scenes.WelcomeScene;
 import javafx.application.Application;
 import javafx.stage.Stage;
 

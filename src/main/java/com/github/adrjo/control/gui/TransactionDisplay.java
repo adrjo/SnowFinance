@@ -1,4 +1,4 @@
-package com.github.adrjo.control.impl.gui;
+package com.github.adrjo.control.gui;
 
 import com.github.adrjo.util.Helper;
 import com.github.adrjo.transactions.Transaction;

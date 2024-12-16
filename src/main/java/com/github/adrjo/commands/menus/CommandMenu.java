@@ -1,8 +1,8 @@
 package com.github.adrjo.commands.menus;
 
 import com.github.adrjo.commands.Command;
-import com.github.adrjo.commands.management.CommandManager;
-import com.github.adrjo.commands.management.impl.AnnotationCommandManager;
+import com.github.adrjo.commands.manager.CommandManager;
+import com.github.adrjo.commands.manager.AnnotationCommandManager;
 
 import java.util.List;
 

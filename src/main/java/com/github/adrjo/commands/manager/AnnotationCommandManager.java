@@ -1,11 +1,10 @@
-package com.github.adrjo.commands.management.impl;
+package com.github.adrjo.commands.manager;
 
-import com.github.adrjo.commands.annotations.impl.ImplementsMenu;
+import com.github.adrjo.commands.annotations.ImplementsMenu;
 import com.github.adrjo.commands.menus.CommandMenu;
 import com.github.adrjo.util.Helper;
 import com.github.adrjo.commands.Command;
-import com.github.adrjo.commands.annotations.impl.RegisterCommand;
-import com.github.adrjo.commands.management.CommandManager;
+import com.github.adrjo.commands.annotations.RegisterCommand;
 
 import java.lang.reflect.Constructor;
 import java.util.List;

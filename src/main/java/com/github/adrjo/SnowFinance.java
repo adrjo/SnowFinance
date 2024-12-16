@@ -1,13 +1,13 @@
 package com.github.adrjo;
 
-import com.github.adrjo.commands.management.CommandManager;
-import com.github.adrjo.control.impl.GuiController;
+import com.github.adrjo.commands.manager.CommandManager;
+import com.github.adrjo.control.gui.GuiController;
 import com.github.adrjo.control.Controller;
-import com.github.adrjo.control.impl.TerminalController;
+import com.github.adrjo.control.TerminalController;
 import com.github.adrjo.database.Database;
 import com.github.adrjo.database.DatabaseUtil;
-import com.github.adrjo.transactions.management.impl.SimpleTransactionManager;
-import com.github.adrjo.transactions.management.TransactionManager;
+import com.github.adrjo.transactions.impl.SimpleTransactionManager;
+import com.github.adrjo.transactions.TransactionManager;
 
 import java.util.Locale;
 

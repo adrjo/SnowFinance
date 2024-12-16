@@ -1,6 +1,4 @@
-package com.github.adrjo.commands.menus.impl;
-
-import com.github.adrjo.commands.menus.CommandMenu;
+package com.github.adrjo.commands.menus;
 
 public class MainCommandMenu extends CommandMenu {
 

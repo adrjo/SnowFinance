@@ -1,11 +1,11 @@
 package com.github.adrjo.commands.impl;
 
-import com.github.adrjo.commands.annotations.impl.ImplementsMenu;
-import com.github.adrjo.commands.menus.impl.MainCommandMenu;
+import com.github.adrjo.commands.annotations.ImplementsMenu;
+import com.github.adrjo.commands.menus.MainCommandMenu;
 import com.github.adrjo.util.Helper;
 import com.github.adrjo.SnowFinance;
 import com.github.adrjo.commands.Command;
-import com.github.adrjo.commands.annotations.impl.RegisterCommand;
+import com.github.adrjo.commands.annotations.RegisterCommand;
 import com.github.adrjo.util.TransactionUtil;
 
 import java.text.ParseException;

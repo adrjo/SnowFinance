@@ -1,4 +1,4 @@
-package com.github.adrjo.commands.management;
+package com.github.adrjo.commands.manager;
 
 
 import com.github.adrjo.commands.Command;

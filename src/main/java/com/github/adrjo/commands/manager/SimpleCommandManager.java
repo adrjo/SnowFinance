@@ -1,7 +1,6 @@
-package com.github.adrjo.commands.management.impl;
+package com.github.adrjo.commands.manager;
 
 import com.github.adrjo.commands.impl.*;
-import com.github.adrjo.commands.management.CommandManager;
 import com.github.adrjo.commands.menus.CommandMenu;
 
 @Deprecated
