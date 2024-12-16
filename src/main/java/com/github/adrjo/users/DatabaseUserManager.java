@@ -56,8 +56,8 @@ public class DatabaseUserManager implements UserManager {
 
     @Override
     public User getUser(String username) {
-        try (PreparedStatement stmt = db.getConnection().prepareStatement("SELECT * FROM users WHERE username = ?")) {
-            stmt.setString(1, username);
+        try (PreparedStatement stmt = db.getConnection().prepareStatement("SELECT * FROM users WHERE LOWER(username) = ?")) {
+            stmt.setString(1, username.toLowerCase());
 
             ResultSet set = stmt.executeQuery();
 
