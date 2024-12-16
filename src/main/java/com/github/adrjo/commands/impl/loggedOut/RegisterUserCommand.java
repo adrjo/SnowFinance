@@ -5,14 +5,13 @@ import com.github.adrjo.commands.Command;
 import com.github.adrjo.commands.annotations.ImplementsMenu;
 import com.github.adrjo.commands.annotations.RegisterCommand;
 import com.github.adrjo.commands.menus.LoggedOutCommandMenu;
-import com.github.adrjo.commands.menus.MainCommandMenu;
 import com.github.adrjo.users.User;
 import com.github.adrjo.users.UserManager;
 
 @ImplementsMenu(LoggedOutCommandMenu.class)
 @RegisterCommand(
         name = "register",
-        description = "/register <user> <password>",
+        description = "register <user> <password>",
         requiredArgs = 2
 )
 public class RegisterUserCommand extends Command {
@@ -28,14 +27,13 @@ public class RegisterUserCommand extends Command {
 
         final UserManager manager = SnowFinance.instance.getUserManager();
 
-        if (manager.getUser(username) != null) {
+        if (manager.userExists(username)) {
             System.err.println("That user already exists!");
             return;
         }
 
         manager.addUser(new User(username, password));
 
-        //eventually...
-        SnowFinance.instance.getController().setCommandMenu(new MainCommandMenu());
+        System.out.println(username + " successfully registered! Login with `login " + username + " <password>`");
     }
 }

@@ -17,7 +17,7 @@ public class DatabaseTransactionManager implements TransactionManager {
 
     @Override
     public void load() {
-        throw new IllegalArgumentException("Not implemented");
+//        throw new IllegalArgumentException("Not implemented");
         // load into memory
         // select id, name, amt, timestamp from transactions;
     }

@@ -51,6 +51,8 @@ public class SnowFinance {
     }
 
     private void init() {
+        database = new Database();
+
         userManager = new DatabaseUserManager(database);
         accountManager = new DatabaseAccountManager(database);
         transactionManager = new DatabaseTransactionManager(database);
@@ -61,8 +63,6 @@ public class SnowFinance {
         } else {
             controller = new TerminalController();
         }
-
-        database = new Database();
     }
 
     /**

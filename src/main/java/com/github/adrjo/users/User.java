@@ -7,9 +7,10 @@ public class User {
     private String name;
     private String hashedPassword;
 
-    public User(int id, String name) {
+    public User(int id, String name, String hashedPassword) {
         this.id = id;
         this.name = name;
+        this.hashedPassword = hashedPassword;
     }
 
     public User(String username, String password) {
@@ -23,5 +24,9 @@ public class User {
 
     public String getName() {
         return name;
+    }
+
+    public String getHashedPassword() {
+        return hashedPassword;
     }
 }
