@@ -25,6 +25,11 @@ public class DatabaseUserManager implements UserManager {
     }
 
     @Override
+    public User getUser(String username) {
+        return null;
+    }
+
+    @Override
     public Account getAccountsForUser(int id) {
         return null;
     }

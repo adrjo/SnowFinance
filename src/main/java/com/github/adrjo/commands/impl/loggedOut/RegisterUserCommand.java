@@ -6,6 +6,8 @@ import com.github.adrjo.commands.annotations.ImplementsMenu;
 import com.github.adrjo.commands.annotations.RegisterCommand;
 import com.github.adrjo.commands.menus.LoggedOutCommandMenu;
 import com.github.adrjo.commands.menus.MainCommandMenu;
+import com.github.adrjo.users.User;
+import com.github.adrjo.users.UserManager;
 
 @ImplementsMenu(LoggedOutCommandMenu.class)
 @RegisterCommand(
@@ -21,8 +23,17 @@ public class RegisterUserCommand extends Command {
     @Override
     public void exec(String[] args) {
         super.exec(args);
+        final String username = args[0];
+        final String password = args[1];
 
-        //register logic
+        final UserManager manager = SnowFinance.instance.getUserManager();
+
+        if (manager.getUser(username) != null) {
+            System.err.println("That user already exists!");
+            return;
+        }
+
+        manager.addUser(new User(username, password));
 
         //eventually...
         SnowFinance.instance.getController().setCommandMenu(new MainCommandMenu());

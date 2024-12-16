@@ -85,4 +85,16 @@ public class SnowFinance {
     public CommandManager getCommandManager() {
         return controller.getCommandMenu().getCommandManager();
     }
+
+    public Database getDatabase() {
+        return database;
+    }
+
+    public AccountManager getAccountManager() {
+        return accountManager;
+    }
+
+    public UserManager getUserManager() {
+        return userManager;
+    }
 }

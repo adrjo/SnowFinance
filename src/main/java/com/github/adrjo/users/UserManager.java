@@ -7,6 +7,7 @@ public interface UserManager {
     void addUser(User user);
     void removeUser(int id);
     User getUser(int id);
+    User getUser(String username);
 
     Account getAccountsForUser(int id);
 
