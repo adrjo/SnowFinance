@@ -10,17 +10,23 @@ public class Account {
     private String description;
     private int color;
 
-    private User owner;
+    private int ownerId;
 
     private Set<User> users = new HashSet<>();
 
-    public Account(int id, String name, String description, User owner) {
-        this.id = id;
+    public Account(String name, String description) {
         this.name = name;
         this.description = description;
         this.color = new Random().nextInt(0, 16777215);
-        this.owner = owner;
-        users.add(owner);
+    }
+
+    public Account(int id, String name, String description, int color, int ownerId, Set<User> users) {
+        this.id = id;
+        this.name = name;
+        this.description = description;
+        this.color = color;
+        this.ownerId = ownerId;
+        this.users = users;
     }
 
     public int getId() {
@@ -37,10 +43,6 @@ public class Account {
 
     public int getColor() {
         return color;
-    }
-
-    public User getOwner() {
-        return owner;
     }
 
     public Set<User> getUsers() {

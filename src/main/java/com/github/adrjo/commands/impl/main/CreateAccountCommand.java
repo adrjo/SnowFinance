@@ -1,5 +1,7 @@
 package com.github.adrjo.commands.impl.main;
 
+import com.github.adrjo.SnowFinance;
+import com.github.adrjo.accounts.Account;
 import com.github.adrjo.commands.Command;
 import com.github.adrjo.commands.annotations.ImplementsMenu;
 import com.github.adrjo.commands.annotations.RegisterCommand;
@@ -19,5 +21,12 @@ public class CreateAccountCommand extends Command {
     @Override
     public void exec(String[] args) {
         super.exec(args);
+
+        final String name = args[0];
+        final String description = args[1];
+
+        if (SnowFinance.instance.getAccountManager().addAccount(new Account(name, description))) {
+            System.out.println("Created " + name + "!");
+        }
     }
 }

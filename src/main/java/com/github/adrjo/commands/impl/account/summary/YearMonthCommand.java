@@ -1,4 +1,4 @@
-package com.github.adrjo.commands.impl.summary;
+package com.github.adrjo.commands.impl.account.summary;
 
 import com.github.adrjo.SnowFinance;
 import com.github.adrjo.commands.Command;
@@ -7,16 +7,17 @@ import com.github.adrjo.commands.annotations.RegisterCommand;
 import com.github.adrjo.commands.menus.AccountCommandMenu;
 import com.github.adrjo.commands.menus.SummaryCommandMenu;
 import com.github.adrjo.transactions.Transaction;
-import com.github.adrjo.util.Helper;
 import com.github.adrjo.util.TransactionUtil;
 
 import java.time.LocalDate;
 import java.util.Map;
 
+import static com.github.adrjo.util.Helper.getInput;
+
 @ImplementsMenu(SummaryCommandMenu.class)
-@RegisterCommand(name = "1", description = "")
-public class YearCommand extends Command {
-    public YearCommand(String name, String desc, int requiredArgs) {
+@RegisterCommand(name = "2", description = "")
+public class YearMonthCommand extends Command {
+    public YearMonthCommand(String name, String desc, int requiredArgs) {
         super(name, desc, requiredArgs);
     }
 
@@ -24,7 +25,7 @@ public class YearCommand extends Command {
     public void exec(String[] args) {
         super.exec(args);
 
-        Map<Integer, Transaction> transactions = year();
+        Map<Integer, Transaction> transactions = yearMonth();
 
         TransactionUtil.printTransactionInfoFor(transactions);
 
@@ -33,12 +34,14 @@ public class YearCommand extends Command {
         SnowFinance.instance.getController().setCommandMenu(new AccountCommandMenu());
     }
 
-    private Map<Integer, Transaction> year() {
-        int year = Helper.getInput("Year");
-        LocalDate date = LocalDate.of(year, 1, 1);
+    private Map<Integer, Transaction> yearMonth() {
+        int year = getInput("Year");
+        int month = getInput("Month");
+
+        LocalDate date = LocalDate.of(year, month, 1);
 
         return SnowFinance.instance.getTransactionManager().getTransactionsBetween(
                 TransactionUtil.epochMilli(date),
-                TransactionUtil.epochMilli(date.plusYears(1)));
+                TransactionUtil.epochMilli(date.plusMonths(1)));
     }
 }
