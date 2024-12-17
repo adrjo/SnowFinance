@@ -87,7 +87,7 @@ public class DatabaseAccountManager implements AccountManager {
         Set<User> users = new HashSet<>();
         try (PreparedStatement stmt = db.getConnection()
                 .prepareStatement("""
-            SELECT users.id, users.name
+            SELECT users.id, users.username
             FROM account_users
             JOIN users
             ON users.id = account_users.user_id
@@ -146,5 +146,39 @@ public class DatabaseAccountManager implements AccountManager {
         } catch (SQLException e) {
             System.err.println("Error removing user from account: " + e.getMessage());
         }
+    }
+
+    @Override
+    public Set<Account> getAccountsForUser(int id) {
+        final Set<Account> accounts = new HashSet<>();
+
+        final String query = """
+                        SELECT id, name, description, color, owner_id
+                        FROM account_users
+                        JOIN accounts ON accounts.id = account_users.account_id
+                        WHERE account_users.user_id = ?
+                        ORDER BY id ASC
+                        """;
+        try (PreparedStatement stmt = db.getConnection().prepareStatement(query)) {
+            stmt.setInt(1, id);
+
+            ResultSet set = stmt.executeQuery();
+
+            while (set.next()) {
+                int accountId = set.getInt(1);
+                String name = set.getString(2);
+                String description = set.getString(3);
+                int color = set.getInt(4);
+                int ownerId = set.getInt(5);
+
+                final Set<User> users = this.getUsersForAccount(accountId);
+
+                accounts.add(new Account(accountId, name, description, color, ownerId, users));
+            }
+        } catch (SQLException e) {
+            System.err.println("Error fetching user accounts: " + e.getMessage());
+        }
+
+        return accounts;
     }
 }

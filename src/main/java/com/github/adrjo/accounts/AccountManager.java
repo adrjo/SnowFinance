@@ -19,4 +19,6 @@ public interface AccountManager {
     default void removeAccount(Account account) {
         this.removeAccount(account.getId());
     }
+
+    Set<Account> getAccountsForUser(int id);
 }

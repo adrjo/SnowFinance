@@ -13,9 +13,10 @@ CREATE TABLE IF NOT EXISTS accounts (
     id              SERIAL PRIMARY KEY,
     name            VARCHAR(32) NOT NULL,
     description     TEXT,
-    color           INTEGER, --RBG int, randomly generated when creating a new account
+    color           INTEGER, -- 0 -> 255, ansi code
     owner_id        INTEGER NOT NULL,
 
+    CHECK (color BETWEEN 0 AND 255),
     UNIQUE (name, owner_id),
     FOREIGN KEY(owner_id) REFERENCES users(id) ON DELETE CASCADE -- delete the account if the owner user is deleted
 );
