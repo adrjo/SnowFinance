@@ -7,6 +7,9 @@ import com.github.adrjo.util.HashHelper;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
+import java.util.ArrayList;
+import java.util.List;
 
 public class DatabaseUserManager implements UserManager {
     private final Database db;
@@ -122,5 +125,23 @@ public class DatabaseUserManager implements UserManager {
     @Override
     public void logout() {
         this.setLoggedInUser(null);
+    }
+
+    @Override
+    public List<User> getAllUsers() {
+        List<User> users = new ArrayList<>();
+        try (Statement stmt = db.getConnection().createStatement()) {
+            ResultSet set = stmt.executeQuery("SELECT id, username FROM users");
+
+            while (set.next()) {
+                int id = set.getInt(1);
+                String name = set.getString(2);
+
+                users.add(new User(id, name));
+            }
+        } catch (SQLException e) {
+            System.err.println("Error fetching users: " + e.getMessage());
+        }
+        return users;
     }
 }

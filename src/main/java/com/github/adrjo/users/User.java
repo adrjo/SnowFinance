@@ -2,6 +2,8 @@ package com.github.adrjo.users;
 
 import com.github.adrjo.util.HashHelper;
 
+import java.util.Objects;
+
 public class User {
     private int id;
     private String name;
@@ -33,5 +35,18 @@ public class User {
 
     public String getHashedPassword() {
         return hashedPassword;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        User user = (User) o;
+        return id == user.id && Objects.equals(name, user.name);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, name);
     }
 }

@@ -11,7 +11,7 @@ public interface AccountManager {
     void removeAccount(int id);
     Account getAccount(int id);
 
-    void addUserToAccount(int userId, int accountId);
+    boolean addUserToAccount(int userId, int accountId);
     void removeUserFromAccount(int userId, int accountId);
 
     Set<User> getUsersForAccount(int id);

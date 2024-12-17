@@ -113,7 +113,7 @@ public class DatabaseAccountManager implements AccountManager {
     }
 
     @Override
-    public void addUserToAccount(int userId, int accountId) {
+    public boolean addUserToAccount(int userId, int accountId) {
         try (PreparedStatement stmt = db.getConnection()
                 .prepareStatement(
                         """
@@ -124,10 +124,11 @@ public class DatabaseAccountManager implements AccountManager {
             stmt.setInt(1, userId);
             stmt.setInt(2, accountId);
 
-            stmt.execute();
+            return stmt.executeUpdate() > 0;
         } catch (SQLException e) {
             System.err.println("Error adding user to account: " + e.getMessage());
         }
+        return false;
     }
 
     @Override

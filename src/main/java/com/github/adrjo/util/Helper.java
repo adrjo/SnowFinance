@@ -1,5 +1,6 @@
 package com.github.adrjo.util;
 
+import com.github.adrjo.accounts.Account;
 import javafx.scene.control.Label;
 
 import java.io.File;
@@ -16,6 +17,7 @@ public class Helper {
 
     public static final String DATE_AND_TIME = "yyyy-MM-dd.HH:mm";
     public static final DateFormat DATE_FORMAT = new SimpleDateFormat(DATE_AND_TIME);
+    private static final String BLOCK_CHARACTER = "\u2588";
 
     public static final String DATABASE = "transactions.snow";
 
@@ -78,5 +80,16 @@ public class Helper {
 
     public static String joinArgs(String[] args, int from) {
         return String.join(" ", Arrays.copyOfRange(args, from, args.length));
+    }
+
+    public static String formattedPrint(Account account) {
+        return String.format("[%s%s%s] %d. %s - %s [OWNER=%s]",
+                TextColor.getFormatForColor(account.getColor()),
+                BLOCK_CHARACTER,
+                TextColor.RESET,
+                account.getId(),
+                account.getName(),
+                account.getDescription(),
+                account.isOwner());
     }
 }

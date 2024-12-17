@@ -29,7 +29,7 @@ public abstract class CommandMenu {
        }
        try {
            command.exec(args);
-       } catch (Exception e) {
+       } catch (IllegalArgumentException e) {
            System.err.println(e.getMessage());
        }
    }

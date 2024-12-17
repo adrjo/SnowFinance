@@ -2,6 +2,8 @@ package com.github.adrjo.users;
 
 import com.github.adrjo.accounts.Account;
 
+import java.util.List;
+
 public interface UserManager {
     User getLoggedInUser();
     void setLoggedInUser(User user);
@@ -26,4 +28,6 @@ public interface UserManager {
 
     boolean login(String username, String password);
     void logout();
+
+    List<User> getAllUsers();
 }

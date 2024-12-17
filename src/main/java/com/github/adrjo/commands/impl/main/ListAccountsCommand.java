@@ -8,7 +8,7 @@ import com.github.adrjo.commands.annotations.RegisterCommand;
 import com.github.adrjo.commands.menus.LoggedOutCommandMenu;
 import com.github.adrjo.commands.menus.MainCommandMenu;
 import com.github.adrjo.users.User;
-import com.github.adrjo.util.TextColor;
+import com.github.adrjo.util.Helper;
 
 import java.util.Set;
 
@@ -18,7 +18,6 @@ import java.util.Set;
         description = "Lists all your accounts, or accounts you are a member of"
 )
 public class ListAccountsCommand extends Command {
-    private static final String BLOCK_CHARACTER = "\u2588";
 
     public ListAccountsCommand(String name, String desc, int requiredArgs) {
         super(name, desc, requiredArgs);
@@ -36,18 +35,7 @@ public class ListAccountsCommand extends Command {
 
         Set<Account> accounts = SnowFinance.instance.getAccountManager().getAccountsForUser(user.getId());
 
-        accounts.forEach(account -> System.out.println(this.formattedPrint(account)));
+        accounts.forEach(account -> System.out.println(Helper.formattedPrint(account)));
         System.out.println();
-    }
-
-    private String formattedPrint(Account account) {
-        return String.format("[%s%s%s] %d. %s - %s [OWNER=%s]",
-                TextColor.getFormatForColor(account.getColor()),
-                BLOCK_CHARACTER,
-                TextColor.RESET,
-                account.getId(),
-                account.getName(),
-                account.getDescription(),
-                account.isOwner());
     }
 }
