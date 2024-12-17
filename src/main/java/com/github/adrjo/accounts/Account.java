@@ -50,6 +50,10 @@ public class Account {
         return users;
     }
 
+    public int getOwnerId() {
+        return ownerId;
+    }
+
     public boolean isOwner() {
         final User user = SnowFinance.instance.getUserManager().getLoggedInUser();
         return user != null && user.getId() == this.ownerId;

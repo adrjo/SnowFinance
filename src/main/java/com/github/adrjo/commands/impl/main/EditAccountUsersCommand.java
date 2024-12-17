@@ -14,11 +14,11 @@ import java.util.Optional;
 
 @ImplementsMenu(MainCommandMenu.class)
 @RegisterCommand(
-        name = "add",
-        description = "Adds a user to one of your accounts"
+        name = "edit",
+        description = "Add or remove account users"
 )
-public class AddUserToAccountCommand extends Command {
-    public AddUserToAccountCommand(String name, String desc, int requiredArgs) {
+public class EditAccountUsersCommand extends Command {
+    public EditAccountUsersCommand(String name, String desc, int requiredArgs) {
         super(name, desc, requiredArgs);
     }
 
@@ -28,7 +28,7 @@ public class AddUserToAccountCommand extends Command {
         final User loggedInUser = super.validateLoggedIn();
         List<Account> accounts = super.validateUserAccounts(loggedInUser);
 
-        System.out.println("Select which account to add users to: ");
+        System.out.println("Select which account to modify: ");
         accounts.forEach(account -> System.out.println(Helper.formattedPrint(account)));
         int input = super.getIntegerInput();
         Optional<Account> optSelectedAccount = accounts.stream().filter(account -> account.getId() == input).findAny();
@@ -37,17 +37,25 @@ public class AddUserToAccountCommand extends Command {
             return;
         }
 
+        System.out.println("Would you like to remove(0) or add(1) a user?");
+        boolean add = (super.getIntegerInput() != 0);
+
         Account selectedAccount = optSelectedAccount.get();
         List<User> users = SnowFinance.instance.getUserManager().getAllUsers().stream()
-                .filter(user -> !selectedAccount.getUsers().contains(user))
+                .filter(user -> {
+                    if (add) {
+                        return !selectedAccount.getUsers().contains(user);
+                    }
+                    return selectedAccount.getUsers().contains(user) && user.getId() != selectedAccount.getOwnerId();
+                })
                 .toList();
 
         if (users.isEmpty()) {
-            System.err.println("No users to add.");
+            System.err.println("No users to " + (add ? "add." : "remove."));
             return;
         }
 
-        System.out.println("Select a user to add: ");
+        System.out.println("Select a user: ");
         users.forEach(user -> System.out.printf("%d. %s%n", user.getId(), user.getName()));
         int userInput = super.getIntegerInput();
 
@@ -58,9 +66,16 @@ public class AddUserToAccountCommand extends Command {
             return;
         }
 
-        if (!SnowFinance.instance.getAccountManager().addUserToAccount(userOptional.get().getId(), selectedAccount.getId())) {
-            System.err.println("Failed to add user to account.");
-            return;
+        if (add) {
+            if (!SnowFinance.instance.getAccountManager().addUserToAccount(userOptional.get().getId(), selectedAccount.getId())) {
+                System.err.println("Failed to add user to account.");
+                return;
+            }
+        } else {
+            if (!SnowFinance.instance.getAccountManager().removeUserFromAccount(userOptional.get().getId(), selectedAccount.getId())) {
+                System.err.println("Failed to remove user from account.");
+                return;
+            }
         }
 
         System.out.println("Success!");

@@ -133,7 +133,7 @@ public class DatabaseAccountManager implements AccountManager {
     }
 
     @Override
-    public void removeUserFromAccount(int userId, int accountId) {
+    public boolean removeUserFromAccount(int userId, int accountId) {
         try (PreparedStatement stmt = db.getConnection()
                 .prepareStatement(
                         """
@@ -141,13 +141,14 @@ public class DatabaseAccountManager implements AccountManager {
                                 WHERE account_id = ? AND user_id = ?
                                 """)) {
 
-            stmt.setInt(1, userId);
-            stmt.setInt(2, accountId);
+            stmt.setInt(1, accountId);
+            stmt.setInt(2, userId);
 
-            stmt.execute();
+            return stmt.executeUpdate() > 0;
         } catch (SQLException e) {
             System.err.println("Error removing user from account: " + e.getMessage());
         }
+        return false;
     }
 
     @Override

@@ -12,7 +12,7 @@ public interface AccountManager {
     Account getAccount(int id);
 
     boolean addUserToAccount(int userId, int accountId);
-    void removeUserFromAccount(int userId, int accountId);
+    boolean removeUserFromAccount(int userId, int accountId);
 
     Set<User> getUsersForAccount(int id);
 
