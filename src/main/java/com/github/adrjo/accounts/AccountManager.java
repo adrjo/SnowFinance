@@ -6,6 +6,9 @@ import java.util.Set;
 
 public interface AccountManager {
 
+    Account getActiveAccount();
+    void setActiveAccount(Account account);
+
     /** return true on success **/
     boolean addAccount(Account account);
     boolean removeAccount(int id);
@@ -19,6 +22,8 @@ public interface AccountManager {
     default boolean removeAccount(Account account) {
         return this.removeAccount(account.getId());
     }
+
+    void leave();
 
     Set<Account> getAccountsForUser(int id);
 }

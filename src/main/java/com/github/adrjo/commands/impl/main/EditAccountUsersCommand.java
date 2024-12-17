@@ -26,7 +26,7 @@ public class EditAccountUsersCommand extends Command {
     public void exec(String[] args) {
         super.exec(args);
         final User loggedInUser = super.validateLoggedIn();
-        List<Account> accounts = super.validateUserAccounts(loggedInUser);
+        List<Account> accounts = super.validateUserAccounts(loggedInUser, true);
 
         System.out.println("Select which account to modify: ");
         accounts.forEach(account -> System.out.println(Helper.formattedPrint(account)));

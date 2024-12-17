@@ -26,7 +26,6 @@ public class CreateAccountCommand extends Command {
         final String name = args[0];
         final String description = Helper.joinArgs(args, 1);
 
-
         if (SnowFinance.instance.getAccountManager().addAccount(new Account(name, description))) {
             System.out.println("Created " + name + "!");
         }

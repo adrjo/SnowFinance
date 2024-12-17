@@ -14,8 +14,25 @@ public class DatabaseAccountManager implements AccountManager {
 
     private final Database db;
 
+    private Account activeAccount;
+
     public DatabaseAccountManager(Database db) {
         this.db = db;
+    }
+
+    @Override
+    public Account getActiveAccount() {
+        return activeAccount;
+    }
+
+    @Override
+    public void setActiveAccount(Account account) {
+        this.activeAccount = account;
+    }
+
+    @Override
+    public void leave() {
+        this.setActiveAccount(null);
     }
 
     @Override

@@ -50,11 +50,11 @@ public abstract class Command {
         return loggedInUser;
     }
 
-    protected List<Account> validateUserAccounts(User loggedInUser) {
+    protected List<Account> validateUserAccounts(User loggedInUser, boolean onlyOwned) {
         final AccountManager accManager = SnowFinance.instance.getAccountManager();
 
         List<Account> accounts = accManager.getAccountsForUser(loggedInUser.getId()).stream()
-                .filter(Account::isOwner)
+                .filter(account -> !onlyOwned || account.isOwner())
                 .toList();
 
         if (accounts.isEmpty()) {

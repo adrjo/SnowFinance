@@ -27,7 +27,7 @@ public class RemoveAccountCommand extends Command {
     public void exec(String[] args) {
         super.exec(args);
         final User loggedInUser = super.validateLoggedIn();
-        List<Account> accounts = super.validateUserAccounts(loggedInUser);
+        List<Account> accounts = super.validateUserAccounts(loggedInUser, true);
 
         System.out.println("Select which account to remove: ");
         accounts.forEach(account -> System.out.println(Helper.formattedPrint(account)));

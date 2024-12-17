@@ -22,6 +22,7 @@ public class BackCommand extends Command {
         super.exec(args);
 
         System.out.println("Leaving account menu!");
+        SnowFinance.instance.getAccountManager().leave();
         SnowFinance.instance.getController().setCommandMenu(new MainCommandMenu());
     }
 }
