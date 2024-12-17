@@ -1,7 +1,7 @@
-package com.github.adrjo.commands.impl.loggedIn;
+package com.github.adrjo.commands.impl.account;
 
 import com.github.adrjo.commands.annotations.ImplementsMenu;
-import com.github.adrjo.commands.menus.MainCommandMenu;
+import com.github.adrjo.commands.menus.AccountCommandMenu;
 import com.github.adrjo.util.Helper;
 import com.github.adrjo.SnowFinance;
 import com.github.adrjo.commands.Command;
@@ -11,7 +11,7 @@ import com.github.adrjo.transactions.Transaction;
 import java.text.ParseException;
 import java.util.Date;
 
-@ImplementsMenu(MainCommandMenu.class)
+@ImplementsMenu(AccountCommandMenu.class)
 @RegisterCommand(
         name = "add",
         description = "args: [name] [amt in SEK] [date in format " + Helper.DATE_AND_TIME + " (or blank for current time)]\n"

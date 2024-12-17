@@ -4,7 +4,7 @@ import com.github.adrjo.SnowFinance;
 import com.github.adrjo.commands.Command;
 import com.github.adrjo.commands.annotations.ImplementsMenu;
 import com.github.adrjo.commands.annotations.RegisterCommand;
-import com.github.adrjo.commands.menus.MainCommandMenu;
+import com.github.adrjo.commands.menus.AccountCommandMenu;
 import com.github.adrjo.commands.menus.SummaryCommandMenu;
 import com.github.adrjo.transactions.Transaction;
 import com.github.adrjo.util.TransactionUtil;
@@ -28,7 +28,7 @@ public class FullSummaryCommand extends Command {
 
         System.out.println();
         TransactionUtil.printStats(transactions);
-        SnowFinance.instance.getController().setCommandMenu(new MainCommandMenu());
+        SnowFinance.instance.getController().setCommandMenu(new AccountCommandMenu());
     }
 
     private Map<Integer, Transaction> full() {

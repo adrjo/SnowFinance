@@ -1,13 +1,13 @@
-package com.github.adrjo.commands.impl.loggedIn;
+package com.github.adrjo.commands.impl.account;
 
 import com.github.adrjo.SnowFinance;
 import com.github.adrjo.commands.Command;
 import com.github.adrjo.commands.annotations.ImplementsMenu;
 import com.github.adrjo.commands.annotations.RegisterCommand;
-import com.github.adrjo.commands.menus.MainCommandMenu;
+import com.github.adrjo.commands.menus.AccountCommandMenu;
 import com.github.adrjo.commands.menus.SummaryCommandMenu;
 
-@ImplementsMenu(MainCommandMenu.class)
+@ImplementsMenu(AccountCommandMenu.class)
 @RegisterCommand(
         name = "summary",
         description = "View full transaction summary (balance, expenses, income) or optionally by year, month, day or week"

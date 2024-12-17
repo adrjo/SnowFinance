@@ -1,13 +1,13 @@
-package com.github.adrjo.commands.impl.loggedIn;
+package com.github.adrjo.commands.impl.account;
 
 import com.github.adrjo.SnowFinance;
 import com.github.adrjo.commands.Command;
 import com.github.adrjo.commands.annotations.ImplementsMenu;
 import com.github.adrjo.commands.annotations.RegisterCommand;
-import com.github.adrjo.commands.menus.MainCommandMenu;
+import com.github.adrjo.commands.menus.AccountCommandMenu;
 import com.github.adrjo.transactions.TransactionManager;
 
-@ImplementsMenu(MainCommandMenu.class)
+@ImplementsMenu(AccountCommandMenu.class)
 @RegisterCommand(
         name = "remove",
         description = "Removes a transaction by [ID]",

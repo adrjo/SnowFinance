@@ -1,7 +1,7 @@
-package com.github.adrjo.commands.impl.loggedIn;
+package com.github.adrjo.commands.impl.account;
 
 import com.github.adrjo.commands.annotations.ImplementsMenu;
-import com.github.adrjo.commands.menus.MainCommandMenu;
+import com.github.adrjo.commands.menus.AccountCommandMenu;
 import com.github.adrjo.fileloading.SwedbankFileLoader;
 import com.github.adrjo.fileloading.TransactionFileLoader;
 import com.github.adrjo.commands.Command;
@@ -10,7 +10,7 @@ import com.github.adrjo.commands.annotations.RegisterCommand;
 import java.io.File;
 import java.io.IOException;
 
-@ImplementsMenu(MainCommandMenu.class)
+@ImplementsMenu(AccountCommandMenu.class)
 @RegisterCommand(
         name = "import",
         description = "Imports transactions from Swedbank\n"

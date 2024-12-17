@@ -45,34 +45,51 @@ public class DatabaseUserManager implements UserManager {
     }
 
     @Override
-    public void removeUser(int id) {
-
+    public boolean removeUser(int id) {
+        try (PreparedStatement stmt = db.getConnection().prepareStatement("DELETE FROM users WHERE id = ?")) {
+            stmt.setInt(1, id);
+            return stmt.executeUpdate() > 0;
+        } catch (SQLException e) {
+            e.printStackTrace();
+            throw new RuntimeException("Error executing query: " + e.getMessage());
+        }
     }
 
     @Override
     public User getUser(int id) {
-        return null;
+        try (PreparedStatement stmt = db.getConnection().prepareStatement("SELECT * FROM users WHERE id = ?")) {
+            stmt.setInt(1, id);
+            ResultSet set = stmt.executeQuery();
+
+            return getUserResult(set);
+        } catch (SQLException e) {
+            e.printStackTrace();
+            throw new RuntimeException("Error executing query: " + e.getMessage());
+        }
     }
 
     @Override
     public User getUser(String username) {
         try (PreparedStatement stmt = db.getConnection().prepareStatement("SELECT * FROM users WHERE LOWER(username) = ?")) {
             stmt.setString(1, username.toLowerCase());
-
             ResultSet set = stmt.executeQuery();
 
-            if (set.next()) {
-                int id = set.getInt(1);
-                String name = set.getString(2);
-                String hashedPass = set.getString(3);
-
-                return new User(id, name, hashedPass);
-            }
-            return null;
+            return getUserResult(set);
         } catch (SQLException e) {
             e.printStackTrace();
             throw new RuntimeException("Error executing query: " + e.getMessage());
         }
+    }
+
+    private User getUserResult(ResultSet set) throws SQLException {
+        if (set.next()) {
+            int id = set.getInt(1);
+            String name = set.getString(2);
+            String hashedPass = set.getString(3);
+
+            return new User(id, name, hashedPass);
+        }
+        return null;
     }
 
     @Override

@@ -5,11 +5,11 @@ import com.github.adrjo.commands.Command;
 import com.github.adrjo.commands.annotations.ImplementsMenu;
 import com.github.adrjo.commands.annotations.RegisterCommand;
 import com.github.adrjo.commands.menus.LoggedOutCommandMenu;
-import com.github.adrjo.commands.menus.MainCommandMenu;
+import com.github.adrjo.commands.menus.AccountCommandMenu;
 import com.github.adrjo.commands.menus.SummaryCommandMenu;
 
 @ImplementsMenu(LoggedOutCommandMenu.class)
-@ImplementsMenu(MainCommandMenu.class)
+@ImplementsMenu(AccountCommandMenu.class)
 @ImplementsMenu(SummaryCommandMenu.class)
 @RegisterCommand(
         name = "help",

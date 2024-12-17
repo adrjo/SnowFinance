@@ -1,7 +1,7 @@
-package com.github.adrjo.commands.impl.loggedIn;
+package com.github.adrjo.commands.impl.account;
 
 import com.github.adrjo.commands.annotations.ImplementsMenu;
-import com.github.adrjo.commands.menus.MainCommandMenu;
+import com.github.adrjo.commands.menus.AccountCommandMenu;
 import com.github.adrjo.util.Helper;
 import com.github.adrjo.SnowFinance;
 import com.github.adrjo.commands.Command;
@@ -10,7 +10,7 @@ import com.github.adrjo.commands.annotations.RegisterCommand;
 import java.text.ParseException;
 import java.util.Date;
 
-@ImplementsMenu(MainCommandMenu.class)
+@ImplementsMenu(AccountCommandMenu.class)
 @RegisterCommand(
         name = "bal",
         description = "Returns your current balance OR your balance at a specific [Date] (yyyy-MM-dd.hh:mm)"
