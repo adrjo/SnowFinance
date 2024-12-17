@@ -6,6 +6,7 @@ import com.github.adrjo.commands.Command;
 import com.github.adrjo.commands.annotations.ImplementsMenu;
 import com.github.adrjo.commands.annotations.RegisterCommand;
 import com.github.adrjo.commands.menus.MainCommandMenu;
+import com.github.adrjo.util.Helper;
 
 @ImplementsMenu(MainCommandMenu.class)
 @RegisterCommand(
@@ -23,7 +24,8 @@ public class CreateAccountCommand extends Command {
         super.exec(args);
 
         final String name = args[0];
-        final String description = args[1];
+        final String description = Helper.joinArgs(args, 1);
+
 
         if (SnowFinance.instance.getAccountManager().addAccount(new Account(name, description))) {
             System.out.println("Created " + name + "!");

@@ -76,4 +76,7 @@ public class Helper {
         return Integer.parseInt(new Scanner(System.in).nextLine());
     }
 
+    public static String joinArgs(String[] args, int from) {
+        return String.join(" ", Arrays.copyOfRange(args, from, args.length));
+    }
 }

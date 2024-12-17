@@ -26,6 +26,7 @@ public class DatabaseAccountManager implements AccountManager {
                                 INSERT INTO
                                 accounts (name, description, color, owner_id)
                                 VALUES (?, ?, ?, ?)
+                                RETURNING id
                                 """;
 
         try (PreparedStatement stmt = db.getConnection().prepareStatement(query)) {
@@ -34,12 +35,17 @@ public class DatabaseAccountManager implements AccountManager {
             stmt.setInt(3, account.getColor());
             stmt.setInt(4, user.getId());
 
-            return !stmt.execute();
+            ResultSet set = stmt.executeQuery();
+            if (set.next()) {
+                int insertedId = set.getInt(1);
+                this.addUserToAccount(user.getId(), insertedId);
+                return true;
+            }
+
         } catch (SQLException e) {
             System.err.println("Failed to create account: " + e.getMessage());
-            return false;
         }
-
+        return false;
     }
 
     @Override
