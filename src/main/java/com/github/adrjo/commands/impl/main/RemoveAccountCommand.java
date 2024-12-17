@@ -31,9 +31,8 @@ public class RemoveAccountCommand extends Command {
 
         System.out.println("Select which account to remove: ");
         accounts.forEach(account -> System.out.println(Helper.formattedPrint(account)));
-        final Scanner scanner = new Scanner(System.in);
-        System.out.print("> ");
-        int input = Integer.parseInt(scanner.nextLine());
+        int input = super.getIntegerInput();
+
         Optional<Account> optSelectedAccount = accounts.stream().filter(account -> account.getId() == input).findAny();
         if (!optSelectedAccount.isPresent()) {
             System.err.println("You do not own that account.");
