@@ -5,7 +5,6 @@ import com.github.adrjo.accounts.Account;
 import com.github.adrjo.commands.Command;
 import com.github.adrjo.commands.annotations.ImplementsMenu;
 import com.github.adrjo.commands.annotations.RegisterCommand;
-import com.github.adrjo.commands.menus.LoggedOutCommandMenu;
 import com.github.adrjo.commands.menus.MainCommandMenu;
 import com.github.adrjo.users.User;
 import com.github.adrjo.util.Helper;
@@ -26,12 +25,7 @@ public class ListAccountsCommand extends Command {
     @Override
     public void exec(String[] args) {
         super.exec(args);
-        User user = SnowFinance.instance.getUserManager().getLoggedInUser();
-        if (user == null) {
-            System.err.println("You're not logged in");
-            SnowFinance.instance.getController().setCommandMenu(new LoggedOutCommandMenu());
-            return;
-        }
+        User user = super.validateLoggedIn();
 
         Set<Account> accounts = SnowFinance.instance.getAccountManager().getAccountsForUser(user.getId());
 

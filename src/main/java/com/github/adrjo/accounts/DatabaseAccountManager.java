@@ -49,14 +49,15 @@ public class DatabaseAccountManager implements AccountManager {
     }
 
     @Override
-    public void removeAccount(int id) {
+    public boolean removeAccount(int id) {
         try (PreparedStatement stmt = db.getConnection().prepareStatement("DELETE FROM accounts WHERE id = ?")) {
             stmt.setInt(1, id);
 
-            stmt.executeQuery();
+            return stmt.executeUpdate() > 0;
         } catch (SQLException e) {
             System.err.println("Error removing account: " + e.getMessage());
         }
+        return false;
     }
 
     @Override

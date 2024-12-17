@@ -8,7 +8,7 @@ public interface AccountManager {
 
     /** return true on success **/
     boolean addAccount(Account account);
-    void removeAccount(int id);
+    boolean removeAccount(int id);
     Account getAccount(int id);
 
     boolean addUserToAccount(int userId, int accountId);
@@ -16,8 +16,8 @@ public interface AccountManager {
 
     Set<User> getUsersForAccount(int id);
 
-    default void removeAccount(Account account) {
-        this.removeAccount(account.getId());
+    default boolean removeAccount(Account account) {
+        return this.removeAccount(account.getId());
     }
 
     Set<Account> getAccountsForUser(int id);
