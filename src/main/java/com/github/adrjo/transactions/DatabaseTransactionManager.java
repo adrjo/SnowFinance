@@ -57,7 +57,7 @@ public class DatabaseTransactionManager implements TransactionManager {
         try (PreparedStatement stmt = db.getConnection()
                 .prepareStatement("""
                         INSERT INTO transactions (id, description, amount, timestamp_ms, account_id)
-                        VALUES (?, ?, ?, ?)
+                        VALUES (?, ?, ?, ?, ?)
                         """)) {
             stmt.setInt(1, id);
             stmt.setString(2, transaction.description());
