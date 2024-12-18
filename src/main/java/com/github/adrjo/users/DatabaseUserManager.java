@@ -1,5 +1,6 @@
 package com.github.adrjo.users;
 
+import com.github.adrjo.SnowFinance;
 import com.github.adrjo.accounts.Account;
 import com.github.adrjo.database.Database;
 import com.github.adrjo.util.HashHelper;
@@ -36,11 +37,17 @@ public class DatabaseUserManager implements UserManager {
                                      INSERT INTO
                                      users (username, hashed_password)
                                      VALUES (?, ?)
+                                     RETURNING id
                                      """)) {
             stmt.setString(1, user.getName());
             stmt.setString(2, user.getHashedPassword());
 
-            stmt.execute();
+            ResultSet set = stmt.executeQuery();
+            if (set.next()) {
+                int insertedId = set.getInt(1);
+                Account mainAccount = new Account("Main Account", user.getName() + "'s Main Account");
+                SnowFinance.instance.getAccountManager().addAccount(insertedId, mainAccount);
+            }
         } catch (SQLException e) {
             e.printStackTrace();
             throw new RuntimeException("Error executing query: " + e.getMessage());
