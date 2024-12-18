@@ -42,6 +42,11 @@ public class DatabaseAccountManager implements AccountManager {
     public boolean addAccount(Account account) {
         final User user = SnowFinance.instance.getUserManager().getLoggedInUser();
 
+        return this.addAccount(user.getId(), account);
+    }
+
+    @Override
+    public boolean addAccount(int userId, Account account) {
         final String query = """
                 INSERT INTO
                 accounts (name, description, color, owner_id)
@@ -58,12 +63,12 @@ public class DatabaseAccountManager implements AccountManager {
                 stmt.setString(1, account.getName());
                 stmt.setString(2, account.getDescription());
                 stmt.setInt(3, account.getColor());
-                stmt.setInt(4, user.getId());
+                stmt.setInt(4, userId);
 
                 ResultSet set = stmt.executeQuery();
                 if (set.next()) {
                     int insertedId = set.getInt(1);
-                    if (this.addUserToAccount(user.getId(), insertedId)) {
+                    if (this.addUserToAccount(userId, insertedId)) {
                         // successfully added user, commit and save
                         connection.commit();
                     } else {

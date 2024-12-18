@@ -12,6 +12,8 @@ public interface AccountManager {
 
     /** return true on success **/
     boolean addAccount(Account account);
+    boolean addAccount(int userId, Account account);
+
     boolean removeAccount(int id);
     Account getAccount(int id);
 
