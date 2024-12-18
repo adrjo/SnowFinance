@@ -244,10 +244,10 @@ public class DatabaseTransactionManager implements TransactionManager {
                         WHERE
                         account_id = ?
                         AND
-                        LOWER(description) LIKE '%?%'
+                        LOWER(description) LIKE ?
                         """)) {
             stmt.setInt(1, account.getId());
-            stmt.setString(2, toSearch);
+            stmt.setString(2, "%" + toSearch.toLowerCase() + "%"); //wildcard
 
             ResultSet set = stmt.executeQuery();
 
