@@ -10,8 +10,7 @@ public interface TransactionManager {
     boolean add(Transaction transaction);
     boolean add(int id, Transaction transaction);
 
-    void remove(Transaction transaction);
-    void remove(int id);
+    boolean remove(int id);
 
     Transaction get(int id);
 

@@ -6,6 +6,7 @@ import com.github.adrjo.database.Database;
 
 import java.math.BigDecimal;
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.Map;
 
@@ -73,29 +74,68 @@ public class DatabaseTransactionManager implements TransactionManager {
     }
 
     @Override
-    public void remove(Transaction transaction) {
-        throw new IllegalArgumentException("Not implemented");
-        // maybe not needed?
-    }
+    public boolean remove(int id) {
+        try (PreparedStatement stmt = db.getConnection()
+                .prepareStatement("DELETE FROM transactions WHERE id = ?")) {
+            stmt.setInt(1, id);
 
-    @Override
-    public void remove(int id) {
-        throw new IllegalArgumentException("Not implemented");
-        // remove from transactions where id = id
+            return stmt.executeUpdate() > 0;
+        } catch (SQLException e) {
+            System.err.println("Error removing transaction: " + e.getMessage());
+        }
+
+        return false;
     }
 
     @Override
     public Transaction get(int id) {
-        throw new IllegalArgumentException("Not implemented");
-        // select name, amount, timestamp from transactions where id = id
+        try (PreparedStatement stmt = db.getConnection()
+                .prepareStatement("SELECT description, amount, timestamp_ms FROM transactions WHERE id = ?")) {
+            stmt.setInt(1, id);
+
+            ResultSet set = stmt.executeQuery();
+
+            if (set.next()) {
+                String desc = set.getString(1);
+                BigDecimal amount = set.getBigDecimal(2);
+                long timestamp = set.getLong(3);
+
+                return new Transaction(desc, amount.doubleValue(), timestamp);
+            }
+        } catch (SQLException e) {
+            System.err.println("Error fetching transaction: " + e.getMessage());
+        }
+        return null;
     }
 
     @Override
     public double getBalanceAt(long timestamp) {
-        throw new IllegalArgumentException("Not implemented");
-        // List<Double> amts = select amount from transactions where this.timestamp <= timestamp
-        // int tot = 0
-        // foreach amts tot += amount
+        final Account account = SnowFinance.instance.getAccountManager().getActiveAccount();
+
+        final String query = """
+                        SELECT amount
+                        FROM transactions
+                        WHERE
+                        account_id = ?
+                        AND
+                        timestamp_ms <= ?
+                        """;
+        try (PreparedStatement stmt = db.getConnection().prepareStatement(query)) {
+            stmt.setInt(1, account.getId());
+            stmt.setLong(2, timestamp);
+
+            ResultSet set = stmt.executeQuery();
+            BigDecimal total = BigDecimal.ZERO;
+            while (set.next()) {
+                BigDecimal amount = set.getBigDecimal(1);
+                total = total.add(amount);
+            }
+
+            return total.doubleValue();
+        } catch (SQLException e) {
+            System.err.println("Error getting balance: " + e.getMessage());
+        }
+        return 0;
     }
 
     @Override

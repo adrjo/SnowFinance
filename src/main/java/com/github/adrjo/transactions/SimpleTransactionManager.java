@@ -85,13 +85,9 @@ public class SimpleTransactionManager implements TransactionManager {
     }
 
     @Override
-    public void remove(int id) {
+    public boolean remove(int id) {
         idtoTransactionMap.remove(id);
-    }
-
-    @Override
-    public void remove(Transaction transaction) {
-        idtoTransactionMap.values().removeIf(t -> t.equals(transaction));
+        return true;
     }
 
     @Override
