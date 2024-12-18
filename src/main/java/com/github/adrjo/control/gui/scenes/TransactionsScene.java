@@ -49,7 +49,7 @@ public class TransactionsScene extends Scene {
         id.setCellValueFactory(new PropertyValueFactory<>("id"));
 
         TableColumn<TransactionDisplay, String> name = new TableColumn<>("Name");
-        name.setCellValueFactory(new PropertyValueFactory<>("desc"));
+        name.setCellValueFactory(new PropertyValueFactory<>("description"));
 
         TableColumn<TransactionDisplay, String> dateTime = new TableColumn<>("Date");
         dateTime.setCellValueFactory(new PropertyValueFactory<>("date"));
@@ -261,10 +261,10 @@ public class TransactionsScene extends Scene {
 
         transactions.entrySet().stream()
                 .filter(entry -> {
-                    if (showIncome.isSelected() && entry.getValue().amt() >= 0) {
+                    if (showIncome.isSelected() && entry.getValue().amount() >= 0) {
                         return true;
                     }
-                    return showOutcome.isSelected() && entry.getValue().amt() <= 0;
+                    return showOutcome.isSelected() && entry.getValue().amount() <= 0;
                 })
                 .forEach(entry -> {
                     int id = entry.getKey();

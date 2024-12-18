@@ -7,8 +7,8 @@ public interface TransactionManager {
     void load();
     void save();
 
-    void add(Transaction transaction);
-    void add(int id, Transaction transaction);
+    boolean add(Transaction transaction);
+    boolean add(int id, Transaction transaction);
 
     void remove(Transaction transaction);
     void remove(int id);

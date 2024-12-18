@@ -34,7 +34,7 @@ CREATE TABLE IF NOT EXISTS account_users (
 CREATE TABLE IF NOT EXISTS transactions (
     id              SERIAL PRIMARY KEY,
     description     TEXT,
-    amount          DECIMAL NOT NULL,
+    amount          DECIMAL(15,2) NOT NULL, -- supports 15 long and 2 decimal spaces big numbers
     timestamp_ms    BIGINT NOT NULL DEFAULT (EXTRACT(EPOCH FROM NOW()) * 1000), -- milliseconds since 1 Jan 1970
 
     account_id      INTEGER NOT NULL,

@@ -8,7 +8,7 @@ import com.github.adrjo.control.Controller;
 import com.github.adrjo.control.TerminalController;
 import com.github.adrjo.database.Database;
 import com.github.adrjo.database.DatabaseUtil;
-import com.github.adrjo.transactions.impl.DatabaseTransactionManager;
+import com.github.adrjo.transactions.DatabaseTransactionManager;
 import com.github.adrjo.transactions.TransactionManager;
 import com.github.adrjo.users.DatabaseUserManager;
 import com.github.adrjo.users.UserManager;

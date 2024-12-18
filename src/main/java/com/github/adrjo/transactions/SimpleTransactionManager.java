@@ -1,12 +1,11 @@
-package com.github.adrjo.transactions.impl;
+package com.github.adrjo.transactions;
 
 import com.github.adrjo.util.Helper;
 import com.github.adrjo.fileloading.SnowFileLoader;
 import com.github.adrjo.fileloading.TransactionFileLoader;
-import com.github.adrjo.transactions.Transaction;
-import com.github.adrjo.transactions.TransactionManager;
 
 import java.io.*;
+import java.math.BigDecimal;
 import java.nio.charset.StandardCharsets;
 import java.util.HashMap;
 import java.util.Map;
@@ -35,7 +34,7 @@ public class SimpleTransactionManager implements TransactionManager {
             for (Map.Entry<Integer, Transaction> entry : idtoTransactionMap.entrySet()) {
                 final int id = entry.getKey();
                 final Transaction transaction = entry.getValue();
-                writer.write(String.format("%d,\"%s\",%.3f,%d\n", id, transaction.desc(), transaction.amt(), transaction.timestamp()));
+                writer.write(String.format("%d,\"%s\",%.3f,%d\n", id, transaction.description(), transaction.amount(), transaction.timestamp()));
             }
         } catch (IOException e) {
             System.err.println("Error in saving transactions to file: " + e.getMessage());
@@ -43,23 +42,24 @@ public class SimpleTransactionManager implements TransactionManager {
     }
 
     @Override
-    public void add(Transaction transaction) {
-        this.add(index, transaction);
+    public boolean add(Transaction transaction) {
+        return this.add(index, transaction);
     }
 
     @Override
-    public void add(int id, Transaction transaction) {
+    public boolean add(int id, Transaction transaction) {
         if (index <= id) {
             index = id + 1;
         }
         this.idtoTransactionMap.put(id, transaction);
+        return true;
     }
 
     @Override
     public double getBalanceAt(long timestamp) {
         return idtoTransactionMap.values().stream()
                 .filter(transaction -> transaction.timestamp() <= timestamp)
-                .mapToDouble(Transaction::amt)
+                .mapToDouble(Transaction::amount)
                 .sum();
     }
 
@@ -102,7 +102,7 @@ public class SimpleTransactionManager implements TransactionManager {
     @Override
     public Map<Integer, Transaction> find(String toSearch) {
         return idtoTransactionMap.entrySet().stream()
-                .filter(entry -> entry.getValue().desc().toLowerCase().contains(toSearch.toLowerCase()))
+                .filter(entry -> entry.getValue().description().toLowerCase().contains(toSearch.toLowerCase()))
                 .collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue));
     }
 }

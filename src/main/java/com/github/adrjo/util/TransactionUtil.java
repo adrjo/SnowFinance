@@ -12,8 +12,8 @@ public class TransactionUtil {
     public static void printTransactionInfo(int id, Transaction transaction) {
         System.out.printf("%d | %s | %.2f | %s\n",
                 id,
-                transaction.desc(),
-                transaction.amt(),
+                transaction.description(),
+                transaction.amount(),
                 Helper.DATE_FORMAT.format(new Date(transaction.timestamp()))
         );
     }
@@ -37,20 +37,20 @@ public class TransactionUtil {
 
     public static double getBalanceFromTransactions(Map<Integer, Transaction> transactions) {
         return transactions.values().stream()
-                .mapToDouble(Transaction::amt)
+                .mapToDouble(Transaction::amount)
                 .sum();
     }
 
     public static double getExpensesForTransactions(Map<Integer, Transaction> transactions) {
         return transactions.values().stream()
-                .mapToDouble(Transaction::amt)
+                .mapToDouble(Transaction::amount)
                 .filter(amt -> amt < 0)
                 .sum();
     }
 
     public static double getIncomeForTransactions(Map<Integer, Transaction> transactions) {
         return transactions.values().stream()
-                .mapToDouble(Transaction::amt)
+                .mapToDouble(Transaction::amount)
                 .filter(amt -> amt > 0)
                 .sum();
     }

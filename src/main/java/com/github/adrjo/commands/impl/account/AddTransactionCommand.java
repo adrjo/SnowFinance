@@ -14,7 +14,7 @@ import java.util.Date;
 @ImplementsMenu(AccountCommandMenu.class)
 @RegisterCommand(
         name = "add",
-        description = "args: [name] [amt in SEK] [date in format " + Helper.DATE_AND_TIME + " (or blank for current time)]\n"
+        description = "args: [name] [amount in SEK] [date in format " + Helper.DATE_AND_TIME + " (or blank for current time)]\n"
                 + "Example: `add Willys 500 2024-08-30.20:30`",
         requiredArgs = 2
 )
@@ -24,7 +24,7 @@ public class AddTransactionCommand extends Command {
     public AddTransactionCommand() {
         super(
                 "add",
-                "args: [name] [amt in SEK] [date in format " + Helper.DATE_AND_TIME + " (or blank for current time)]\n"
+                "args: [name] [amount in SEK] [date in format " + Helper.DATE_AND_TIME + " (or blank for current time)]\n"
                         + "Example: `add Willys 500 2024-08-30.20:30`",
                 2
         );

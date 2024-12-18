@@ -1,5 +1,5 @@
 import com.github.adrjo.transactions.Transaction;
-import com.github.adrjo.transactions.impl.SimpleTransactionManager;
+import com.github.adrjo.transactions.SimpleTransactionManager;
 import org.junit.jupiter.api.Test;
 
 import java.util.Map;
@@ -34,8 +34,8 @@ public class TransactionTest {
         manager.add("Test", 100, 1000);
 
         Transaction transactionFromManager = manager.get(0);
-        assertEquals(transaction.desc(), transactionFromManager.desc());
-        assertEquals(transaction.amt(), transactionFromManager.amt());
+        assertEquals(transaction.description(), transactionFromManager.description());
+        assertEquals(transaction.amount(), transactionFromManager.amount());
         assertEquals(transaction.timestamp(), transactionFromManager.timestamp());
     }
 
@@ -51,7 +51,7 @@ public class TransactionTest {
 
         // Test2 should be the only entry in the map
         assertEquals(1, filteredTransactions.size());
-        assertEquals("Test2", filteredTransactions.values().iterator().next().desc());
+        assertEquals("Test2", filteredTransactions.values().iterator().next().description());
     }
 
     @Test

@@ -19,7 +19,7 @@ public class TransactionDisplay {
     }
 
     public String getDesc() {
-        return transaction.desc();
+        return transaction.description();
     }
 
     public String getDate() {
@@ -27,6 +27,6 @@ public class TransactionDisplay {
     }
 
     public double getAmount() {
-        return transaction.amt();
+        return transaction.amount();
     }
 }
