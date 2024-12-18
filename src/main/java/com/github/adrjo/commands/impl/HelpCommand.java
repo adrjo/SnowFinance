@@ -8,6 +8,7 @@ import com.github.adrjo.commands.menus.LoggedOutCommandMenu;
 import com.github.adrjo.commands.menus.AccountCommandMenu;
 import com.github.adrjo.commands.menus.MainCommandMenu;
 import com.github.adrjo.commands.menus.SummaryCommandMenu;
+import com.github.adrjo.util.TextColor;
 
 @ImplementsMenu(LoggedOutCommandMenu.class)
 @ImplementsMenu(AccountCommandMenu.class)
@@ -31,7 +32,7 @@ public class HelpCommand extends Command {
     @Override
     public void exec(String[] args) {
         for (Command command : SnowFinance.instance.getCommandManager().getCommands()) {
-            System.out.println(command.getName() + " - " + command.getDesc());
+            System.out.println(TextColor.GREEN + command.getName() + TextColor.RESET + " - " + command.getDesc());
         }
     }
 }
