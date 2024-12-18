@@ -8,6 +8,7 @@ import java.math.BigDecimal;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.HashMap;
 import java.util.Map;
 
 public class DatabaseTransactionManager implements TransactionManager {
@@ -140,24 +141,127 @@ public class DatabaseTransactionManager implements TransactionManager {
 
     @Override
     public Map<Integer, Transaction> getAllTransactions() {
-        throw new IllegalArgumentException("Not implemented");
-        // select id, name, amount, timestamp from transactions;
+        final Map<Integer, Transaction> transactionMap = new HashMap<>();
+        final Account account = SnowFinance.instance.getAccountManager().getActiveAccount();
+
+        try (PreparedStatement stmt = db.getConnection()
+                .prepareStatement("SELECT id, description, amount, timestamp_ms FROM transactions WHERE account_id = ?")) {
+            stmt.setInt(1, account.getId());
+
+            ResultSet set = stmt.executeQuery();
+
+
+            while (set.next()) {
+                int id = set.getInt(1);
+                String desc = set.getString(2);
+                BigDecimal amount = set.getBigDecimal(3);
+                long timestamp = set.getLong(4);
+
+                transactionMap.put(id, new Transaction(desc, amount.doubleValue(), timestamp));
+            }
+        } catch (SQLException e) {
+            System.err.println("Error fetching transactions: " + e.getMessage());
+        }
+        return transactionMap;
     }
 
     @Override
     public Map<Integer, Transaction> getTransactionsBefore(long timestamp) {
-        throw new IllegalArgumentException("Not implemented");
-        // select id, name, amount, timestamp from transactions where this.timestamp < timestamp;
+        final Map<Integer, Transaction> transactionMap = new HashMap<>();
+        final Account account = SnowFinance.instance.getAccountManager().getActiveAccount();
+
+        try (PreparedStatement stmt = db.getConnection()
+                .prepareStatement("""
+                        SELECT id, description, amount, timestamp_ms
+                        FROM transactions
+                        WHERE
+                        account_id = ?
+                        AND
+                        timestamp_ms < ?
+                        """)) {
+            stmt.setInt(1, account.getId());
+            stmt.setLong(2, timestamp);
+
+            ResultSet set = stmt.executeQuery();
+
+            while (set.next()) {
+                int id = set.getInt(1);
+                String desc = set.getString(2);
+                BigDecimal amount = set.getBigDecimal(3);
+                long timestampOut = set.getLong(4);
+
+                transactionMap.put(id, new Transaction(desc, amount.doubleValue(), timestampOut));
+            }
+        } catch (SQLException e) {
+            System.err.println("Error fetching transactions: " + e.getMessage());
+        }
+        return transactionMap;
     }
 
     @Override
     public Map<Integer, Transaction> getTransactionsBetween(long from, long until) {
-        throw new IllegalArgumentException("Not implemented");
-        // select id, name, amount, timestamp from transactions where this.timestamp > from and this.timestamp < until;
+        final Map<Integer, Transaction> transactionMap = new HashMap<>();
+        final Account account = SnowFinance.instance.getAccountManager().getActiveAccount();
+
+        try (PreparedStatement stmt = db.getConnection()
+                .prepareStatement("""
+                        SELECT id, description, amount, timestamp_ms
+                        FROM transactions
+                        WHERE
+                        account_id = ?
+                        AND
+                        timestamp_ms BETWEEN ? AND ?
+                        """)) {
+            stmt.setInt(1, account.getId());
+            stmt.setLong(2, from);
+            stmt.setLong(3, until);
+
+            ResultSet set = stmt.executeQuery();
+
+            while (set.next()) {
+                int id = set.getInt(1);
+                String desc = set.getString(2);
+                BigDecimal amount = set.getBigDecimal(3);
+                long timestampOut = set.getLong(4);
+
+                transactionMap.put(id, new Transaction(desc, amount.doubleValue(), timestampOut));
+            }
+        } catch (SQLException e) {
+            System.err.println("Error fetching transactions: " + e.getMessage());
+        }
+        return transactionMap;
     }
 
     @Override
     public Map<Integer, Transaction> find(String toSearch) {
-        throw new IllegalArgumentException("Not implemented");
+        final Map<Integer, Transaction> transactionMap = new HashMap<>();
+        final Account account = SnowFinance.instance.getAccountManager().getActiveAccount();
+
+        try (PreparedStatement stmt = db.getConnection()
+                .prepareStatement("""
+                        SELECT id, description, amount, timestamp_ms
+                        FROM transactions
+                        WHERE
+                        account_id = ?
+                        AND
+                        LOWER(description) LIKE '%?%'
+                        """)) {
+            stmt.setInt(1, account.getId());
+            stmt.setString(2, toSearch);
+
+            ResultSet set = stmt.executeQuery();
+
+            while (set.next()) {
+                int id = set.getInt(1);
+                String desc = set.getString(2);
+                BigDecimal amount = set.getBigDecimal(3);
+                long timestampOut = set.getLong(4);
+
+                transactionMap.put(id, new Transaction(desc, amount.doubleValue(), timestampOut));
+            }
+        } catch (SQLException e) {
+            System.err.println("Error fetching transactions: " + e.getMessage());
+        }
+        return transactionMap;
     }
 }
