@@ -7,7 +7,9 @@ import com.github.adrjo.users.User;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 public class DatabaseAccountManager implements AccountManager {
@@ -169,8 +171,8 @@ public class DatabaseAccountManager implements AccountManager {
     }
 
     @Override
-    public Set<Account> getAccountsForUser(int id) {
-        final Set<Account> accounts = new HashSet<>();
+    public List<Account> getAccountsForUser(int id) {
+        final List<Account> accounts = new ArrayList<>();
 
         final String query = """
                         SELECT id, name, description, color, owner_id

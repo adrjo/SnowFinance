@@ -9,6 +9,7 @@ import com.github.adrjo.commands.menus.MainCommandMenu;
 import com.github.adrjo.users.User;
 import com.github.adrjo.util.Helper;
 
+import java.util.List;
 import java.util.Set;
 
 @ImplementsMenu(MainCommandMenu.class)
@@ -27,7 +28,7 @@ public class ListAccountsCommand extends Command {
         super.exec(args);
         User user = super.validateLoggedIn();
 
-        Set<Account> accounts = SnowFinance.instance.getAccountManager().getAccountsForUser(user.getId());
+        List<Account> accounts = SnowFinance.instance.getAccountManager().getAccountsForUser(user.getId());
 
         accounts.forEach(account -> System.out.println(Helper.formattedPrint(account)));
         System.out.println();

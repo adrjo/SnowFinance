@@ -2,6 +2,7 @@ package com.github.adrjo.accounts;
 
 import com.github.adrjo.users.User;
 
+import java.util.List;
 import java.util.Set;
 
 public interface AccountManager {
@@ -25,5 +26,5 @@ public interface AccountManager {
 
     void leave();
 
-    Set<Account> getAccountsForUser(int id);
+    List<Account> getAccountsForUser(int id);
 }
