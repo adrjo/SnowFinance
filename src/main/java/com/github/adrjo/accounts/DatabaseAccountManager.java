@@ -4,6 +4,7 @@ import com.github.adrjo.SnowFinance;
 import com.github.adrjo.database.Database;
 import com.github.adrjo.users.User;
 
+import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -42,28 +43,50 @@ public class DatabaseAccountManager implements AccountManager {
         final User user = SnowFinance.instance.getUserManager().getLoggedInUser();
 
         final String query = """
-                                INSERT INTO
-                                accounts (name, description, color, owner_id)
-                                VALUES (?, ?, ?, ?)
-                                RETURNING id
-                                """;
+                INSERT INTO
+                accounts (name, description, color, owner_id)
+                VALUES (?, ?, ?, ?)
+                RETURNING id
+                """;
 
-        try (PreparedStatement stmt = db.getConnection().prepareStatement(query)) {
-            stmt.setString(1, account.getName());
-            stmt.setString(2, account.getDescription());
-            stmt.setInt(3, account.getColor());
-            stmt.setInt(4, user.getId());
+        try {
+            Connection connection = db.getConnection();
+            // disable autocommit in case of error in any of the queries
+            connection.setAutoCommit(false);
 
-            ResultSet set = stmt.executeQuery();
-            if (set.next()) {
-                int insertedId = set.getInt(1);
-                this.addUserToAccount(user.getId(), insertedId);
-                return true;
+            try (PreparedStatement stmt = connection.prepareStatement(query)) {
+                stmt.setString(1, account.getName());
+                stmt.setString(2, account.getDescription());
+                stmt.setInt(3, account.getColor());
+                stmt.setInt(4, user.getId());
+
+                ResultSet set = stmt.executeQuery();
+                if (set.next()) {
+                    int insertedId = set.getInt(1);
+                    if (this.addUserToAccount(user.getId(), insertedId)) {
+                        // successfully added user, commit and save
+                        connection.commit();
+                    } else {
+                        // failed to add user, rollback
+                        connection.rollback();
+                    }
+                    return true;
+                }
+
+                // nothing returned, must've errored, rollback
+                connection.rollback();
+            } catch (SQLException e) {
+                // rollback on exception
+                connection.rollback();
+                System.err.println("Failed to create account, rolling back: " + e.getMessage());
+            } finally {
+                // enable auto commit again
+                connection.setAutoCommit(true);
             }
-
         } catch (SQLException e) {
-            System.err.println("Failed to create account: " + e.getMessage());
+            System.err.println("Error in connection rollback/commit: " + e.getMessage());
         }
+
         return false;
     }
 
@@ -89,7 +112,7 @@ public class DatabaseAccountManager implements AccountManager {
 
             if (set.next()) {
                 int accountId = set.getInt(1);
-                String name =  set.getString(2);
+                String name = set.getString(2);
                 String description = set.getString(3);
                 int color = set.getInt(4);
                 int ownerId = set.getInt(5);
@@ -107,12 +130,12 @@ public class DatabaseAccountManager implements AccountManager {
         Set<User> users = new HashSet<>();
         try (PreparedStatement stmt = db.getConnection()
                 .prepareStatement("""
-            SELECT users.id, users.username
-            FROM account_users
-            JOIN users
-            ON users.id = account_users.user_id
-            WHERE account_users.account_id = ?
-            """)) {
+                        SELECT users.id, users.username
+                        FROM account_users
+                        JOIN users
+                        ON users.id = account_users.user_id
+                        WHERE account_users.account_id = ?
+                        """)) {
 
             stmt.setInt(1, id);
 
@@ -175,12 +198,12 @@ public class DatabaseAccountManager implements AccountManager {
         final List<Account> accounts = new ArrayList<>();
 
         final String query = """
-                        SELECT id, name, description, color, owner_id
-                        FROM account_users
-                        JOIN accounts ON accounts.id = account_users.account_id
-                        WHERE account_users.user_id = ?
-                        ORDER BY id ASC
-                        """;
+                SELECT id, name, description, color, owner_id
+                FROM account_users
+                JOIN accounts ON accounts.id = account_users.account_id
+                WHERE account_users.user_id = ?
+                ORDER BY id ASC
+                """;
         try (PreparedStatement stmt = db.getConnection().prepareStatement(query)) {
             stmt.setInt(1, id);
 
